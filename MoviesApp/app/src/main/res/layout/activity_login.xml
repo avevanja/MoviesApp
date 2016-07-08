@@ -7,10 +7,89 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.avevanjagmail.moviesapp.LoginActivity">
+    tools:context="com.avevanjagmail.moviesapp.LoginActivity"
+    android:touchscreenBlocksFocus="true"
+    android:background="#009688">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="MoviesApp"
+        android:id="@+id/textView"
+        android:layout_marginTop="58dp"
+        android:textColor="@color/bright_foreground_inverse_material_light"
+        android:textStyle="normal|italic"
+        android:textSize="56dp"
+        android:visibility="visible"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:hint="login"
+        android:textColor="#ffffff" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText2"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"
+        android:hint="password"
+        android:elegantTextHeight="false"
+        android:singleLine="false"
+        android:textColor="#ffffff" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="With facebook"
+        android:id="@+id/button2"
+        android:layout_below="@+id/button3"
+        android:layout_alignParentLeft="true"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/ripple_btn_fb"
+        android:textColor="#ffffff" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Login"
+        android:id="@+id/button3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/editText2"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/ripple_btn_log"
+        android:textColor="#ffffff" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/button4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="402dp"
+        android:layout_marginStart="402dp"
+        android:layout_below="@+id/button2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign up now"
+        android:id="@+id/textView2"
+        android:layout_alignBottom="@+id/button4"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:clickable="true" />
+
 </RelativeLayout>
