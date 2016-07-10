@@ -18,7 +18,7 @@
         <activity android:name=".RegistrationActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"
+            android:label="Movies"
             android:theme="@style/AppTheme"></activity>
     </application>
 

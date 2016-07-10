@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="#009688" />
+        app:backgroundTint="#009688"
+        android:src="@android:drawable/ic_menu_search" />
 
 </android.support.design.widget.CoordinatorLayout>
