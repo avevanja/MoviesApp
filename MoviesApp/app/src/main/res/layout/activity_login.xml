@@ -11,8 +11,6 @@
     android:touchscreenBlocksFocus="true"
     android:background="#009688">
 
-
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +32,7 @@
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="38dp"
-        android:hint="email"
+        android:hint="login"
         android:textColor="#ffffff" />
 
     <EditText
@@ -87,12 +85,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register now"
-        android:id="@+id/tV_reg"
+        android:text="Sign up now"
+        android:id="@+id/textView2"
         android:layout_alignBottom="@+id/button4"
         android:layout_centerHorizontal="true"
         android:textColor="#ffffff"
-        android:clickable="true"
-        android:onClick="onClick" />
+        android:clickable="true" />
 
 </RelativeLayout>
