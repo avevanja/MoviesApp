@@ -20,7 +20,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(this, RegistrationActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
 
