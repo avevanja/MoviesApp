@@ -1,16 +1,19 @@
 package com.avevanjagmail.moviesapp;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 /**
  * Created by John on 10.07.2016.
  */
 public  class TopTabFragment extends Fragment {
+    RecyclerView rv;
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -18,6 +21,7 @@ public  class TopTabFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     public TopTabFragment() {
+
     }
 
     /**
@@ -31,14 +35,18 @@ public  class TopTabFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-        return rootView;
+
+        View parentView = inflater.inflate(R.layout.fragment_main, container, false);
+        rv = (RecyclerView) parentView.findViewById(R.id.rv);
+        rv.setAdapter(new RvMovieAdapter(Movie.initializeData()));
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        rv.setLayoutManager(llm);
+
+        return parentView;
     }
 }
 
