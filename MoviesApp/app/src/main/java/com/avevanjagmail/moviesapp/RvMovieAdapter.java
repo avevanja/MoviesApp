@@ -30,7 +30,11 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         holder.setName(movies.get(position).getName());
+        holder.setGanre(movies.get(position).getGanre());
         holder.setImage(movies.get(position).getPosterId());
+        holder.setStarImage(movies.get(position).getImageStarId());
+        holder.setTop(movies.get(position).getTop());
+
 
     }
 
@@ -43,6 +47,9 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
         CardView cv;
         ImageView ivPoster;
         TextView tvNameMovie;
+        TextView ganreMovie;
+        TextView topText;
+        ImageView starImage;
         private final View parentView;
 
 
@@ -52,11 +59,24 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
             this.parentView = parentView;
             cv = (CardView)itemView.findViewById(R.id.movie_card_view);
             ivPoster = (ImageView) itemView.findViewById(R.id.movie_poster_image_view);
+            starImage = (ImageView) itemView.findViewById(R.id.image_star);
             tvNameMovie = (TextView) itemView.findViewById(R.id.name_movi_tv);
+            ganreMovie = (TextView) itemView.findViewById(R.id.ganre_text);
+            topText = (TextView) itemView.findViewById(R.id.top_text);
         }
         public void setName(String name){
             tvNameMovie.setText(name);
         }
+        public void setGanre(String ganre){
+            ganreMovie.setText(ganre);
+        }
+        public void setTop(String top){
+            topText.setText(top);
+        }
+        public void setStarImage(int resource){
+            starImage.setImageDrawable(ContextCompat.getDrawable(parentView.getContext(), resource));
+        }
+
 
 
         public void setImage(int resource) {

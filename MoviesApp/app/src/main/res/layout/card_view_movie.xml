@@ -5,12 +5,12 @@
 
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="342dp"
         android:id="@+id/movie_card_view"
         card_view:cardUseCompatPadding="true"
         card_view:cardCornerRadius="4dp">
-        <LinearLayout
+        <RelativeLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -22,15 +22,59 @@
                 android:src="@drawable/ic_movies_top" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Побег из Шоушенка"
                 android:id="@+id/name_movi_tv"
-                android:layout_gravity="center_horizontal"
                 android:textStyle="italic"
-                android:textAlignment="center" />
-        </LinearLayout>
+                android:textAlignment="center"
+                android:layout_alignBottom="@+id/movie_poster_image_view"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="23dp"
+                android:layout_marginStart="23dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="драма, криминал"
+                android:id="@+id/ganre_text"
+                android:allowUndo="false"
+                android:layout_below="@+id/image_star"
+                android:layout_alignLeft="@+id/name_movi_tv"
+                android:layout_alignStart="@+id/name_movi_tv" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_star"
+                android:src="@mipmap/ic_star_rate_black_18dp"
+                android:layout_marginRight="34dp"
+                android:layout_marginEnd="34dp"
+                android:layout_alignBottom="@+id/movie_poster_image_view"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="8.3"
+                android:id="@+id/top_text"
+                android:layout_alignBottom="@+id/movie_poster_image_view"
+                android:layout_toLeftOf="@+id/image_star"
+                android:layout_toStartOf="@+id/image_star" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView3"
+                android:layout_alignTop="@+id/name_movi_tv"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
 
