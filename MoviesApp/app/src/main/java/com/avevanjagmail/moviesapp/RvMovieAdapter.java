@@ -1,6 +1,6 @@
 package com.avevanjagmail.moviesapp;
 
-import android.support.v4.content.ContextCompat;
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,16 +9,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avevanjagmail.moviesapp.Models.Result;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
  * Created by John on 12.07.2016.
  */
 public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieViewHolder> {
-    List<Movie> movies;
-    RvMovieAdapter(List<Movie> movies){
+    List<Result> movies;
+
+    RvMovieAdapter(List<Result> movies) {
         this.movies = movies;
     }
+
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_movie, parent, false);
@@ -29,14 +34,17 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        holder.setName(movies.get(position).getName());
-        holder.setGanre(movies.get(position).getGanre());
-        holder.setImage(movies.get(position).getPosterId());
-        holder.setStarImage(movies.get(position).getImageStarId());
-        holder.setTop(movies.get(position).getTop());
 
-
+        holder.setName(movies.get(position).getTitle());
+        Context context = holder.ivPoster.getContext();
+        Picasso.with(context).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + movies.get(position).getBackdropPath()).
+                error(R.drawable.ava).resize(717,400).into(holder.ivPoster);
+        holder.setDataMovie(movies.get(position).getReleaseDate());
+        holder.setTopMark(movies.get(position).getVoteAverage());
     }
+
+
+
 
     @Override
     public int getItemCount() {
@@ -47,40 +55,38 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
         CardView cv;
         ImageView ivPoster;
         TextView tvNameMovie;
-        TextView ganreMovie;
+        TextView dataMovie;
         TextView topText;
-        ImageView starImage;
+
         private final View parentView;
 
 
-        public MovieViewHolder (View parentView) {
+        public MovieViewHolder(View parentView) {
             super(parentView);
 
             this.parentView = parentView;
-            cv = (CardView)itemView.findViewById(R.id.movie_card_view);
+            cv = (CardView) itemView.findViewById(R.id.movie_card_view);
             ivPoster = (ImageView) itemView.findViewById(R.id.movie_poster_image_view);
-            starImage = (ImageView) itemView.findViewById(R.id.image_star);
+
             tvNameMovie = (TextView) itemView.findViewById(R.id.name_movi_tv);
-            ganreMovie = (TextView) itemView.findViewById(R.id.ganre_text);
+            dataMovie = (TextView) itemView.findViewById(R.id.ganre_text);
             topText = (TextView) itemView.findViewById(R.id.top_text);
         }
-        public void setName(String name){
+
+        public void setName(String name) {
             tvNameMovie.setText(name);
         }
-        public void setGanre(String ganre){
-            ganreMovie.setText(ganre);
+
+        public void setDataMovie(String datamovie) {
+            dataMovie.setText(datamovie);
         }
-        public void setTop(String top){
-            topText.setText(top);
-        }
-        public void setStarImage(int resource){
-            starImage.setImageDrawable(ContextCompat.getDrawable(parentView.getContext(), resource));
+
+        public void setTopMark(Double mark) {
+            topText.setText(mark.toString());
         }
 
 
-
-        public void setImage(int resource) {
-            ivPoster.setImageDrawable(ContextCompat.getDrawable(parentView.getContext(), resource));
-        }
     }
-}
+
+    }
+

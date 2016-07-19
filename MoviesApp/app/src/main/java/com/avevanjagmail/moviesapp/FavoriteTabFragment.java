@@ -39,7 +39,7 @@ public class FavoriteTabFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         rv = (RecyclerView) rootView.findViewById(R.id.rv);
-        rv.setAdapter(new RvMovieAdapter(Movie.initializeData()));
+
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
 
