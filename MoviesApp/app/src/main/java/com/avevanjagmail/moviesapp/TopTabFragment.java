@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.avevanjagmail.moviesapp.Interface.MoviesServise;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
-import com.avevanjagmail.moviesapp.Models.Result;
+import com.avevanjagmail.moviesapp.Models.Movie;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -34,7 +34,7 @@ public class TopTabFragment extends Fragment {
 
     private final String URL = "http://api.themoviedb.org";
     String key = "a143b2488bf72e7081edb871e0db3a7c";
-    ArrayList<Result> moviesnew;
+    ArrayList<Movie> moviesnew;
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -83,7 +83,7 @@ public class TopTabFragment extends Fragment {
 
 
                 ListMovie listmovies = response.body();
-                moviesnew = new ArrayList<Result>(listmovies.getResults());
+                moviesnew = new ArrayList<Movie>(listmovies.getResults());
                 rv.setAdapter(new RvMovieAdapter(moviesnew));
 
 

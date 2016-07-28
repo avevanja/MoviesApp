@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.avevanjagmail.moviesapp.Models.Result;
+import com.avevanjagmail.moviesapp.Models.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -18,9 +18,9 @@ import java.util.List;
  * Created by John on 12.07.2016.
  */
 public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieViewHolder> {
-    List<Result> movies;
+    List<Movie> movies;
 
-    RvMovieAdapter(List<Result> movies) {
+    RvMovieAdapter(List<Movie> movies) {
         this.movies = movies;
     }
 

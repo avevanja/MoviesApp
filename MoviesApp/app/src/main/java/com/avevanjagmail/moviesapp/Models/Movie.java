@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by John on 15.07.2016.
  */
-public class Result {
+public class Movie {
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;

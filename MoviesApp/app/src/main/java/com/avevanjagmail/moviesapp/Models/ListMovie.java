@@ -16,9 +16,9 @@ public class ListMovie {
 
     @SerializedName("results")
     @Expose
-    private List<Result> results = new ArrayList<Result>();
+    private List<Movie> results = new ArrayList<Movie>();
 
-    public List<Result> getResults() {
+    public List<Movie> getResults() {
         return results;
     }
 }
