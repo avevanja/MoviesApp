@@ -18,7 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = LoginActivity.class.getSimpleName();
+   private static final String TAG = LoginActivity.class.getSimpleName();
     TextView tvReg;
     Button btnLog;
     EditText email, password1;
@@ -26,12 +26,17 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+         final String TAG = LoginActivity.class.getSimpleName();
+        TextView tvReg;
+        Button btnLog;
+        EditText email, password1;
+        final String URL = "http://146.185.180.39:4020/login/email";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         tvReg = (TextView) findViewById(R.id.tV_reg);
-        email = (EditText) findViewById(R.id.editText);
-        password1 = (EditText) findViewById(R.id.editText2);
-        btnLog = (Button) findViewById(R.id.btn_log);
+        email = (EditText) findViewById(R.id.lastName);
+        password1 = (EditText) findViewById(R.id.email);
+        btnLog = (Button) findViewById(R.id.btn_create);
         final  String login = email.getText().toString();
         final String password = password1.getText().toString();
          btnLog.setOnClickListener(new View.OnClickListener() {
