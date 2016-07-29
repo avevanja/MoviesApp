@@ -1,5 +1,6 @@
 package com.avevanjagmail.moviesapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,7 +19,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
-   private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final String TAG = LoginActivity.class.getSimpleName();
     TextView tvReg;
     Button btnLog;
     EditText email, password1;
@@ -26,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-         final String TAG = LoginActivity.class.getSimpleName();
+        final String TAG = LoginActivity.class.getSimpleName();
         TextView tvReg;
         Button btnLog;
         EditText email, password1;
@@ -37,43 +38,47 @@ public class LoginActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.lastName);
         password1 = (EditText) findViewById(R.id.email);
         btnLog = (Button) findViewById(R.id.btn_create);
-        final  String login = email.getText().toString();
+        final String login = email.getText().toString();
         final String password = password1.getText().toString();
-         btnLog.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 LoginApiService mService = RetrofitUtil.getLoginService();
-                 Call<LoginResponse> requestMovie = mService.login(new LoginRequest(login, password));
-                 requestMovie.enqueue(new Callback<LoginResponse>() {
-                     @Override
-                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                         Log.d(TAG, "onResponse - " + response.body().toString());
+        btnLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginApiService mService = RetrofitUtil.getLoginService();
+                Call<LoginResponse> requestMovie = mService.login(new LoginRequest(login, password));
+                requestMovie.enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                        Log.d(TAG, "onResponse - " + response.body().toString());
 
-                         if (response.isSuccessful() == true) {
-                             System.out.println("hahahah");
-                         }
-                     }
+                        if (response.isSuccessful() == true) {
+                            System.out.println("hahahah");
+                        }
+                    }
 
-                     @Override
-                     public void onFailure(Call<LoginResponse> call, Throwable t) {
-                         System.out.println("hahahah1");
-                     }
-                 });
-             }
-         });
-
-                                      }
-                                  }
-
-
-
-
-   /* public void onClick(View view) {
-        Intent intent = new Intent(this, RegistrationActivity.class);
-        startActivity(intent);
+                    @Override
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+                        System.out.println("hahahah1");
+                    }
+                });
+            }
+        });
+      tvReg.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+              Intent intent = new Intent( getApplicationContext(), RegistrationActivity.class );
+              startActivity(intent);
+          }
+      });
+    }
 
 
-    }*/
+}
+
+
+
+
+
+
 
   /*  public void onClick1(View view) {
         Intent intent1 = new Intent(this, MainActivity.class);

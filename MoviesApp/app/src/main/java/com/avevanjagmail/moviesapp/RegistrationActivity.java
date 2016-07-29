@@ -22,18 +22,18 @@ import retrofit2.Response;
  * Created by John on 08.07.2016.
  */
 public class RegistrationActivity extends AppCompatActivity{
-
+    final String TAG = LoginActivity.class.getSimpleName();
+    EditText fName, lName, email, password;
+    Button btn_create;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
-         final String TAG = LoginActivity.class.getSimpleName();
-        EditText fName, lName, email, password;
-        Button btn_create;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-      /*  fName = (EditText) findViewById(R.id.editText4);
-        lName = (EditText) findViewById(R.id.editText);
-        email = (EditText) findViewById(R.id.editText2);
-        password = (EditText) findViewById(R.id.editText3);
+       fName = (EditText) findViewById(R.id.firstName);
+        lName = (EditText) findViewById(R.id.lastName);
+        email = (EditText) findViewById(R.id.email);
+        password = (EditText) findViewById(R.id.password);
         btn_create = (Button)(findViewById(R.id.btn_create));
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +57,7 @@ public class RegistrationActivity extends AppCompatActivity{
                     }
                 });
             }
-        });*/
+        });
 
     }
 }
