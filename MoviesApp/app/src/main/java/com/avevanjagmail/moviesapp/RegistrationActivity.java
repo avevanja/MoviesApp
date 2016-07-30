@@ -1,5 +1,6 @@
 package com.avevanjagmail.moviesapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -48,7 +49,9 @@ public class RegistrationActivity extends AppCompatActivity{
                            if (response.body().getSucceeded().success == true)
                          {
 
-                            System.out.println("hahahah");
+                             Intent intent = new Intent(getApplicationContext(), VerifyActivity.class);
+                             startActivity( intent );
+
                         }
                     }
 

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.Interface.LoginApiService;
 import com.avevanjagmail.moviesapp.Models.LoginRequest;
@@ -50,14 +51,26 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         Log.d(TAG, "onResponse - " + response.body().toString());
 
-                        if (response.isSuccessful() == true) {
-                            System.out.println("hahahah");
+                        if (response.body().getSucceeded().success==true)
+                        {
+                            Toast toast = Toast.makeText(getApplicationContext(), "You have logged succtssfully",Toast.LENGTH_LONG);
+                            toast.show();
+                            Intent intent = new Intent( getApplicationContext(), MainActivity.class );
+                            startActivity(intent);
+                        }
+                        else if (response.body().getSucceeded().success==false)
+                        {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Password or Login is incorrect. Try again.",Toast.LENGTH_LONG);
+                            toast.show();
+
                         }
                     }
 
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        System.out.println("hahahah1");
+                        Toast toast = Toast.makeText(getApplicationContext(), "You failed! Try to check your internet connection",Toast.LENGTH_LONG);
+                        toast.show();
+
                     }
                 });
             }
