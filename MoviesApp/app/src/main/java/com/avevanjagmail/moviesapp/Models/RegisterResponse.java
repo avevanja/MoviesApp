@@ -10,4 +10,12 @@ public class RegisterResponse {
   Succeeded succeeded;
     @Expose
     RegisterData data;
+
+    public Succeeded getSucceeded() {
+        return succeeded;
+    }
+
+    public RegisterData getData() {
+        return data;
+    }
 }

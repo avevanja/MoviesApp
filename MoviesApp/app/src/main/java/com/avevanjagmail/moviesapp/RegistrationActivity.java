@@ -45,8 +45,9 @@ public class RegistrationActivity extends AppCompatActivity{
                     @Override
                     public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                         Log.d(TAG, "onResponse - " + response.body().toString());
+                           if (response.body().getSucceeded().success == true)
+                         {
 
-                        if (response.isSuccessful() == true) {
                             System.out.println("hahahah");
                         }
                     }
