@@ -12,16 +12,21 @@ import android.widget.TextView;
 import com.avevanjagmail.moviesapp.Models.Movie;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by John on 12.07.2016.
  */
 public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieViewHolder> {
-    List<Movie> movies;
+   private List<Movie> mMovies = new ArrayList<Movie>();
 
     RvMovieAdapter(List<Movie> movies) {
-        this.movies = movies;
+        mMovies.addAll(movies);
+    }
+    public void addNewMovies (List<Movie> newMoviesList){
+        mMovies.addAll(newMoviesList);
+        notify();
     }
 
     @Override
@@ -35,12 +40,12 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
 
-        holder.setName(movies.get(position).getTitle());
+        holder.setName(mMovies.get(position).getTitle());
         Context context = holder.ivPoster.getContext();
-        Picasso.with(context).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + movies.get(position).getBackdropPath()).
+        Picasso.with(context).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + mMovies.get(position).getBackdropPath()).
                 error(R.drawable.ava).resize(717,400).into(holder.ivPoster);
-        holder.setDataMovie(movies.get(position).getReleaseDate());
-        holder.setTopMark(movies.get(position).getVoteAverage());
+        holder.setDataMovie(mMovies.get(position).getReleaseDate());
+        holder.setTopMark(mMovies.get(position).getVoteAverage());
     }
 
 
@@ -48,7 +53,7 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return mMovies.size();
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {

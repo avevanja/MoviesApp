@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 public interface MoviesServise {
 
     @GET("3/movie/top_rated/?api_key=a143b2488bf72e7081edb871e0db3a7c")
-    Call<ListMovie> getTopName(@Query("language") String lg);
+    Call<ListMovie> getTopName(@Query("language") String lg, @Query("page") int page);
 
     @GET("3/movie/now_playing/?api_key=a143b2488bf72e7081edb871e0db3a7c")
     Call<ListMovie> getNewMovie(@Query("language") String lg);

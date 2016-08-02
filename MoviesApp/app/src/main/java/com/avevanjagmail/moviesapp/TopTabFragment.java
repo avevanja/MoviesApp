@@ -13,16 +13,13 @@ import android.view.ViewGroup;
 import com.avevanjagmail.moviesapp.Interface.MoviesServise;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
 import com.avevanjagmail.moviesapp.Models.Movie;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by John on 10.07.2016.
@@ -30,7 +27,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class TopTabFragment extends Fragment {
 
     RecyclerView rv;
+    int page;
     private static final String TAG = "bla" ;
+    LinearLayoutManager llm;
+    RvMovieAdapter mMovieAdapter;
 
     private final String URL = "http://api.themoviedb.org";
     String key = "a143b2488bf72e7081edb871e0db3a7c";
@@ -55,6 +55,7 @@ public class TopTabFragment extends Fragment {
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
+
     }
 
     @Nullable
@@ -65,17 +66,14 @@ public class TopTabFragment extends Fragment {
         View parentView = inflater.inflate(R.layout.fragment_topmovie, container, false);
         rv = (RecyclerView) parentView.findViewById(R.id.rv);
 
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
 
 
-        Gson gson = new GsonBuilder().create();
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(URL)
-                .build();
-        MoviesServise mService = retrofit.create(MoviesServise.class);
-        Call<ListMovie> requestMovie = mService.getTopName("ru");
+
+        MoviesServise mService = RetrofitUtil.getMoviesService();
+        page = 1;
+        Call<ListMovie> requestMovie = mService.getTopName("ru", page);
 
         requestMovie.enqueue(new Callback<ListMovie>() {
             @Override
@@ -84,7 +82,8 @@ public class TopTabFragment extends Fragment {
 
                 ListMovie listmovies = response.body();
                 moviesnew = new ArrayList<Movie>(listmovies.getResults());
-                rv.setAdapter(new RvMovieAdapter(moviesnew));
+                rv.setAdapter(mMovieAdapter = new RvMovieAdapter(moviesnew));
+
 
 
             }
@@ -92,6 +91,32 @@ public class TopTabFragment extends Fragment {
             @Override
             public void onFailure(Call<ListMovie> call, Throwable t) {
                 Log.e(TAG, "Eror" + t.getMessage());
+
+            }
+        });
+        rv.setOnScrollListener(new EndlessRecyclerOnScrollListener(llm) {
+            @Override
+            public void onLoadMore(int current_page) {
+                MoviesServise mService = RetrofitUtil.getMoviesService();
+
+                Call<ListMovie> requestMovie = mService.getTopName("ru", current_page);
+
+                requestMovie.enqueue(new Callback<ListMovie>() {
+                    @Override
+                    public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
+                        ListMovie listmovies = response.body();
+                        moviesnew = new ArrayList<Movie>(listmovies.getResults());
+                        mMovieAdapter.addNewMovies(moviesnew);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ListMovie> call, Throwable t) {
+                        Log.e(TAG, "Eror" + t.getMessage());
+
+                    }
+                });
+
+
 
             }
         });
