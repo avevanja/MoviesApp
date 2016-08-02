@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp;
+package com.avevanjagmail.moviesapp.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.avevanjagmail.moviesapp.Fragments.FavoriteTabFragment;
+import com.avevanjagmail.moviesapp.Fragments.NewTabFragment;
+import com.avevanjagmail.moviesapp.R;
+//import com.avevanjagmail.moviesapp.Fragments.TopTabFragment;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -44,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView( R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -98,9 +102,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager mViewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(TopTabFragment.newInstance(1), "Top");
-        adapter.addFragment(NewTabFragment.newInstance(2), "New");
-        adapter.addFragment(FavoriteTabFragment.newInstance(3), "Favorite");
+       // adapter.addFragment( TopTabFragment.newInstance(1), "Top");
+        adapter.addFragment( NewTabFragment.newInstance(2), "New");
+        adapter.addFragment( FavoriteTabFragment.newInstance(3), "Favorite");
         mViewPager.setAdapter(adapter);
 
     }

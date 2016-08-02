@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp;
+package com.avevanjagmail.moviesapp.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.avevanjagmail.moviesapp.Interface.MoviesServise;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
 import com.avevanjagmail.moviesapp.Models.Movie;
+import com.avevanjagmail.moviesapp.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -57,7 +58,7 @@ public class NewTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate( R.layout.fragment_main, container, false);
         rv = (RecyclerView) rootView.findViewById(R.id.rv);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());

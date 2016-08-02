@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.avevanjagmail.moviesapp.Fragments.RvMovieAdapter;
 import com.avevanjagmail.moviesapp.Interface.MoviesServise;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
 import com.avevanjagmail.moviesapp.Models.Movie;
@@ -82,7 +83,7 @@ public class TopTabFragment extends Fragment {
 
                 ListMovie listmovies = response.body();
                 moviesnew = new ArrayList<Movie>(listmovies.getResults());
-                rv.setAdapter(mMovieAdapter = new RvMovieAdapter(moviesnew));
+               // rv.setAdapter(mMovieAdapter = new RvMovieAdapter(moviesnew));
 
 
 

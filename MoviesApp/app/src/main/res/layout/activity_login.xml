@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.avevanjagmail.moviesapp.LoginActivity"
+    tools:context=".activities.LoginActivity"
     android:touchscreenBlocksFocus="true"
     android:background="#009688">
 
@@ -86,26 +86,16 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="29dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button4"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="402dp"
-        android:layout_marginStart="402dp"
-        android:layout_below="@+id/button2" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register now"
         android:id="@+id/tV_reg"
-        android:layout_alignBottom="@+id/button4"
-        android:layout_centerHorizontal="true"
         android:textColor="#ffffff"
         android:clickable="true"
-        android:onClick="onClick" />
+        android:onClick="onClick"
+        android:layout_below="@+id/button2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="51dp"/>
 
 </RelativeLayout>

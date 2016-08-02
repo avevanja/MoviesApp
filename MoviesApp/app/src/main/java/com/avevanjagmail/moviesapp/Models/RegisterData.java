@@ -11,4 +11,12 @@ public class RegisterData {
     @Expose
     private String email;
     private String verified;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getVerified() {
+        return verified;
+    }
 }

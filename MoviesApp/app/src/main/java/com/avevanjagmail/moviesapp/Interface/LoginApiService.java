@@ -5,14 +5,15 @@ import com.avevanjagmail.moviesapp.Models.LoginRequest;
 import com.avevanjagmail.moviesapp.Models.LoginResponse;
 import com.avevanjagmail.moviesapp.Models.RegisterRequest;
 import com.avevanjagmail.moviesapp.Models.RegisterResponse;
-
-import java.util.List;
+import com.avevanjagmail.moviesapp.Models.ActivateRequest;
+import com.avevanjagmail.moviesapp.Models.ActivateResponse;
+import com.avevanjagmail.moviesapp.Models.VerifyRequest;
+import com.avevanjagmail.moviesapp.Models.VerifyResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
+import retrofit2.http.PUT;
 
 /**
  * Created by irabokalo on 27.07.2016.
@@ -26,6 +27,8 @@ public interface LoginApiService {
    Call<LoginResponse> logout (@Body LogOutRequest logOutRequest);
     @POST("registration")
     Call<RegisterResponse>register (@Body RegisterRequest registerRequest);
-   @GET("/login/email/{password}")
-  Call<List<LoginRequest>> getPassword(@Path("password") String password);
+    @POST("users/verify")
+    Call<VerifyResponse> verify (@Body VerifyRequest verifyRequest);
+    @PUT("users/activate")
+    Call<ActivateResponse>activate (@Body ActivateRequest verifyRequest);
 }

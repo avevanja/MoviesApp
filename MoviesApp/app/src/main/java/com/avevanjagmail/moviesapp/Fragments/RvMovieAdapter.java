@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp;
+package com.avevanjagmail.moviesapp.Fragments;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avevanjagmail.moviesapp.Models.Movie;
+import com.avevanjagmail.moviesapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_movie, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate( R.layout.card_view_movie, parent, false);
         MovieViewHolder mvh = new MovieViewHolder(v);
         return mvh;
 

@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp;
+package com.avevanjagmail.moviesapp.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.avevanjagmail.moviesapp.R;
 
 /**
  * Created by John on 10.07.2016.
@@ -37,7 +39,7 @@ public class FavoriteTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate( R.layout.fragment_main, container, false);
         rv = (RecyclerView) rootView.findViewById(R.id.rv);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());

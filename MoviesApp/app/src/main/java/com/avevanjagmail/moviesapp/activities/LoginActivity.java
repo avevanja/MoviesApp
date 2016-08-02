@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp;
+package com.avevanjagmail.moviesapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.avevanjagmail.moviesapp.Interface.LoginApiService;
 import com.avevanjagmail.moviesapp.Models.LoginRequest;
 import com.avevanjagmail.moviesapp.Models.LoginResponse;
+import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 
 import retrofit2.Call;
@@ -31,10 +32,11 @@ public class LoginActivity extends AppCompatActivity {
         final String TAG = LoginActivity.class.getSimpleName();
         TextView tvReg;
         Button btnLog;
-        EditText email, password1;
-        final String URL = "http://146.185.180.39:4020/login/email";
+       final EditText email, password1;
+        //final String URL = "http://146.185.180.39:4020/login/email";
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView( R.layout.activity_login);
+
         tvReg = (TextView) findViewById(R.id.tV_reg);
         email = (EditText) findViewById(R.id.lastName);
         password1 = (EditText) findViewById(R.id.email);
@@ -82,10 +84,14 @@ public class LoginActivity extends AppCompatActivity {
               startActivity(intent);
           }
       });
-    }
 
 
-}
+            }
+        }
+
+
+
+
 
 
 
