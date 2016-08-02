@@ -39,14 +39,16 @@ public class LoginActivity extends AppCompatActivity {
 
         tvReg = (TextView) findViewById(R.id.tV_reg);
         email = (EditText) findViewById(R.id.lastName);
-        password1 = (EditText) findViewById(R.id.email);
+        password1 = (EditText) findViewById(R.id.email)
+        ;
         btnLog = (Button) findViewById(R.id.btn_create);
-        final String login = email.getText().toString();
-        final String password = password1.getText().toString();
+
         btnLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LoginApiService mService = RetrofitUtil.getLoginService();
+                String login = email.getText().toString();
+                String password = password1.getText().toString();
                 Call<LoginResponse> requestMovie = mService.login(new LoginRequest(login, password));
                 requestMovie.enqueue(new Callback<LoginResponse>() {
                     @Override
