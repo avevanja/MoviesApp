@@ -5,13 +5,11 @@ package com.avevanjagmail.moviesapp.Models;
  */
 public class ActivateResponse {
     Succeeded succeeded;
-    ActivateData data;
+
 
     public Succeeded getSucceeded() {
         return succeeded;
     }
 
-    public ActivateData getData() {
-        return data;
-    }
+
 }

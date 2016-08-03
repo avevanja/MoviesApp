@@ -16,8 +16,9 @@ import android.view.View;
 
 import com.avevanjagmail.moviesapp.Fragments.FavoriteTabFragment;
 import com.avevanjagmail.moviesapp.Fragments.NewTabFragment;
+import com.avevanjagmail.moviesapp.Fragments.TopTabFragment;
 import com.avevanjagmail.moviesapp.R;
-//import com.avevanjagmail.moviesapp.Fragments.TopTabFragment;
+
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;

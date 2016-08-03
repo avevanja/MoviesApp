@@ -16,12 +16,16 @@ public class RegisterRequest {
     @SerializedName("u_email")
     @Expose
     private String mEmail;
+    @SerializedName( "u_password" )
+    private String mPassword;
+    @SerializedName( "role" )
     private String mRole;
-    public RegisterRequest(String f_name, String l_name, String u_email, String role)
+    public RegisterRequest(String f_name, String l_name, String u_email,String password, String role)
     {
         mFirstName = f_name;
         mLastName = l_name;
         mEmail = u_email;
+        mPassword = password;
         mRole = role;
     }
 }

@@ -44,6 +44,40 @@ public class RegistrationActivity extends AppCompatActivity{
 
 
                 LoginApiService mService = RetrofitUtil.getLoginService();
+
+                Call<RegisterResponse> requestMovie = mService.register(new RegisterRequest(lName.getText().toString(),
+                        fName.getText().toString(),email.getText().toString(),password.getText().toString(),"0"));
+                requestMovie.enqueue(new Callback<RegisterResponse>() {
+                    @Override
+                    public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
+                        Log.d(TAG, "onResponse - " + response.body().toString());
+                        System.out.println(response.body().getData().getEmail());
+                        System.out.println(response.body().getData().getVerified());
+                        System.out.println(response.body().getSucceeded().message);
+                        System.out.println(response.body().getSucceeded().success);
+
+
+                        Intent myintent=new Intent(getApplicationContext(), VerifyActivity.class).putExtra("<email>",emailText);
+                        startActivity(myintent);
+
+
+                       /* if (response.body().getSucceeded().success == true) {
+                            Intent intent = new Intent( getApplicationContext(), VerifyActivity.class );
+                            startActivity( intent );
+                        }
+
+                        if (response.body().getSucceeded().success == false)
+                           {
+                               Toast toast = Toast.makeText(getApplicationContext(), response.body().getSucceeded().message,Toast.LENGTH_LONG);
+                               toast.show();
+                           }*/
+                    }
+
+                    @Override
+                    public void onFailure(Call<RegisterResponse> call, Throwable t) {
+                        System.out.println("hahahah1");
+                    }
+                });
                 Call<VerifyResponse> requestInfo = mService.verify( new VerifyRequest( emailText ) );
                 requestInfo.enqueue( new Callback<VerifyResponse>() {
 
@@ -66,37 +100,7 @@ public class RegistrationActivity extends AppCompatActivity{
 
 
         //LoginApiService mService = RetrofitUtil.getLoginService();
-                Call<RegisterResponse> requestMovie = mService.register(new RegisterRequest(fName.getText().toString(),
-                        lName.getText().toString(),email.getText().toString(),password.getText().toString()));
-                requestMovie.enqueue(new Callback<RegisterResponse>() {
-                    @Override
-                    public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-                        Log.d(TAG, "onResponse - " + response.body().toString());
-                        System.out.println(response.body().getData().getEmail());
-                        System.out.println(response.body().getData().getVerified());
-                        System.out.println(response.body().getSucceeded().message);
-                        System.out.println(response.body().getSucceeded().success);
 
-                        Intent intent = new Intent( getApplicationContext(), VerifyActivity.class );
-                        startActivity( intent );
-
-                       /* if (response.body().getSucceeded().success == true) {
-                            Intent intent = new Intent( getApplicationContext(), VerifyActivity.class );
-                            startActivity( intent );
-                        }
-
-                        if (response.body().getSucceeded().success == false)
-                           {
-                               Toast toast = Toast.makeText(getApplicationContext(), response.body().getSucceeded().message,Toast.LENGTH_LONG);
-                               toast.show();
-                           }*/
-                    }
-
-                    @Override
-                    public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                        System.out.println("hahahah1");
-                    }
-                });
             }
         });
 

@@ -7,10 +7,10 @@ import com.google.gson.annotations.SerializedName;
  */
 public class ActivateRequest {
     @SerializedName( "v_code" )
-    private  int code;
+    private  String code;
     @SerializedName( "u_email" )
     private String email;
-   public ActivateRequest(int c, String e)
+   public ActivateRequest(String c, String e)
     {
         email =e;
         code = c;
@@ -19,7 +19,7 @@ public class ActivateRequest {
         return email;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 }

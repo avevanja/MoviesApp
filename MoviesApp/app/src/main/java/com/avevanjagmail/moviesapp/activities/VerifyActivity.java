@@ -24,18 +24,18 @@ import retrofit2.Response;
  * Created by irabokalo on 29.07.2016.
  */
 public class VerifyActivity extends AppCompatActivity {
-    EditText email;
-    TextView codeTxt;
-    Button verifyBtn, activateBtn;
+    EditText codeTextEdit;
+
+    Button activateBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_verify );
-        email = (EditText) findViewById( R.id.editText );
 
-        activateBtn = (Button) findViewById( R.id.activate_btn );
 
+          activateBtn = (Button) findViewById( R.id.activate_btn );
+            codeTextEdit = (EditText) findViewById( R.id.editText );
 
 
         activateBtn.setOnClickListener( new View.OnClickListener() {
@@ -46,14 +46,15 @@ public class VerifyActivity extends AppCompatActivity {
                 activateBtn.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int code = Integer.parseInt( codeTxt.getText().toString() );
-                        String emailT = email.getText().toString();
+                        String code  = codeTextEdit.getText().toString();
+                        String emailT= getIntent().getStringExtra("email");
                         LoginApiService mService = RetrofitUtil.getLoginService();
                         Call<ActivateResponse> requestInfo = mService.activate( new ActivateRequest( code, emailT ) );
                         requestInfo.enqueue( new Callback<ActivateResponse>() {
                             @Override
                             public void onResponse(Call<ActivateResponse> call, Response<ActivateResponse> response) {
                                 System.out.println( response.body().getSucceeded().message );
+
                                 if (response.body().getSucceeded().success == true)
                                 {
                                     Toast toast = Toast.makeText(getApplicationContext(), "Congratulations you activated your account!",Toast.LENGTH_LONG);

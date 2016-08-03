@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp;
+package com.avevanjagmail.moviesapp.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.avevanjagmail.moviesapp.EndlessRecyclerOnScrollListener;
 import com.avevanjagmail.moviesapp.Fragments.RvMovieAdapter;
 import com.avevanjagmail.moviesapp.Interface.MoviesServise;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
 import com.avevanjagmail.moviesapp.Models.Movie;
+import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class TopTabFragment extends Fragment {
     int page;
     private static final String TAG = "bla" ;
     LinearLayoutManager llm;
-    RvMovieAdapter mMovieAdapter;
+   public RvMovieAdapter mMovieAdapter;
 
     private final String URL = "http://api.themoviedb.org";
     String key = "a143b2488bf72e7081edb871e0db3a7c";
@@ -64,7 +66,7 @@ public class TopTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View parentView = inflater.inflate(R.layout.fragment_topmovie, container, false);
+        View parentView = inflater.inflate( R.layout.fragment_topmovie, container, false);
         rv = (RecyclerView) parentView.findViewById(R.id.rv);
 
         llm = new LinearLayoutManager(getContext());
@@ -83,7 +85,7 @@ public class TopTabFragment extends Fragment {
 
                 ListMovie listmovies = response.body();
                 moviesnew = new ArrayList<Movie>(listmovies.getResults());
-               // rv.setAdapter(mMovieAdapter = new RvMovieAdapter(moviesnew));
+                rv.setAdapter(mMovieAdapter = new RvMovieAdapter(moviesnew));
 
 
 
@@ -106,6 +108,8 @@ public class TopTabFragment extends Fragment {
                     @Override
                     public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
                         ListMovie listmovies = response.body();
+                        rv.setAdapter(mMovieAdapter = new RvMovieAdapter(moviesnew));
+
                         moviesnew = new ArrayList<Movie>(listmovies.getResults());
                         mMovieAdapter.addNewMovies(moviesnew);
                     }
