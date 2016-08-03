@@ -1,7 +1,7 @@
 package com.avevanjagmail.moviesapp.utils;
 
 import com.avevanjagmail.moviesapp.Interface.LoginApiService;
-import com.avevanjagmail.moviesapp.Interface.MoviesServise;
+import com.avevanjagmail.moviesapp.Interface.MoviesService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -13,22 +13,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitUtil {
 
+
     public static LoginApiService getLoginService(){
         Gson gson = new GsonBuilder().create();
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(LoginApiService.BASE_URL)
                 .build();
-        LoginApiService mService = retrofit.create(LoginApiService.class);
-        return  mService;
+        return retrofit.create(LoginApiService.class);
     }
-    public static MoviesServise getMoviesService(){
+    public static MoviesService getMoviesService(){
         Gson gson = new GsonBuilder().create();
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(LoginApiService.BASE_URL)
+                .baseUrl(MoviesService.URL)
                 .build();
-        MoviesServise mService = retrofit.create(MoviesServise.class);
-        return  mService;
+        return retrofit.create(MoviesService.class);
     }
 }

@@ -9,20 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.avevanjagmail.moviesapp.Interface.MoviesServise;
+import com.avevanjagmail.moviesapp.EndlessRecyclerOnScrollListener;
+import com.avevanjagmail.moviesapp.Interface.MoviesService;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
-import com.avevanjagmail.moviesapp.Models.Movie;
 import com.avevanjagmail.moviesapp.R;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.util.ArrayList;
+import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by John on 10.07.2016.
@@ -33,24 +28,18 @@ public class NewTabFragment extends Fragment {
 
     private final String URL = "http://api.themoviedb.org";
     String key = "a143b2488bf72e7081edb871e0db3a7c";
-    ArrayList<Movie> moviesnew;
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
-    private static final String ARG_SECTION_NUMBER = "section_number";
+
+    LinearLayoutManager llm;
+    public RvMovieAdapter mMovieAdapter;
+
+
 
     public NewTabFragment() {
     }
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
-    public static NewTabFragment newInstance(int sectionNumber) {
+    public static NewTabFragment newInstance() {
         NewTabFragment fragment = new NewTabFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,40 +47,49 @@ public class NewTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate( R.layout.fragment_main, container, false);
-        rv = (RecyclerView) rootView.findViewById(R.id.rv);
+        View parentView = inflater.inflate( R.layout.fragment_main, container, false);
+        rv = (RecyclerView) parentView.findViewById(R.id.rv);
 
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
 
 
-        Gson gson = new GsonBuilder().create();
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(URL)
-                .build();
-        MoviesServise mService = retrofit.create(MoviesServise.class);
-        Call<ListMovie> requestMovie = mService.getNewMovie("ru");
+        MoviesService mService = RetrofitUtil.getMoviesService();
 
-        requestMovie.enqueue(new Callback<ListMovie>() {
+        Call<ListMovie> requestMovie = mService.getNewMovie("ru", 1);
+
+        mMovieAdapter = new RvMovieAdapter();
+        rv.setAdapter(mMovieAdapter);
+
+        requestMovie.enqueue(getCallback());
+
+        rv.setOnScrollListener(new EndlessRecyclerOnScrollListener(llm) {
+            @Override
+            public void onLoadMore(int current_page) {
+                MoviesService mService = RetrofitUtil.getMoviesService();
+                Call<ListMovie> requestMovie = mService.getNewMovie("ru", current_page);
+                requestMovie.enqueue(getCallback());
+            }
+        });
+
+        return parentView;
+    }
+
+    private Callback<ListMovie> getCallback() {
+        Log.d(TAG, "getCallback");
+        return new Callback<ListMovie>() {
             @Override
             public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
-
-
-                ListMovie listmovies = response.body();
-                moviesnew = new ArrayList<Movie>(listmovies.getResults());
-                rv.setAdapter(new RvMovieAdapter(moviesnew));
-
-
+                Log.d(TAG, "getCallback onResponse");
+                mMovieAdapter.addNewMovies(response.body().getResults());
             }
 
             @Override
             public void onFailure(Call<ListMovie> call, Throwable t) {
                 Log.e(TAG, "Eror" + t.getMessage());
-
+                t.printStackTrace();
             }
-        });
-        return rootView;
+        };
     }
 }
 

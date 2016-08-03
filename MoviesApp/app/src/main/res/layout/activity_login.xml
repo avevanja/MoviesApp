@@ -3,99 +3,101 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#009688"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activities.LoginActivity"
     android:touchscreenBlocksFocus="true"
-    android:background="#009688">
-
+    tools:context=".activities.LoginActivity">
 
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="MoviesApp"
-        android:id="@+id/textView"
-        android:layout_marginTop="67dp"
-        android:textColor="@color/bright_foreground_inverse_material_light"
-        android:textStyle="normal|italic"
-        android:textSize="56dp"
-        android:visibility="visible"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp" />
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="67dp"
+        android:text="MoviesApp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/bright_foreground_inverse_material_light"
+        android:textSize="56dp"
+        android:textStyle="normal|italic"
+        android:visibility="visible" />
+
     <android.support.design.widget.TextInputLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
         android:id="@+id/view"
-        android:layout_below="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView">
+
         <EditText
+            android:id="@+id/lastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/lastName"
+            android:cursorVisible="false"
             android:hint="email"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
+
     <android.support.design.widget.TextInputLayout
-        android:layout_height="wrap_content"
+        android:id="@+id/view2"
         android:layout_width="match_parent"
-        android:layout_below="@+id/view"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/view2">
+        android:layout_below="@+id/view">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/email"
-        android:hint="password"
-        android:textColor="#ffffff"
-         />
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cursorVisible="false"
+            android:hint="password"
+            android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
 
 
-
     <Button
+        android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="With facebook"
-        android:id="@+id/button2"
-        android:padding="16dp"
-        android:background="@drawable/ripple_btn_fb"
-        android:textColor="#ffffff"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/btn_create"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Login"
-        android:id="@+id/btn_create"
-        android:background="@drawable/ripple_btn_log"
-        android:textColor="#ffffff"
-        android:onClick="onClick1"
-        android:layout_below="@+id/view2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="29dp" />
+        android:layout_below="@+id/btn_create"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/ripple_btn_fb"
+        android:padding="16dp"
+        android:text="With facebook"
+        android:textColor="#ffffff" />
+
+    <Button
+        android:id="@+id/btn_create"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/view2"
+        android:layout_marginTop="29dp"
+        android:background="@drawable/ripple_btn_log"
+        android:onClick="onClick1"
+        android:text="Login"
+        android:textColor="#ffffff" />
 
     <TextView
+        android:id="@+id/tV_reg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register now"
-        android:id="@+id/tV_reg"
-        android:textColor="#ffffff"
-        android:clickable="true"
-        android:onClick="onClick"
         android:layout_below="@+id/button2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="51dp"/>
+        android:layout_marginTop="51dp"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:text="Register now"
+        android:textColor="#ffffff" />
 
 </RelativeLayout>

@@ -30,10 +30,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final String TAG = LoginActivity.class.getSimpleName();
-        TextView tvReg;
-        Button btnLog;
-       final EditText email, password1;
-        //final String URL = "http://146.185.180.39:4020/login/email";
+
+
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_login);
 

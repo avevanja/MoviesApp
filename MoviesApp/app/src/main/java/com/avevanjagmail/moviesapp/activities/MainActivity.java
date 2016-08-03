@@ -103,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager mViewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-       // adapter.addFragment( TopTabFragment.newInstance(1), "Top");
-        adapter.addFragment( NewTabFragment.newInstance(2), "New");
-        adapter.addFragment( FavoriteTabFragment.newInstance(3), "Favorite");
+        adapter.addFragment(TopTabFragment.newInstance(), "Top");
+        adapter.addFragment(NewTabFragment.newInstance(), "New");
+        adapter.addFragment(FavoriteTabFragment.newInstance(3), "Favorite");
         mViewPager.setAdapter(adapter);
 
     }
