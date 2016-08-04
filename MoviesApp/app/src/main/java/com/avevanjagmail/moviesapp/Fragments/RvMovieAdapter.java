@@ -1,7 +1,6 @@
 package com.avevanjagmail.moviesapp.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
 import com.avevanjagmail.moviesapp.Models.Movie;
 import com.avevanjagmail.moviesapp.R;
-import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -22,9 +21,17 @@ import java.util.List;
  * Created by John on 12.07.2016.
  */
 public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieViewHolder> {
-    private List<Movie> mMovies = new ArrayList<>();
+    public    OpenInformActivity mCallback;
+
+
+
+    public List<Movie> mMovies = new ArrayList<>();
+
 
     public RvMovieAdapter() {
+    }
+    public RvMovieAdapter(OpenInformActivity call){
+        this.mCallback = call;
     }
 
     public void addNewMovies(List<Movie> newMoviesList) {
@@ -42,7 +49,7 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
     }
 
     @Override
-    public void onBindViewHolder(MovieViewHolder holder, int position) {
+    public void onBindViewHolder(final MovieViewHolder holder, final int position) {
 
         holder.setName(mMovies.get(position).getTitle());
         Context context = holder.ivPoster.getContext();
@@ -50,6 +57,23 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
                 error(R.drawable.ava).resize(717, 400).into(holder.ivPoster);
         holder.setDataMovie(mMovies.get(position).getReleaseDate());
         holder.setTopMark(mMovies.get(position).getVoteAverage());
+        holder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                InformActivity.start(mMovies.get(position).getId(), holder.cv.getContext());
+//                Intent intent = new Intent(holder.cv.getContext(), InformActivity.class);
+//                intent.putExtra("id",mMovies.get(position).getId() );
+//                holder.cv.getContext().startActivity(intent);
+                mCallback.onClickOpen(mMovies.get(position).getId());
+
+
+            }
+        });
+
+
+
+
+
     }
 
 
@@ -65,18 +89,22 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
         TextView dataMovie;
         TextView topText;
 
+
         private final View parentView;
 
 
         public MovieViewHolder(final View parentView) {
             super(parentView);
-            parentView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    parentView.getContext().startActivity(new Intent(parentView.getContext(),InformActivity.class));
-
-                }
-            });
+//            parentView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent intent = new Intent(parentView.getContext(), InformActivity.class);
+//                    intent.putExtra("id", topText.getText());
+//                    parentView.getContext().startActivity(intent);
+//
+//
+//                }
+//            });
 
             this.parentView = parentView;
             cv = (CardView) itemView.findViewById(R.id.movie_card_view);
@@ -95,9 +123,9 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
             dataMovie.setText(datamovie);
         }
 
-        public void setTopMark(Double mark) {
-            topText.setText(mark.toString());
-        }
+        public void setTopMark(Double mark) {topText.setText(mark.toString());}
+
+
 
 
     }
