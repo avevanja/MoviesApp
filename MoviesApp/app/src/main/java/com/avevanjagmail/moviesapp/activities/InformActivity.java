@@ -51,7 +51,7 @@ public class InformActivity extends AppCompatActivity {
         });
         setTitle(getIntent().getStringExtra(TITLE));
         TitleImageView = (ImageView)findViewById(R.id.expandedImage);
-        TextTet = (TextView)findViewById(R.id.id_view);
+        TextTet = (TextView)findViewById(R.id.inform_movie_text);
         String text = getIntent().getStringExtra(MOVIE_ID);
         TextTet.setText(text.toString());
         Picasso.with(this).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + getIntent().getStringExtra(URL_Image)).
