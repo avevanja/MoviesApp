@@ -26,10 +26,10 @@ import retrofit2.Response;
  * Created by John on 10.07.2016.
  */
 public class TopTabFragment extends Fragment implements OpenInformActivity {
-    OpenInformActivity mCallback;
+
 
     RecyclerView rv;
-    int page;
+
     private static final String TAG = TopTabFragment.class.getSimpleName();
     LinearLayoutManager llm;
     public RvMovieAdapter mMovieAdapter;
@@ -110,8 +110,8 @@ public class TopTabFragment extends Fragment implements OpenInformActivity {
     }
 
     @Override
-    public void onClickOpen(String id) {
-      InformActivity.start(id, getContext());
+    public void onClickOpen(String id, String url, String title) {
+      InformActivity.start(id, url, title, getContext());
 
     }
 }

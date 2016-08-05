@@ -64,7 +64,7 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
 //                Intent intent = new Intent(holder.cv.getContext(), InformActivity.class);
 //                intent.putExtra("id",mMovies.get(position).getId() );
 //                holder.cv.getContext().startActivity(intent);
-                mCallback.onClickOpen(mMovies.get(position).getId());
+                mCallback.onClickOpen(mMovies.get(position).getId(), mMovies.get(position).getBackdropPath(), mMovies.get(position).getTitle());
 
 
             }

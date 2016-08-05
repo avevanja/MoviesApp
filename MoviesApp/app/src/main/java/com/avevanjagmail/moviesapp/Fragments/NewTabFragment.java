@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 
 import com.avevanjagmail.moviesapp.EndlessRecyclerOnScrollListener;
 import com.avevanjagmail.moviesapp.Interface.MoviesService;
+import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
 import com.avevanjagmail.moviesapp.R;
+import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 
 import retrofit2.Call;
@@ -22,7 +24,7 @@ import retrofit2.Response;
 /**
  * Created by John on 10.07.2016.
  */
-public class NewTabFragment extends Fragment {
+public class NewTabFragment extends Fragment implements OpenInformActivity {
     RecyclerView rv;
     private static final String TAG = "bla" ;
 
@@ -58,7 +60,7 @@ public class NewTabFragment extends Fragment {
 
         Call<ListMovie> requestMovie = mService.getNewMovie("ru", 1);
 
-        mMovieAdapter = new RvMovieAdapter();
+        mMovieAdapter = new RvMovieAdapter(this);
         rv.setAdapter(mMovieAdapter);
 
         requestMovie.enqueue(getCallback());
@@ -90,6 +92,11 @@ public class NewTabFragment extends Fragment {
                 t.printStackTrace();
             }
         };
+    }
+
+    @Override
+    public void onClickOpen(String id, String url, String title) {
+        InformActivity.start(id, url, title, getContext());
     }
 }
 
