@@ -1,5 +1,6 @@
 package com.avevanjagmail.moviesapp.Interface;
 
+import com.avevanjagmail.moviesapp.Models.CastList;
 import com.avevanjagmail.moviesapp.Models.MoviesInfo;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
 
@@ -28,6 +29,9 @@ public interface MoviesService {
 
     @GET("3/movie/{id}?api_key=a143b2488bf72e7081edb871e0db3a7c")
     Call<MoviesInfo> getMovieInfoFromId(@Path("id")String idMovie, @Query("language") String lg);
+
+    @GET("3/movie/{id}/credits?api_key=a143b2488bf72e7081edb871e0db3a7c")
+    Call<CastList> getCastList(@Path("id")String idMovie);
 
 
 

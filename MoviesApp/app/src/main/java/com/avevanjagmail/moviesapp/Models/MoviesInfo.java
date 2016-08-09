@@ -24,4 +24,5 @@ public class MoviesInfo {
     public String getOverview() {
         return overview;
     }
+
 }

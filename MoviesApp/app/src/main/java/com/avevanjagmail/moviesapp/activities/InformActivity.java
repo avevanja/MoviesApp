@@ -11,12 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avevanjagmail.moviesapp.Interface.MoviesService;
+import com.avevanjagmail.moviesapp.Models.Cast;
+import com.avevanjagmail.moviesapp.Models.CastList;
 import com.avevanjagmail.moviesapp.Models.Genre;
 import com.avevanjagmail.moviesapp.Models.MoviesInfo;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -30,10 +30,13 @@ import retrofit2.Response;
  */
 public class InformActivity extends AppCompatActivity {
     private static final String TAG = "InformActivity" ;
-    private TextView TextTet, mOverviewTextView;
-    private ImageView TitleImageView;
+    private TextView TextTet, mOverviewTextView, mNameCast, mNameCast1, mNameCast2, mNameCast3, mNameCast4, mNameCast5;
+    private ImageView TitleImageView, mCastFoto, mCastFoto1, mCastFoto2, mCastFoto3, mCastFoto4, mCastFoto5;
     private Toolbar toolbarInformActivity;
     private ArrayList<Genre> mListMovie;
+    private ArrayList<Cast> mListCast;
+
+
 
 
 
@@ -67,18 +70,75 @@ public class InformActivity extends AppCompatActivity {
         });
         setTitle(getIntent().getStringExtra(TITLE));
         TitleImageView = (ImageView)findViewById(R.id.expandedImage);
+        mCastFoto = (ImageView)findViewById(R.id.cast_foto);
+        mCastFoto1 = (ImageView)findViewById(R.id.cast_foto1);
+        mCastFoto2 = (ImageView)findViewById(R.id.cast_foto2);
+        mCastFoto3 = (ImageView)findViewById(R.id.cast_foto3);
+        mCastFoto4 = (ImageView)findViewById(R.id.cast_foto4);
+        mCastFoto5 = (ImageView)findViewById(R.id.cast_foto5);
         TextTet = (TextView)findViewById(R.id.inform_movie_text);
         mOverviewTextView = (TextView)findViewById(R.id.text_overview);
+        mNameCast = (TextView)findViewById(R.id.name_cast_text_view);
+        mNameCast1 = (TextView)findViewById(R.id.name_cast_text_view1);
+        mNameCast2 = (TextView)findViewById(R.id.name_cast_text_view2);
+        mNameCast3 = (TextView)findViewById(R.id.name_cast_text_view3);
+        mNameCast4 = (TextView)findViewById(R.id.name_cast_text_view4);
+        mNameCast5 = (TextView)findViewById(R.id.name_cast_text_view5);
         String text = getIntent().getStringExtra(MOVIE_ID);
-//        TextTet.setText(text.toString());
+
         Picasso.with(this).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + getIntent().getStringExtra(URL_Image)).
                 error(R.drawable.ava).resize(717, 400).into(TitleImageView);
-        Gson gson = new GsonBuilder().create();
+
 
         MoviesService mService = RetrofitUtil.getMoviesService();
         Call<MoviesInfo> requestMovie = mService.getMovieInfoFromId(text, "ru");
         requestMovie.enqueue(getCallback());
-//        TextTet.setText("bla");
+        MoviesService mServiceCastList = RetrofitUtil.getMoviesService();
+        Call<CastList> requestCastList = mServiceCastList.getCastList(text);
+        requestCastList.enqueue(getCastListCallback());
+
+    }
+    private Callback<CastList> getCastListCallback(){
+        return new Callback<CastList>() {
+            @Override
+            public void onResponse(Call<CastList> call, Response<CastList> response) {
+                Log.d(TAG, "getCallback onResponse");
+
+                mListCast = (ArrayList<Cast>) response.body().getCast();
+                if (mListCast.size()>=6) {
+
+
+                    mNameCast.setText(mListCast.get(0).getName());
+                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(0).getProfilePath()).
+                            error(R.drawable.ava).into(mCastFoto);
+                    mNameCast1.setText(mListCast.get(1).getName());
+                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(1).getProfilePath()).
+                            error(R.drawable.ava).into(mCastFoto1);
+                    mNameCast2.setText(mListCast.get(2).getName());
+                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(2).getProfilePath()).
+                            error(R.drawable.ava).into(mCastFoto2);
+                    mNameCast3.setText(mListCast.get(3).getName());
+                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(3).getProfilePath()).
+                            error(R.drawable.ava).into(mCastFoto3);
+                    mNameCast4.setText(mListCast.get(4).getName());
+                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(4).getProfilePath()).
+                            error(R.drawable.ava).into(mCastFoto4);
+                    mNameCast5.setText(mListCast.get(5).getName());
+                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(5).getProfilePath()).
+                            error(R.drawable.ava).into(mCastFoto5);
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<CastList> call, Throwable t) {
+                Log.e(TAG, "Eror" + t.getMessage());
+                t.printStackTrace();
+
+            }
+        };
     }
     private Callback<MoviesInfo> getCallback() {
         Log.d(TAG, "getCallback");
@@ -92,9 +152,6 @@ public class InformActivity extends AppCompatActivity {
                     TextTet.setText(genre.getName() + " ");
                 }
                 mOverviewTextView.setText(response.body().getOverview());
-
-//                TextTet.setText(mGenre.getName());
-//                TextTet.setText("bla");
 
 
             }
