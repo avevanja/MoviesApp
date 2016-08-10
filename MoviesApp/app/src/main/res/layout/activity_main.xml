@@ -51,6 +51,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="#009688"
         app:layout_scrollFlags="scroll|enterAlways"
-        android:src="@android:drawable/ic_menu_search" />
+        android:src="@drawable/ic_search_white_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>
