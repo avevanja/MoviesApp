@@ -62,6 +62,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Дата Релиза"
+                android:id="@+id/textView6"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/release_date_text_view"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Страна"
+                android:id="@+id/textView7"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/countrу_text_view"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:textColor="#000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Жанр"
                 android:id="@+id/textView4"
                 android:layout_marginLeft="16dp"
@@ -128,7 +164,8 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:id="@+id/name_cast_text_view"
-                        android:layout_marginLeft="16dp" />
+                        android:layout_marginLeft="16dp"
+                        android:textColor="#000000" />
                 </LinearLayout>
                 <LinearLayout
                     android:orientation="vertical"
@@ -149,7 +186,8 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:id="@+id/name_cast_text_view1"
-                        android:layout_marginLeft="24dp" />
+                        android:layout_marginLeft="24dp"
+                        android:textColor="#000000" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -170,7 +208,8 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:id="@+id/name_cast_text_view2"
-                        android:layout_marginLeft="24dp" />
+                        android:layout_marginLeft="24dp"
+                        android:textColor="#000000" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -199,7 +238,8 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:id="@+id/name_cast_text_view3"
-                        android:layout_marginLeft="16dp" />
+                        android:layout_marginLeft="16dp"
+                        android:textColor="#000000" />
                 </LinearLayout>
                 <LinearLayout
                     android:orientation="vertical"
@@ -221,7 +261,8 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:id="@+id/name_cast_text_view4"
-                        android:layout_marginLeft="24dp" />
+                        android:layout_marginLeft="24dp"
+                        android:textColor="#000000" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -242,7 +283,8 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:id="@+id/name_cast_text_view5"
-                        android:layout_marginLeft="24dp" />
+                        android:layout_marginLeft="24dp"
+                        android:textColor="#000000" />
                 </LinearLayout>
 
             </LinearLayout>

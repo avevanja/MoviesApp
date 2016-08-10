@@ -24,5 +24,19 @@ public class MoviesInfo {
     public String getOverview() {
         return overview;
     }
+    @SerializedName("release_date")
+    @Expose
+    private String releaseDate;
 
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public List<ProductionCountry> getProductionCountries() {
+        return productionCountries;
+    }
+
+    @SerializedName("production_countries")
+    @Expose
+    private List<ProductionCountry> productionCountries = new ArrayList<ProductionCountry>();
 }

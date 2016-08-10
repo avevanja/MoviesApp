@@ -30,7 +30,7 @@ import retrofit2.Response;
  */
 public class InformActivity extends AppCompatActivity {
     private static final String TAG = "InformActivity" ;
-    private TextView TextTet, mOverviewTextView, mNameCast, mNameCast1, mNameCast2, mNameCast3, mNameCast4, mNameCast5;
+    private TextView TextTet, mOverviewTextView, mNameCast, mNameCast1, mNameCast2, mNameCast3, mNameCast4, mNameCast5, mDataRealise, mCountryName;
     private ImageView TitleImageView, mCastFoto, mCastFoto1, mCastFoto2, mCastFoto3, mCastFoto4, mCastFoto5;
     private Toolbar toolbarInformActivity;
     private ArrayList<Genre> mListMovie;
@@ -84,6 +84,8 @@ public class InformActivity extends AppCompatActivity {
         mNameCast3 = (TextView)findViewById(R.id.name_cast_text_view3);
         mNameCast4 = (TextView)findViewById(R.id.name_cast_text_view4);
         mNameCast5 = (TextView)findViewById(R.id.name_cast_text_view5);
+        mDataRealise = (TextView)findViewById(R.id.release_date_text_view);
+        mCountryName = (TextView)findViewById(R.id.countrу_text_view);
         String text = getIntent().getStringExtra(MOVIE_ID);
 
         Picasso.with(this).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + getIntent().getStringExtra(URL_Image)).
@@ -152,6 +154,8 @@ public class InformActivity extends AppCompatActivity {
                     TextTet.setText(genre.getName() + " ");
                 }
                 mOverviewTextView.setText(response.body().getOverview());
+                mDataRealise.setText(response.body().getReleaseDate());
+                mCountryName.setText(response.body().getProductionCountries().get(0).getName());
 
 
             }
