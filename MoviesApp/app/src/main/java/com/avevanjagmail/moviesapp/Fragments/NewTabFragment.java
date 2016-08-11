@@ -26,14 +26,13 @@ import retrofit2.Response;
  */
 public class NewTabFragment extends Fragment implements OpenInformActivity {
     private RecyclerView rv;
-    private static final String TAG = "bla" ;
+    private static final String TAG = "bla";
 
     private final String URL = "http://api.themoviedb.org";
     String key = "a143b2488bf72e7081edb871e0db3a7c";
 
     LinearLayoutManager llm;
     public RvMovieAdapter mMovieAdapter;
-
 
 
     public NewTabFragment() {
@@ -49,7 +48,7 @@ public class NewTabFragment extends Fragment implements OpenInformActivity {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View parentView = inflater.inflate( R.layout.fragment_main, container, false);
+        View parentView = inflater.inflate(R.layout.fragment_main, container, false);
         rv = (RecyclerView) parentView.findViewById(R.id.rv);
 
         llm = new LinearLayoutManager(getContext());

@@ -21,16 +21,16 @@ import java.util.List;
  * Created by John on 12.07.2016.
  */
 public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieViewHolder> {
-    public    OpenInformActivity mCallback;
+    private OpenInformActivity mCallback;
 
 
-
-    public List<Movie> mMovies = new ArrayList<>();
+    private List<Movie> mMovies = new ArrayList<>();
 
 
     public RvMovieAdapter() {
     }
-    public RvMovieAdapter(OpenInformActivity call){
+
+    public RvMovieAdapter(OpenInformActivity call) {
         this.mCallback = call;
     }
 
@@ -69,9 +69,6 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
 
             }
         });
-
-
-
 
 
     }
@@ -123,9 +120,9 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
             dataMovie.setText(datamovie);
         }
 
-        public void setTopMark(Double mark) {topText.setText(mark.toString());}
-
-
+        public void setTopMark(Double mark) {
+            topText.setText(mark.toString());
+        }
 
 
     }
