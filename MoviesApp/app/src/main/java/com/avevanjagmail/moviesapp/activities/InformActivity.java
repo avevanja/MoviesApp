@@ -3,6 +3,7 @@ package com.avevanjagmail.moviesapp.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -58,6 +59,13 @@ public class InformActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inform);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_favourite_btn);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+            }
+        });
         toolbarInformActivity = (Toolbar) findViewById(R.id.toolbar_inf_act);
         setSupportActionBar(toolbarInformActivity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
