@@ -1,8 +1,8 @@
 package com.avevanjagmail.moviesapp.Interface;
 
 import com.avevanjagmail.moviesapp.Models.CastList;
-import com.avevanjagmail.moviesapp.Models.MoviesInfo;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
+import com.avevanjagmail.moviesapp.Models.MoviesInfo;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -32,6 +32,9 @@ public interface MoviesService {
 
     @GET("3/movie/{id}/credits?api_key=a143b2488bf72e7081edb871e0db3a7c")
     Call<CastList> getCastList(@Path("id")String idMovie);
+
+    @GET("3/search/movie/?api_key=a143b2488bf72e7081edb871e0db3a7c")
+    Call<ListMovie> getSearchMovies(@Query("query")String MovieName);
 
 
 

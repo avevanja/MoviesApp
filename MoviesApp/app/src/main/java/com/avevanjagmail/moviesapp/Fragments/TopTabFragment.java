@@ -29,29 +29,19 @@ import retrofit2.Response;
 public class TopTabFragment extends Fragment implements OpenInformActivity {
 
 
-    RecyclerView rv;
+    private RecyclerView rv;
 
     private static final String TAG = TopTabFragment.class.getSimpleName();
-    LinearLayoutManager llm;
+    private LinearLayoutManager llm;
     public RvMovieAdapter mMovieAdapter;
 
-    private final String URL = "http://api.themoviedb.org";
-    String key = "a143b2488bf72e7081edb871e0db3a7c";
-//    ArrayList<Movie> moviesnew;
 
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
+//    ArrayList<Movie> moviesnew;
 
     public TopTabFragment() {
 
     }
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
     public static TopTabFragment newInstance() {
         TopTabFragment fragment = new TopTabFragment();
         Bundle args = new Bundle();
