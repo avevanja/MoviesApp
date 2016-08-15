@@ -39,7 +39,6 @@
             android:id="@+id/lastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:cursorVisible="false"
             android:hint="email"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
@@ -56,24 +55,12 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:cursorVisible="false"
             android:hint="password"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
 
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/btn_create"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/ripple_btn_fb"
-        android:padding="16dp"
-        android:text="With facebook"
-        android:textColor="#ffffff" />
+
 
     <Button
         android:id="@+id/btn_create"
@@ -87,14 +74,23 @@
         android:onClick="onClick1"
         android:text="Login"
         android:textColor="#ffffff" />
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btn_create"/>
 
     <TextView
         android:id="@+id/tV_reg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button2"
+        android:layout_below="@+id/login_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="45dp"
         android:clickable="true"
         android:onClick="onClick"
         android:text="Register now"

@@ -15,6 +15,13 @@ import com.avevanjagmail.moviesapp.Models.LoginRequest;
 import com.avevanjagmail.moviesapp.Models.LoginResponse;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,18 +29,50 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
-    TextView tvReg;
-    Button btnLog;
-    EditText email, password1;
+    private TextView tvReg;
+    private Button btnLog;
+    private EditText email, password1;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
     private final String URL = "http://146.185.180.39:4020/login/email";
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(getApplicationContext());
         final String TAG = LoginActivity.class.getSimpleName();
 
 
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_login);
+        loginButton = (LoginButton) findViewById(R.id.login_button);
+        callbackManager = CallbackManager.Factory.create();
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Profile profile = Profile.getCurrentProfile();
+
+
+                url = String.valueOf(profile.getProfilePictureUri(100, 200));
+                Log.d("dfdf", url);
+
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intentUser = new Intent(getApplicationContext(), UserActivity.class);
+                intentUser.putExtra("ProfilePictureUri", url);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+            }
+        });
 
         tvReg = (TextView) findViewById(R.id.tV_reg);
         email = (EditText) findViewById(R.id.lastName);
@@ -86,6 +125,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
             }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
         }
 
 
