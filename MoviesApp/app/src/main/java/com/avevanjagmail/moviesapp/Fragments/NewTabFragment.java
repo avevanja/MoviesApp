@@ -27,14 +27,8 @@ import retrofit2.Response;
 public class NewTabFragment extends Fragment implements OpenInformActivity {
     private RecyclerView rv;
     private static final String TAG = "bla";
-
-    private final String URL = "http://api.themoviedb.org";
-    String key = "a143b2488bf72e7081edb871e0db3a7c";
-
-    LinearLayoutManager llm;
+    private LinearLayoutManager llm;
     public RvMovieAdapter mMovieAdapter;
-
-
     public NewTabFragment() {
     }
 
