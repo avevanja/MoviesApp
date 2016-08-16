@@ -24,7 +24,7 @@ public interface LoginApiService {
     @POST("login/email/")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
     @POST("login/logout")
-   Call<LoginResponse> logout (@Body LogOutRequest logOutRequest);
+    Call<LoginResponse> logout (@Body LogOutRequest logOutRequest);
     @POST("registration")
     Call<RegisterResponse>register (@Body RegisterRequest registerRequest);
     @POST("users/verify")

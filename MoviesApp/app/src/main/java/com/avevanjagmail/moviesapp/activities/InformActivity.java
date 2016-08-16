@@ -45,6 +45,7 @@ public class InformActivity extends AppCompatActivity {
     private static final String MOVIE_ID = "movie.id";
     private static final String URL_Image = "url";
     private static final String TITLE = "movie_title";
+    private boolean showingFirst;
 
     public static void start(String movieId, String url, String title, Context context) {
         Intent starter = new Intent(context, InformActivity.class);
@@ -60,10 +61,19 @@ public class InformActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inform);
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_favourite_btn);
+        showingFirst = true;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+                if (showingFirst == true) {
+                    fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+                    showingFirst = false;
+                }
+                else {
+                    fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                    showingFirst = true;
+
+                }
             }
         });
         toolbarInformActivity = (Toolbar) findViewById(R.id.toolbar_inf_act);

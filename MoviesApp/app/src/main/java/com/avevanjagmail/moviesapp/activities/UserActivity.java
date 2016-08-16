@@ -41,6 +41,7 @@ public class UserActivity extends AppCompatActivity {
         ivImage = (ImageView) findViewById(R.id.expandedImage);
 
         Profile profile = Profile.getCurrentProfile();
+
         url1 = String.valueOf(profile.getProfilePictureUri(717, 400));
         Log.d("bh", url1);
         Picasso.with(this).load(url1).
