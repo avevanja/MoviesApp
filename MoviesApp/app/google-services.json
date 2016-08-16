@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "121666085842",
+    "firebase_url": "https://movies-app-fda81.firebaseio.com",
+    "project_id": "movies-app-fda81",
+    "storage_bucket": "movies-app-fda81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121666085842:android:90187b57b2b02de2",
+        "android_client_info": {
+          "package_name": "com.avevanjagmail.moviesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "121666085842-0b3bo6o3ng9uc44vdou1ukh6r5c339br.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoMlPMbYZjhLrVptGSD2L8I4tj-Zo29gE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
