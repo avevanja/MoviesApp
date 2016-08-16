@@ -86,6 +86,7 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
         TextView dataMovie;
         TextView topText;
 
+
         private final View parentView;
 
 

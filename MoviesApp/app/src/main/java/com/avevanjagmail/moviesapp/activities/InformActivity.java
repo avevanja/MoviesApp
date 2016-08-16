@@ -18,11 +18,6 @@ import com.avevanjagmail.moviesapp.Models.Genre;
 import com.avevanjagmail.moviesapp.Models.MoviesInfo;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,14 +36,17 @@ public class InformActivity extends AppCompatActivity {
     private Toolbar toolbarInformActivity;
     private ArrayList<Genre> mListMovie;
     private ArrayList<Cast> mListCast;
-    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
-    DatabaseReference mUserId = mRootRef.child("Users");
-    DatabaseReference mMovieId = mUserId.child("MovieId");
+
+
+
+
+
     private static final String MOVIE_ID = "movie.id";
     private static final String URL_Image = "url";
     private static final String TITLE = "movie_title";
-private  static int i=1;
+    private boolean showingFirst;
+
     public static void start(String movieId, String url, String title, Context context) {
         Intent starter = new Intent(context, InformActivity.class);
         starter.putExtra(MOVIE_ID, movieId);
@@ -63,20 +61,19 @@ private  static int i=1;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inform);
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_favourite_btn);
+        showingFirst = true;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (showingFirst == true) {
+                    fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+                    showingFirst = false;
+                }
+                else {
+                    fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                    showingFirst = true;
 
-                fab.setImageResource(R.drawable.ic_favorite_white_24dp);
-               // String passedArg = getIntent().getExtras().getString("email");
-                String passedArg = "Ira Bokalo";
-
-
-
-                String iText  = String.valueOf(i);
-              mUserId.child("Ira Bokalo").child(iText).setValue(getIntent().getStringExtra(MOVIE_ID));
-                i++;
-
+                }
             }
         });
         toolbarInformActivity = (Toolbar) findViewById(R.id.toolbar_inf_act);
