@@ -18,6 +18,8 @@ import com.avevanjagmail.moviesapp.Models.Genre;
 import com.avevanjagmail.moviesapp.Models.MoviesInfo;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -37,7 +39,11 @@ public class InformActivity extends AppCompatActivity {
     private ArrayList<Genre> mListMovie;
     private ArrayList<Cast> mListCast;
 
+ DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
+
+             DatabaseReference mUserId = mRootRef.child("Users");
+    DatabaseReference mMovieId = mUserId.child("MovieId");
 
 
 
@@ -46,7 +52,7 @@ public class InformActivity extends AppCompatActivity {
     private static final String URL_Image = "url";
     private static final String TITLE = "movie_title";
     private boolean showingFirst;
-
+    private  static int i=1;
     public static void start(String movieId, String url, String title, Context context) {
         Intent starter = new Intent(context, InformActivity.class);
         starter.putExtra(MOVIE_ID, movieId);
@@ -65,9 +71,14 @@ public class InformActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (showingFirst == true) {
+                if (showingFirst) {
                     fab.setImageResource(R.drawable.ic_favorite_white_24dp);
                     showingFirst = false;
+                    String passedArg = "Ira Bokalo";
+                                 String iText  = String.valueOf(i);
+                               mUserId.child("Ira Bokalo").child(iText).setValue(getIntent().getStringExtra(MOVIE_ID));
+                    i++;
+
                 }
                 else {
                     fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
