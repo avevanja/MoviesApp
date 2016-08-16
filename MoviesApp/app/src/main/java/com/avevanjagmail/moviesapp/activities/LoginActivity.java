@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 LoginApiService mService = RetrofitUtil.getLoginService();
-                String login = email.getText().toString();
+                final String login = email.getText().toString();
                 String password = password1.getText().toString();
                 Call<LoginResponse> requestMovie = mService.login(new LoginRequest(login, password));
                 requestMovie.enqueue(new Callback<LoginResponse>() {
@@ -58,6 +58,9 @@ public class LoginActivity extends AppCompatActivity {
                             toast.show();
                             Intent intent = new Intent( getApplicationContext(), MainActivity.class );
                             startActivity(intent);
+                            Intent intent1 = new Intent(getApplicationContext(),InformActivity.class);
+                            intent1.putExtra("email",login ); // getText() SHOULD NOT be static!!!
+                            //startActivity(intent);
                         }
                         else if (response.body().getSucceeded().success==false)
                         {
