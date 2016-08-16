@@ -22,7 +22,8 @@
         android:textColor="@color/bright_foreground_inverse_material_light"
         android:textSize="56dp"
         android:textStyle="normal|italic"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:layout_marginTop="48dp" />
 
 
     <android.support.design.widget.TextInputLayout
@@ -37,7 +38,7 @@
             android:id="@+id/firstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="First Name"
+            android:hint="first name"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
 
@@ -53,7 +54,7 @@
             android:id="@+id/lastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Last Name"
+            android:hint="last name"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout

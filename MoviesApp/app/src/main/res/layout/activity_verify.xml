@@ -21,16 +21,16 @@ Check you email for activation code."
         android:layout_marginRight="30dp"/>
 
     <EditText
-        android:layout_width="216dp"
-        android:layout_height="31dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/editText"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="16dp"
         android:textColor="#ffffff"
         android:hint="activation code"
-        android:layout_weight="0.07"/>
+        />
 
     <Button
-        android:layout_width="166dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Activate"
         android:id="@+id/activate_btn"

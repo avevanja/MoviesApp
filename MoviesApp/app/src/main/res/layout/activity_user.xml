@@ -102,7 +102,7 @@
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:paddingTop="16dp"
-                        android:text="Username"
+                        android:text="username"
                         android:layout_marginBottom="8dp" />
                 </LinearLayout>
 
