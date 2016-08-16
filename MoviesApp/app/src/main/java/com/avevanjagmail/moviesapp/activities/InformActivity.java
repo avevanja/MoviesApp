@@ -2,6 +2,7 @@ package com.avevanjagmail.moviesapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,8 @@ public class InformActivity extends AppCompatActivity {
     private Toolbar toolbarInformActivity;
     private ArrayList<Genre> mListMovie;
     private ArrayList<Cast> mListCast;
+    SharedPreferences sPref;
+    final String SAVED_TEXT = "saved_text";
 
  DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
@@ -74,9 +77,12 @@ public class InformActivity extends AppCompatActivity {
                 if (showingFirst) {
                     fab.setImageResource(R.drawable.ic_favorite_white_24dp);
                     showingFirst = false;
-                    String passedArg = "Ira Bokalo";
+                    sPref = getSharedPreferences("SH",MODE_PRIVATE);
+
+                    String passedArg  = sPref.getString("saved_text", "ggg");
+                 //   Log.d("blaa", passedArg);
                                  String iText  = String.valueOf(i);
-                               mUserId.child("Ira Bokalo").child(iText).setValue(getIntent().getStringExtra(MOVIE_ID));
+                               mUserId.child(passedArg).child(iText).setValue(getIntent().getStringExtra(MOVIE_ID));
                     i++;
 
                 }
