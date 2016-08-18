@@ -22,8 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,9 +30,9 @@ import retrofit2.Response;
  * Created by John on 10.07.2016.
  */
 public class FavoriteTabFragment extends Fragment implements OpenInformActivity {
-    private static final String TAG = "FavoriteFragment";
+    private static final String TAG = FavoriteTabFragment.class.getSimpleName();
     RecyclerView rv;
-    ArrayList<Movie> movieArrayList = new ArrayList<>();
+//    ArrayList<Movie> movieArrayList = new ArrayList<>();
     private RvMovieAdapter mMovieAdapter;
     private SharedPreferences sPref;
     private String passedArg1;
@@ -64,12 +62,70 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity 
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
-        movieArrayList.clear();
+//        movieArrayList.clear();
         sPref = getActivity().getSharedPreferences("SH", getActivity().MODE_PRIVATE);
-        mMovieAdapter = new RvMovieAdapter(this, movieArrayList);
+        mMovieAdapter = new RvMovieAdapter(this);
         rv.setAdapter(mMovieAdapter);
         passedArg1 = sPref.getString("saved_text", "");
         passedArg = passedArg1.replace(".", "a");
+//        mUserId.child(passedArg).child("Movies").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for(DataSnapshot dataSn : dataSnapshot.getChildren()){
+//                    String movie = dataSn.getValue(String.class);
+//                    MoviesService mService = RetrofitUtil.getMoviesService();
+//                    Call<Movie> requestMovie = mService.getMovieForFavorite(movie, "ru");
+//                    requestMovie.enqueue(getCallbackFavorite());
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
+        return rootView;
+    }
+
+    private Callback<Movie> getCallbackFavorite() {
+        Log.d(TAG, "getCallbackFavorite");
+        return new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                Log.d(TAG, "obResponse - " + response.body().toString());
+
+                mMovieAdapter.addNewMovie(response.body());
+//                movieArrayList.add(response.body());
+//                mMovieAdapter.notifyDataSetChanged();
+              //  mMovieAdapter.addNewMovies(movieArrayList);
+
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+
+            }
+
+
+        };
+    }
+
+    @Override
+    public void onClickOpen(String id, String url, String title) {
+        InformActivity.start(id, url, title, getContext());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+        update();
+    }
+
+    public void update() {
+        mMovieAdapter.clear();
         mUserId.child(passedArg).child("Movies").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -88,34 +144,6 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity 
             }
         });
 
-        return rootView;
-    }
-
-    private Callback<Movie> getCallbackFavorite() {
-        Log.d(TAG, "getCallbackFavorite");
-        return new Callback<Movie>() {
-            @Override
-            public void onResponse(Call<Movie> call, Response<Movie> response) {
-                Log.d(TAG, "obResponse - " + response.body().toString());
-
-                movieArrayList.add(response.body());
-                mMovieAdapter.notifyDataSetChanged();
-              //  mMovieAdapter.addNewMovies(movieArrayList);
-
-            }
-
-            @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
-
-            }
-
-
-        };
-    }
-
-    @Override
-    public void onClickOpen(String id, String url, String title) {
-        InformActivity.start(id, url, title, getContext());
     }
 }
 

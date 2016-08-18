@@ -58,13 +58,8 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences.Editor ed = sPref.edit();
                 ed.putString("saved_text", profile.getId().toString());
                 ed.commit();
-
-
-//                Log.d("dfdf", url);
-
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                Intent intentUser = new Intent(getApplicationContext(), UserActivity.class);
-                intentUser.putExtra("ProfilePictureUri", url);
+
                 startActivity(intent);
                 finish();
             }

@@ -3,6 +3,7 @@ package com.avevanjagmail.moviesapp.Fragments;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,14 @@ import com.avevanjagmail.moviesapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
  * Created by John on 12.07.2016.
  */
 public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieViewHolder> {
+    private static final String TAG = RvMovieAdapter.class.getSimpleName();
     private OpenInformActivity mCallback;
 
 
@@ -48,6 +51,21 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
         mMovies.addAll(newMoviesList);
         notifyDataSetChanged();
     }
+
+    public void clear() {
+        mMovies.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addNewMovie(Movie movie) {
+        Log.d(TAG, "addNewMovie " + movie.toString());
+        HashSet<Movie> movies = new HashSet<>(mMovies);
+        movies.add(movie);
+        mMovies.clear();
+        mMovies.addAll(movies);
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -82,7 +100,6 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
 
 
     }
-
 
     @Override
     public int getItemCount() {

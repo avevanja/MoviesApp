@@ -44,9 +44,8 @@ public class InformActivity extends AppCompatActivity {
     SharedPreferences sPref;
     ArrayList<Movie> movieArrayList = new ArrayList<>();
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    String passedArg1 ;
-    String passedArg ;
-    String iText ;
+    String passedArg1;
+    String passedArg;
     DatabaseReference mUserId = mRootRef.child("Users");
     DatabaseReference mMovieId = mUserId.child("MovieId");
     private static final String MOVIE_ID = "movie.id";
@@ -69,7 +68,7 @@ public class InformActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inform);
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_favourite_btn);
-        showingFirst = true;
+
         sPref = getSharedPreferences("SH", MODE_PRIVATE);
 
         passedArg1 = sPref.getString("saved_text", "");
@@ -78,22 +77,15 @@ public class InformActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (showingFirst) {
-//                    fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+                    fab.setImageResource(R.drawable.ic_favorite_white_24dp);
                     showingFirst = false;
 
-
-
-//                   Log.d("blaa", passedArg);
-                     iText = String.valueOf(i);
                     mUserId.child(passedArg).child("Movies").child(getIntent().getStringExtra(MOVIE_ID)).setValue(getIntent().getStringExtra(MOVIE_ID));
-                    i++;
-
-
-
-
 
                 } else {
-//                    fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                    fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                    mUserId.child(passedArg).child("Movies").child(getIntent().getStringExtra(MOVIE_ID)).removeValue();
+
                     showingFirst = true;
 
                 }
@@ -138,8 +130,6 @@ public class InformActivity extends AppCompatActivity {
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
-
-
 
 
             @Override
@@ -246,7 +236,7 @@ public class InformActivity extends AppCompatActivity {
                 }
                 mOverviewTextView.setText(response.body().getOverview());
                 mDataRealise.setText(response.body().getReleaseDate());
-                if(response.body().getProductionCountries().get(0).getName()!=null) {
+                if (response.body().getProductionCountries().get(0).getName() != null) {
                     mCountryName.setText(response.body().getProductionCountries().get(0).getName());
                 }
 

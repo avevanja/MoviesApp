@@ -60,4 +60,31 @@ public class Movie {
                 ", voteAverage=" + voteAverage +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Movie movie = (Movie) o;
+
+        if (backdropPath != null ? !backdropPath.equals(movie.backdropPath) : movie.backdropPath != null)
+            return false;
+        if (title != null ? !title.equals(movie.title) : movie.title != null) return false;
+        if (releaseDate != null ? !releaseDate.equals(movie.releaseDate) : movie.releaseDate != null)
+            return false;
+        if (id != null ? !id.equals(movie.id) : movie.id != null) return false;
+        return voteAverage != null ? voteAverage.equals(movie.voteAverage) : movie.voteAverage == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = backdropPath != null ? backdropPath.hashCode() : 0;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (releaseDate != null ? releaseDate.hashCode() : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (voteAverage != null ? voteAverage.hashCode() : 0);
+        return result;
+    }
 }
