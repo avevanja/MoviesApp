@@ -52,7 +52,7 @@ public class InformActivity extends AppCompatActivity {
     private static final String URL_Image = "url";
     private static final String TITLE = "movie_title";
     private boolean showingFirst;
-    private static int i = 1;
+
 
     public static void start(String movieId, String url, String title, Context context) {
         Intent starter = new Intent(context, InformActivity.class);
@@ -71,22 +71,34 @@ public class InformActivity extends AppCompatActivity {
 
         sPref = getSharedPreferences("SH", MODE_PRIVATE);
 
+
         passedArg1 = sPref.getString("saved_text", "");
         passedArg = passedArg1.replace(".", "a");
+
+        showingFirst = true;
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
                 if (showingFirst) {
                     fab.setImageResource(R.drawable.ic_favorite_white_24dp);
-                    showingFirst = false;
+
+
 
                     mUserId.child(passedArg).child("Movies").child(getIntent().getStringExtra(MOVIE_ID)).setValue(getIntent().getStringExtra(MOVIE_ID));
+                    showingFirst = false;
 
                 } else {
                     fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
                     mUserId.child(passedArg).child("Movies").child(getIntent().getStringExtra(MOVIE_ID)).removeValue();
-
                     showingFirst = true;
+
+
+
 
                 }
             }
@@ -103,14 +115,14 @@ public class InformActivity extends AppCompatActivity {
 //                        }
 //                    }
 //                }
+
                 String movie = dataSnapshot.getValue(String.class);
-//                MoviesService mService = RetrofitUtil.getMoviesService();
-//                Call<Movie> requestMovie = mService.getMovieForFavorite(movie,"ru");
-//                requestMovie.enqueue(getCallbackFavorite());
+
 
                 if (movie != null) {
                     if (movie.equals(getIntent().getStringExtra(MOVIE_ID))) {
                         fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+                       showingFirst = false;
                     }
                 }
                 Log.d(TAG, "get map " + movie.toString());
@@ -123,6 +135,8 @@ public class InformActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                showingFirst = false;
+//                fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
 
             }
 

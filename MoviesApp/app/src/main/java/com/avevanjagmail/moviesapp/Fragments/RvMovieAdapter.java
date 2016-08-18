@@ -3,7 +3,6 @@ package com.avevanjagmail.moviesapp.Fragments;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +57,7 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
     }
 
     public void addNewMovie(Movie movie) {
-        Log.d(TAG, "addNewMovie " + movie.toString());
+//        Log.d(TAG, "addNewMovie " + movie.toString());
         HashSet<Movie> movies = new HashSet<>(mMovies);
         movies.add(movie);
         mMovies.clear();

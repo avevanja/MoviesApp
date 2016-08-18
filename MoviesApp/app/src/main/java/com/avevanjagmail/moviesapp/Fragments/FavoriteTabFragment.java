@@ -94,7 +94,7 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity 
         return new Callback<Movie>() {
             @Override
             public void onResponse(Call<Movie> call, Response<Movie> response) {
-                Log.d(TAG, "obResponse - " + response.body().toString());
+//                Log.d(TAG, "obResponse - " + response.body().toString());
 
                 mMovieAdapter.addNewMovie(response.body());
 //                movieArrayList.add(response.body());
