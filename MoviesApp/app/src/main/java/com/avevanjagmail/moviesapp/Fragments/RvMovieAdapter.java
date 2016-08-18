@@ -30,11 +30,21 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
     public RvMovieAdapter() {
     }
 
+    public RvMovieAdapter(List<Movie> mMovies ) {
+        this.mMovies = mMovies;
+
+    }
+
     public RvMovieAdapter(OpenInformActivity call) {
         this.mCallback = call;
     }
+    public RvMovieAdapter(OpenInformActivity call, List<Movie> mMovies) {
+        this.mCallback = call;
+        this.mMovies = mMovies;
+    }
 
     public void addNewMovies(List<Movie> newMoviesList) {
+
         mMovies.addAll(newMoviesList);
         notifyDataSetChanged();
     }

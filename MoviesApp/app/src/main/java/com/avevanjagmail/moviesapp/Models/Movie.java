@@ -3,9 +3,6 @@ package com.avevanjagmail.moviesapp.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by John on 15.07.2016.
  */
@@ -24,9 +21,9 @@ public class Movie {
     public String getTitle() {
         return title;
     }
-    @SerializedName("genre_ids")
-    @Expose
-    private List<Integer> genreIds = new ArrayList<Integer>();
+//    @SerializedName("genre_ids")
+//    @Expose
+//    private List<Integer> genreIds = new ArrayList<Integer>();
     @SerializedName("release_date")
     @Expose
     private String releaseDate;
@@ -37,9 +34,9 @@ public class Movie {
     @Expose
     private Double voteAverage;
 
-    public List<Integer> getGenreIds() {
-        return genreIds;
-    }
+//   // public List<Integer> getGenreIds() {
+//        return genreIds;
+//    }
 
     public String getReleaseDate() {
         return releaseDate;
@@ -51,5 +48,16 @@ public class Movie {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "backdropPath='" + backdropPath + '\'' +
+                ", title='" + title + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", id='" + id + '\'' +
+                ", voteAverage=" + voteAverage +
+                '}';
     }
 }

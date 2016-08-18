@@ -13,7 +13,7 @@ public class Data {
     @SerializedName("u_email")
     @Expose
     public  String email;
-     String getEmail() {
+     public String getEmail() {
         return email;
     }
 

@@ -1,6 +1,7 @@
 package com.avevanjagmail.moviesapp.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -34,8 +35,10 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email, password1;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
+    private SharedPreferences sPref;
+    final String SAVED_TEXT = "saved_text";
     private final String URL = "http://146.185.180.39:4020/login/email";
-    String url;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +47,20 @@ public class LoginActivity extends AppCompatActivity {
 
 
         super.onCreate(savedInstanceState);
-        setContentView( R.layout.activity_login);
+        setContentView(R.layout.activity_login);
         loginButton = (LoginButton) findViewById(R.id.login_button);
         callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Profile profile = Profile.getCurrentProfile();
+                sPref = getSharedPreferences("SH", MODE_PRIVATE);
+                SharedPreferences.Editor ed = sPref.edit();
+                ed.putString("saved_text", profile.getId().toString());
+                ed.commit();
 
 
-                url = String.valueOf(profile.getProfilePictureUri(100, 200));
-                Log.d("dfdf", url);
+//                Log.d("dfdf", url);
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 Intent intentUser = new Intent(getApplicationContext(), UserActivity.class);
@@ -83,24 +89,27 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 LoginApiService mService = RetrofitUtil.getLoginService();
-                String login = email.getText().toString();
+                final String login = email.getText().toString();
                 String password = password1.getText().toString();
-                Call<LoginResponse> requestMovie = mService.login(new LoginRequest(login, password));
+                final Call<LoginResponse> requestMovie = mService.login(new LoginRequest(login, password));
                 requestMovie.enqueue(new Callback<LoginResponse>() {
                     @Override
                     public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                         Log.d(TAG, "onResponse - " + response.body().toString());
 
-                        if (response.body().getSucceeded().success==true)
-                        {
-                            Toast toast = Toast.makeText(getApplicationContext(), "You have logged successfully",Toast.LENGTH_LONG);
+
+                        if (response.body().getSucceeded().success == true) {
+                            Toast toast = Toast.makeText(getApplicationContext(), "You have logged successfully", Toast.LENGTH_LONG);
                             toast.show();
-                            Intent intent = new Intent( getApplicationContext(), MainActivity.class );
+                            sPref = getSharedPreferences("SH", MODE_PRIVATE);
+                            SharedPreferences.Editor ed = sPref.edit();
+                            ed.putString("saved_text", response.body().getData().getEmail());
+                            ed.commit();
+                            Log.d("sh", sPref.getString("saved_text", ""));
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
-                        }
-                        else if (response.body().getSucceeded().success==false)
-                        {
-                            Toast toast = Toast.makeText(getApplicationContext(), "Password or Login is incorrect. Try again.",Toast.LENGTH_LONG);
+                        } else if (response.body().getSucceeded().success == false) {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Password or Login is incorrect. Try again.", Toast.LENGTH_LONG);
                             toast.show();
 
                         }
@@ -108,29 +117,29 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        Toast toast = Toast.makeText(getApplicationContext(), "You failed! Try to check your internet connection",Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(getApplicationContext(), "You failed! Try to check your internet connection", Toast.LENGTH_LONG);
                         toast.show();
 
                     }
                 });
             }
         });
-      tvReg.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-              Intent intent = new Intent( getApplicationContext(), RegistrationActivity.class );
-              startActivity(intent);
-          }
-      });
-
-
+        tvReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+                startActivity(intent);
             }
+        });
+
+
+    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
-        }
+}
 
 
 

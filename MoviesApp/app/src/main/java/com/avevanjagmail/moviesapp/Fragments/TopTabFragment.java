@@ -36,7 +36,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity {
     public RvMovieAdapter mMovieAdapter;
 
 
-//    ArrayList<Movie> moviesnew;
+
 
     public TopTabFragment() {
 
@@ -102,13 +102,9 @@ public class TopTabFragment extends Fragment implements OpenInformActivity {
 
     @Override
     public void onClickOpen(String id, String url, String title) {
-      InformActivity.start(id, url, title, getContext());
+        InformActivity.start(id, url, title, getContext());
 
     }
 }
 
 
-/**
- * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
