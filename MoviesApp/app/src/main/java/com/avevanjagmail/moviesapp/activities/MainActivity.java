@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -89,7 +90,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
 //                Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                String word = getIntent().getStringExtra("mail");
                 intent.putExtra("query", query);
+                intent.putExtra("mail",word);
+                Log.d("aaa", word);
                 startActivity(intent);
                 return false;
             }

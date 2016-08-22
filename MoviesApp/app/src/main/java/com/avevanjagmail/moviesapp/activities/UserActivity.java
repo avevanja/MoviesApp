@@ -5,9 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -15,9 +17,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.avevanjagmail.moviesapp.Interface.LoginApiService;
 import com.avevanjagmail.moviesapp.R;
+import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -25,27 +37,66 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
+
+import retrofit2.http.Url;
 
 
 public class UserActivity extends AppCompatActivity {
     private ImageView ivImage;
     private String url1;
     private FloatingActionButton btnSelect;
+    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mUserId = mRootRef.child("Users");
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReferenceFromUrl("gs://movies-app-fda81.appspot.com");
+    StorageReference pathReference = storageRef.child("images/stars.jpg");
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;
-
+    TextView exitButton;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         ivImage = (ImageView) findViewById(R.id.expandedImage);
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
         Profile profile = Profile.getCurrentProfile();
+if (profile!=null)
+{
+    url1 = String.valueOf(profile.getProfilePictureUri(717, 400));
 
-        url1 = String.valueOf(profile.getProfilePictureUri(717, 400));
-        Log.d("bh", url1);
-        Picasso.with(this).load(url1).
-                error(R.drawable.ava).resize(717, 400).into(ivImage);
+            Log.d("bh", url1);
+            Picasso.with(this).load(url1).
+                    error(R.drawable.ava).resize(717, 400).into(ivImage);
+        }
+        else
+        {
+            mRootRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    String myUrl = dataSnapshot.child("Users").child("iraklepak@gmailacom").child("Photos").getValue().toString();
+                  try {
+                      Uri myUri = Uri.parse(myUrl);
+                      Picasso.with(getApplicationContext()).load(myUri).fit().centerCrop().into(ivImage);
+                      Log.d("ura", myUri.toString());
+                  }
+                  catch (Exception e)
+                  {
+                      System.out.print(e.getCause());
+                  }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError)
+                {
+
+                }
+            });
+        }
         btnSelect = (FloatingActionButton) findViewById(R.id.change_photo);
         btnSelect.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +105,13 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+         exitButton = (TextView)findViewById(R.id.logout_txt_view);
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
     }
 
     @Override

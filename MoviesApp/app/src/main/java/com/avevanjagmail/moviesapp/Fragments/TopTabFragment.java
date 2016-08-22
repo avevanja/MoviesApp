@@ -104,6 +104,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity {
     public void onClickOpen(String id, String url, String title) {
       InformActivity.start(id, url, title, getContext());
 
+
     }
 }
 

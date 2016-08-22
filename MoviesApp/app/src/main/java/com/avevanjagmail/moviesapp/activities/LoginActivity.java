@@ -1,6 +1,7 @@
 package com.avevanjagmail.moviesapp.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,21 +23,25 @@ import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
+    SharedPreferences sPref;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private TextView tvReg;
     private Button btnLog;
     private EditText email, password1;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
+
     private final String URL = "http://146.185.180.39:4020/login/email";
     String url;
-
+     final  String SAVED_TEXT = "saved_text";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -83,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 LoginApiService mService = RetrofitUtil.getLoginService();
-                String login = email.getText().toString();
+                final String login = email.getText().toString();
                 String password = password1.getText().toString();
                 Call<LoginResponse> requestMovie = mService.login(new LoginRequest(login, password));
                 requestMovie.enqueue(new Callback<LoginResponse>() {
@@ -97,6 +102,14 @@ public class LoginActivity extends AppCompatActivity {
                             toast.show();
                             Intent intent = new Intent( getApplicationContext(), MainActivity.class );
                             startActivity(intent);
+
+                            sPref = getSharedPreferences("SH",MODE_PRIVATE);
+                            SharedPreferences.Editor ed = sPref.edit();
+                            ed.putString("saved_text", response.body().getData().getEmail());
+                            ed.commit();
+                            Log.d("sh", sPref.getString("saved_text", ""));
+
+
                         }
                         else if (response.body().getSucceeded().success==false)
                         {
@@ -115,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
+
       tvReg.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View view) {

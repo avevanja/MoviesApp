@@ -3,6 +3,7 @@ package com.avevanjagmail.moviesapp.Interface;
 import com.avevanjagmail.moviesapp.Models.LogOutRequest;
 import com.avevanjagmail.moviesapp.Models.LoginRequest;
 import com.avevanjagmail.moviesapp.Models.LoginResponse;
+import com.avevanjagmail.moviesapp.Models.LogoutResponse;
 import com.avevanjagmail.moviesapp.Models.RegisterRequest;
 import com.avevanjagmail.moviesapp.Models.RegisterResponse;
 import com.avevanjagmail.moviesapp.Models.ActivateRequest;
@@ -23,12 +24,13 @@ public interface LoginApiService {
 
     @POST("login/email/")
     Call<LoginResponse> login(@Body LoginRequest loginRequest);
-    @POST("login/logout")
-    Call<LoginResponse> logout (@Body LogOutRequest logOutRequest);
+
     @POST("registration")
     Call<RegisterResponse>register (@Body RegisterRequest registerRequest);
     @POST("users/verify")
     Call<VerifyResponse> verify (@Body VerifyRequest verifyRequest);
     @PUT("users/activate")
     Call<ActivateResponse>activate (@Body ActivateRequest verifyRequest);
+    @POST("login/logout")
+    Call<LogoutResponse> logout (@Body LogOutRequest logOutRequest);
 }

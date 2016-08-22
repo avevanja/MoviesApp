@@ -33,29 +33,30 @@ import retrofit2.Response;
  * Created by paulg on 03.08.2016.
  */
 public class InformActivity extends AppCompatActivity {
-    private static final String TAG = "InformActivity" ;
-    private TextView TextTet, mOverviewTextView, mNameCast, mNameCast1, mNameCast2, mNameCast3, mNameCast4, mNameCast5, mDataRealise, mCountryName;
-    private ImageView TitleImageView, mCastFoto, mCastFoto1, mCastFoto2, mCastFoto3, mCastFoto4, mCastFoto5;
+    private static final String TAG = "InformActivity";
+    private TextView TextTet, mOverviewTextView, mNameCast, mNameCast1,
+            mNameCast2, mNameCast3, mNameCast4, mNameCast5, mDataRealise,
+            mCountryName;
+    private ImageView TitleImageView, mCastFoto, mCastFoto1, mCastFoto2, mCastFoto3,
+            mCastFoto4, mCastFoto5;
     private Toolbar toolbarInformActivity;
     private ArrayList<Genre> mListMovie;
     private ArrayList<Cast> mListCast;
     SharedPreferences sPref;
     final String SAVED_TEXT = "saved_text";
 
- DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mUserId = mRootRef.child("Users");
 
 
-             DatabaseReference mUserId = mRootRef.child("Users");
-    DatabaseReference mMovieId = mUserId.child("MovieId");
-
-
-
+    private SharedPreferences mSharedPref;
 
     private static final String MOVIE_ID = "movie.id";
     private static final String URL_Image = "url";
     private static final String TITLE = "movie_title";
     private boolean showingFirst;
-    private  static int i=1;
+    private static int i = 1;
+
     public static void start(String movieId, String url, String title, Context context) {
         Intent starter = new Intent(context, InformActivity.class);
         starter.putExtra(MOVIE_ID, movieId);
@@ -77,16 +78,17 @@ public class InformActivity extends AppCompatActivity {
                 if (showingFirst) {
                     fab.setImageResource(R.drawable.ic_favorite_white_24dp);
                     showingFirst = false;
-                    sPref = getSharedPreferences("SH",MODE_PRIVATE);
+                    sPref = getSharedPreferences("SH", MODE_PRIVATE);
 
-                    String passedArg  = sPref.getString("saved_text", "ggg");
-                 //   Log.d("blaa", passedArg);
-                                 String iText  = String.valueOf(i);
-                               mUserId.child(passedArg).child(iText).setValue(getIntent().getStringExtra(MOVIE_ID));
+                    String passedArg1 = sPref.getString("saved_text", "");
+                    String passedArg = passedArg1.replace(".", "a");
+                    //   Log.d("blaa", passedArg);
+                    String iText = String.valueOf(i);
+
+                    mUserId.child(passedArg).child("Photo");
                     i++;
 
-                }
-                else {
+                } else {
                     fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
                     showingFirst = true;
 
@@ -104,23 +106,23 @@ public class InformActivity extends AppCompatActivity {
             }
         });
         setTitle(getIntent().getStringExtra(TITLE));
-        TitleImageView = (ImageView)findViewById(R.id.expandedImage);
-        mCastFoto = (ImageView)findViewById(R.id.cast_foto);
-        mCastFoto1 = (ImageView)findViewById(R.id.cast_foto1);
-        mCastFoto2 = (ImageView)findViewById(R.id.cast_foto2);
-        mCastFoto3 = (ImageView)findViewById(R.id.cast_foto3);
-        mCastFoto4 = (ImageView)findViewById(R.id.cast_foto4);
-        mCastFoto5 = (ImageView)findViewById(R.id.cast_foto5);
-        TextTet = (TextView)findViewById(R.id.inform_movie_text);
-        mOverviewTextView = (TextView)findViewById(R.id.text_overview);
-        mNameCast = (TextView)findViewById(R.id.name_cast_text_view);
-        mNameCast1 = (TextView)findViewById(R.id.name_cast_text_view1);
-        mNameCast2 = (TextView)findViewById(R.id.name_cast_text_view2);
-        mNameCast3 = (TextView)findViewById(R.id.name_cast_text_view3);
-        mNameCast4 = (TextView)findViewById(R.id.name_cast_text_view4);
-        mNameCast5 = (TextView)findViewById(R.id.name_cast_text_view5);
-        mDataRealise = (TextView)findViewById(R.id.release_date_text_view);
-        mCountryName = (TextView)findViewById(R.id.countrу_text_view);
+        TitleImageView = (ImageView) findViewById(R.id.expandedImage);
+        mCastFoto = (ImageView) findViewById(R.id.cast_foto);
+        mCastFoto1 = (ImageView) findViewById(R.id.cast_foto1);
+        mCastFoto2 = (ImageView) findViewById(R.id.cast_foto2);
+        mCastFoto3 = (ImageView) findViewById(R.id.cast_foto3);
+        mCastFoto4 = (ImageView) findViewById(R.id.cast_foto4);
+        mCastFoto5 = (ImageView) findViewById(R.id.cast_foto5);
+        TextTet = (TextView) findViewById(R.id.inform_movie_text);
+        mOverviewTextView = (TextView) findViewById(R.id.text_overview);
+        mNameCast = (TextView) findViewById(R.id.name_cast_text_view);
+        mNameCast1 = (TextView) findViewById(R.id.name_cast_text_view1);
+        mNameCast2 = (TextView) findViewById(R.id.name_cast_text_view2);
+        mNameCast3 = (TextView) findViewById(R.id.name_cast_text_view3);
+        mNameCast4 = (TextView) findViewById(R.id.name_cast_text_view4);
+        mNameCast5 = (TextView) findViewById(R.id.name_cast_text_view5);
+        mDataRealise = (TextView) findViewById(R.id.release_date_text_view);
+        mCountryName = (TextView) findViewById(R.id.countrу_text_view);
         String text = getIntent().getStringExtra(MOVIE_ID);
 
         Picasso.with(this).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + getIntent().getStringExtra(URL_Image)).
@@ -135,14 +137,15 @@ public class InformActivity extends AppCompatActivity {
         requestCastList.enqueue(getCastListCallback());
 
     }
-    private Callback<CastList> getCastListCallback(){
+
+    private Callback<CastList> getCastListCallback() {
         return new Callback<CastList>() {
             @Override
             public void onResponse(Call<CastList> call, Response<CastList> response) {
                 Log.d(TAG, "getCallback onResponse");
 
                 mListCast = (ArrayList<Cast>) response.body().getCast();
-                if (mListCast.size()>=6) {
+                if (mListCast.size() >= 6) {
 
 
                     mNameCast.setText(mListCast.get(0).getName());
@@ -166,7 +169,6 @@ public class InformActivity extends AppCompatActivity {
                 }
 
 
-
             }
 
             @Override
@@ -177,6 +179,7 @@ public class InformActivity extends AppCompatActivity {
             }
         };
     }
+
     private Callback<MoviesInfo> getCallback() {
         Log.d(TAG, "getCallback");
         return new Callback<MoviesInfo>() {
@@ -184,8 +187,7 @@ public class InformActivity extends AppCompatActivity {
             public void onResponse(Call<MoviesInfo> call, Response<MoviesInfo> response) {
                 Log.d(TAG, "getCallback onResponse");
                 mListMovie = (ArrayList<Genre>) response.body().getGenres();
-                for (Genre genre : mListMovie)
-                {
+                for (Genre genre : mListMovie) {
                     TextTet.setText(genre.getName() + " ");
                 }
                 mOverviewTextView.setText(response.body().getOverview());
