@@ -1,6 +1,7 @@
 package com.avevanjagmail.moviesapp.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,20 +15,31 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.Fragments.FavoriteTabFragment;
 import com.avevanjagmail.moviesapp.Fragments.NewTabFragment;
 import com.avevanjagmail.moviesapp.Fragments.TopTabFragment;
+import com.avevanjagmail.moviesapp.Interface.LoginApiService;
+import com.avevanjagmail.moviesapp.Models.LogOutRequest;
+import com.avevanjagmail.moviesapp.Models.LogoutResponse;
 import com.avevanjagmail.moviesapp.R;
+import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-
+    private SharedPreferences mPref;
+    private SharedPreferences mPref1;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
 
@@ -122,6 +134,41 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
+        if (id== R.id.action_logout)
+        {
+
+                    LoginApiService mService = RetrofitUtil.getLoginService();
+                    mPref = getSharedPreferences("SH", MODE_PRIVATE);
+                    final String passedArg = mPref.getString("saved_text", "");
+                    mPref1 = getSharedPreferences("SH1", MODE_PRIVATE);
+                    final String accsesToken = mPref1.getString("saved_text1", "");
+                    Call<LogoutResponse> requestInfo = mService.logout( new LogOutRequest(passedArg,accsesToken));
+
+                    requestInfo.enqueue(new Callback<LogoutResponse>() {
+                        @Override
+                        public void onResponse(Call<LogoutResponse> call, Response<LogoutResponse> response) {
+                            if (response.body().getSucceeded().success==true)
+                            {
+                                Log.d("success",response.body().getSucceeded().toString());
+                                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                                startActivity(intent);
+                            }
+                            else
+                            {
+                                Log.d("u_email",passedArg);
+                                Log.d("token",accsesToken);
+                                Log.d("exit",response.body().getSucceeded().toString());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<LogoutResponse> call, Throwable t) {
+                             Toast.makeText(getApplicationContext(),"Check your Internet connnection",Toast.LENGTH_LONG);
+                        }
+                    });
+
+                }
+
 
         return super.onOptionsItemSelected(item);
     }

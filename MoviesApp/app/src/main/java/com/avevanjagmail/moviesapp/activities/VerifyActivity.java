@@ -1,5 +1,6 @@
 package com.avevanjagmail.moviesapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -59,6 +60,8 @@ public class VerifyActivity extends AppCompatActivity {
                                 {
                                     Toast toast = Toast.makeText(getApplicationContext(), "Congratulations you activated your account!",Toast.LENGTH_LONG);
                                     toast.show();
+                                    Intent myIntent = new Intent(getApplicationContext(),LoginActivity.class);
+                                    startActivity(myIntent);
                                 }
 
                             }

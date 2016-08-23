@@ -9,6 +9,11 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="100"
+        android:title="@string/action_logout"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_search"
         android:title="@android:string/search_go"
         android:icon="@drawable/ic_search_white_24dp"

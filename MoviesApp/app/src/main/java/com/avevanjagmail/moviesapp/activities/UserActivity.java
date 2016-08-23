@@ -1,8 +1,10 @@
 package com.avevanjagmail.moviesapp.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -20,9 +23,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avevanjagmail.moviesapp.Interface.LoginApiService;
+import com.avevanjagmail.moviesapp.Models.ActivateRequest;
+import com.avevanjagmail.moviesapp.Models.ActivateResponse;
+import com.avevanjagmail.moviesapp.Models.LogOutRequest;
+import com.avevanjagmail.moviesapp.Models.LogoutResponse;
 import com.avevanjagmail.moviesapp.R;
+import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -40,6 +51,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.http.Url;
 
 
@@ -49,10 +63,10 @@ public class UserActivity extends AppCompatActivity {
     private FloatingActionButton btnSelect;
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference mUserId = mRootRef.child("Users");
-
+    SharedPreferences mPref;
+    SharedPreferences mPref1;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://movies-app-fda81.appspot.com");
-    StorageReference pathReference = storageRef.child("images/stars.jpg");
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;
     TextView exitButton;
@@ -77,7 +91,10 @@ if (profile!=null)
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot)
                 {
-                    String myUrl = dataSnapshot.child("Users").child("iraklepak@gmailacom").child("Photos").getValue().toString();
+                    mPref = getSharedPreferences("SH", MODE_PRIVATE);
+                    String passedArg1 = mPref.getString("saved_text", "");
+                    final String passedArg = passedArg1.replace(".", "a");
+                    String myUrl = dataSnapshot.child("Users").child(passedArg).child("Photos").getValue().toString();
                   try {
                       Uri myUri = Uri.parse(myUrl);
                       Picasso.with(getApplicationContext()).load(myUri).fit().centerCrop().into(ivImage);
@@ -89,7 +106,6 @@ if (profile!=null)
                   }
 
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError)
                 {
@@ -105,13 +121,7 @@ if (profile!=null)
             }
         });
 
-         exitButton = (TextView)findViewById(R.id.logout_txt_view);
-        exitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
     }
 
     @Override
@@ -202,8 +212,31 @@ if (profile!=null)
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        mPref = getSharedPreferences("SH", MODE_PRIVATE);
+        String passedArg1 = mPref.getString("saved_text", "");
+        final String passedArg = passedArg1.replace(".", "a");
         ivImage.setImageBitmap(thumbnail);
+        Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
+
+        StorageReference mountainImagesRef = storageRef.child("images/" + tempUri.getLastPathSegment());
+        UploadTask uploadTask = mountainImagesRef.putFile(tempUri);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+        })
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        String Uri = downloadUrl.toString();
+                        mUserId.child(passedArg).child("Photos").setValue(Uri);
+
+
+                    }
+                });
+
     }
 
     @SuppressWarnings("deprecation")
@@ -219,6 +252,36 @@ if (profile!=null)
         }
 
         ivImage.setImageBitmap(bm);
+        mPref = getSharedPreferences("SH", MODE_PRIVATE);
+        String passedArg1 = mPref.getString("saved_text", "");
+        final String passedArg = passedArg1.replace(".", "a");
+        Uri tempUri = getImageUri(getApplicationContext(), bm);
 
+
+        StorageReference mountainImagesRef = storageRef.child("images/" + tempUri.getLastPathSegment());
+        UploadTask uploadTask = mountainImagesRef.putFile(tempUri);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+        })
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        String Uri = downloadUrl.toString();
+                        mUserId.child(passedArg).child("Photos").setValue(Uri);
+
+
+
+                    }
+                });
+    }
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 }

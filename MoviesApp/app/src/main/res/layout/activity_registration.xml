@@ -135,7 +135,7 @@
         android:layout_height="wrap_content"
         android:hint="password"
         android:textColor="#ffffff"
-        android:focusable="false"
+
         android:layout_below="@+id/view3"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />

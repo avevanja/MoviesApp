@@ -32,6 +32,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     SharedPreferences sPref;
+    SharedPreferences sPref1;
     private static final String TAG = LoginActivity.class.getSimpleName();
     private TextView tvReg;
     private Button btnLog;
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private final String URL = "http://146.185.180.39:4020/login/email";
     String url;
-     final  String SAVED_TEXT = "saved_text";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -102,13 +103,17 @@ public class LoginActivity extends AppCompatActivity {
                             toast.show();
                             Intent intent = new Intent( getApplicationContext(), MainActivity.class );
                             startActivity(intent);
-
+                            finish();
                             sPref = getSharedPreferences("SH",MODE_PRIVATE);
                             SharedPreferences.Editor ed = sPref.edit();
                             ed.putString("saved_text", response.body().getData().getEmail());
                             ed.commit();
                             Log.d("sh", sPref.getString("saved_text", ""));
-
+                            sPref1 = getSharedPreferences("SH1",MODE_PRIVATE);
+                            SharedPreferences.Editor ed1 = sPref1.edit();
+                            ed1.putString("saved_text1", response.body().getData().accessToken);
+                            ed1.commit();
+                            Log.d("sh1", sPref1.getString("saved_text1", ""));
 
                         }
                         else if (response.body().getSucceeded().success==false)
@@ -134,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
           public void onClick(View view) {
               Intent intent = new Intent( getApplicationContext(), RegistrationActivity.class );
               startActivity(intent);
+
           }
       });
 
@@ -155,11 +161,4 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-
-  /*  public void onClick1(View view) {
-        Intent intent1 = new Intent(this, MainActivity.class);
-        startActivity(intent1);
-
-
-    }*/
 

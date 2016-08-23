@@ -54,20 +54,20 @@ import retrofit2.Response;
  */
 public class RegistrationActivity extends AppCompatActivity {
     final String TAG = RegistrationActivity.class.getSimpleName();
-    EditText fName, lName, email, password;
-    Button btn_create;
+    private EditText fName, lName, email, password;
+    private Bitmap thumbnail;
+    private Button btn_create;
     private ProgressDialog progressDialog;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://movies-app-fda81.appspot.com");
     private ImageView ivImage;
-    private String url1;
+
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     SharedPreferences sPref;
     DatabaseReference mUserId = mRootRef.child("Users");
-    DatabaseReference mMovie = mUserId.child("Movies");
-    DatabaseReference mPhoto = mUserId.child("Photos");
+    final String argument = new String();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -78,38 +78,66 @@ public class RegistrationActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         ivImage = (ImageView) findViewById(R.id.cast_foto3);
+        btn_create = (Button) (findViewById(R.id.btn_create));
+        ivImage.setBackgroundResource(R.drawable.screenshot);
         progressDialog = new ProgressDialog(this);
         ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ivImage.setBackgroundResource(0);
                 selectImage();
             }
         });
 
-        btn_create = (Button) (findViewById(R.id.btn_create));
+
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String emailText = email.getText().toString();
+                String passedArg = email.getText().toString();
+                final String newPassedArg = passedArg.replace(".","a");
+                Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
+                Log.d(TAG, "photoUri - " + tempUri.toString());
 
+                StorageReference mountainImagesRef = storageRef.child("images/" + tempUri.getLastPathSegment());
+                UploadTask uploadTask = mountainImagesRef.putFile(tempUri);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                    }
+                })
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                String Uri = downloadUrl.toString();
+                                mUserId.child(newPassedArg).child("Photos").setValue(Uri);
+
+                                Log.d(TAG, "downloaded image - " + downloadUrl.toString());
+
+                                progressDialog.dismiss();
+                            }
+                        });
                 LoginApiService mService = RetrofitUtil.getLoginService();
+
 
                 Call<RegisterResponse> requestMovie = mService.register(new RegisterRequest(lName.getText().toString(),
                         fName.getText().toString(), email.getText().toString(), password.getText().toString(), "0"));
+
                 requestMovie.enqueue(new Callback<RegisterResponse>() {
                     @Override
                     public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                         Log.d(TAG, "onResponse - " + response.body().toString());
 
-                        if (response.body().getSucceeded().success == true) {
-                            Intent myintent = new Intent(getApplicationContext(), VerifyActivity.class).putExtra("<email>", emailText);
+                    /*    if (response.body().getSucceeded().success == true) {
+                            Intent myintent = new Intent(getApplicationContext(), VerifyActivity.class).putExtra("<email>", email.getText().toString());
                             startActivity(myintent);
                         }
 
                         if (response.body().getSucceeded().success == false) {
                             Toast toast = Toast.makeText(getApplicationContext(), response.body().getSucceeded().message, Toast.LENGTH_LONG);
                             toast.show();
-                        }
+                        }*/
                     }
 
                     @Override
@@ -118,7 +146,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         toast.show();
                     }
                 });
-                Call<VerifyResponse> requestInfo = mService.verify(new VerifyRequest(emailText));
+                Call<VerifyResponse> requestInfo = mService.verify(new VerifyRequest(email.getText().toString()));
                 requestInfo.enqueue(new Callback<VerifyResponse>() {
 
 
@@ -126,9 +154,11 @@ public class RegistrationActivity extends AppCompatActivity {
                     public void onResponse(Call<VerifyResponse> call, Response<VerifyResponse> response) {
                         if (response.body().getSucceeded().success==true)
                         {
-                            Toast toast = Toast.makeText(getApplicationContext(),"You have activated successfully!",Toast.LENGTH_LONG);
-                            toast.show();
+
+                            Intent myintent = new Intent(getApplicationContext(), VerifyActivity.class).putExtra("email", response.body().getData());
+                            startActivity(myintent);
                         }
+
                     }
 
                     @Override
@@ -146,7 +176,7 @@ public class RegistrationActivity extends AppCompatActivity {
         final CharSequence[] items = {"Take Photo", "Choose from Library",
                 "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Add Photo!");
+
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -186,9 +216,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void galleryIntent() {
         Intent intent = new Intent();
+        intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
+
 
     private void cameraIntent() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -200,12 +232,12 @@ public class RegistrationActivity extends AppCompatActivity {
         Bitmap bm = null;
         if (data != null) {
             try {
-                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+               bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        //TODO: set the photo on Firebase
+
         ivImage.setImageBitmap(bm);
 
     }
@@ -217,23 +249,18 @@ public class RegistrationActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE)
                 onSelectFromGalleryResult(data);
-            else if (requestCode == REQUEST_CAMERA)
+            else if (requestCode == REQUEST_CAMERA) {
                 progressDialog.setMessage("Photo is uploading...");
-            progressDialog.show();
+                progressDialog.show();
                 onCaptureImageResult(data);
+            }
         }
     }
 
-    private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+    private void onCaptureImageResult(Intent data){
+         thumbnail = (Bitmap) data.getExtras().get("data");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-
-        sPref = getSharedPreferences("SH", MODE_PRIVATE);
-
-        String passedArg1 = sPref.getString("saved_text", "");
-        final String passedArg = passedArg1.replace(".", "a");
-         Log.d("blaa", passedArg);
 
 
         File destination = new File(Environment.getExternalStorageDirectory(),
@@ -252,29 +279,8 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         ivImage.setImageBitmap(thumbnail);
-        Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
-        Log.d(TAG, "photoUri - " + tempUri.toString());
 
-        StorageReference mountainImagesRef = storageRef.child("images/" + tempUri.getLastPathSegment());
-        UploadTask uploadTask = mountainImagesRef.putFile(tempUri);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                e.printStackTrace();
-            }
-        })
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        String Uri = downloadUrl.toString();
-                        mUserId.child(passedArg).child("Photos").setValue(Uri);
 
-                        Log.d(TAG, "downloaded image - " + downloadUrl.toString());
-
-                        progressDialog.dismiss();
-                    }
-                });
 
 
     }
