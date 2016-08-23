@@ -82,7 +82,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/btn_create"/>
+        android:layout_below="@+id/btn_create" />
 
     <TextView
         android:id="@+id/tV_reg"

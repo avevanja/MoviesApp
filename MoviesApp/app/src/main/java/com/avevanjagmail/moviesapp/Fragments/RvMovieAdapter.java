@@ -15,12 +15,14 @@ import com.avevanjagmail.moviesapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
  * Created by John on 12.07.2016.
  */
 public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieViewHolder> {
+    private static final String TAG = RvMovieAdapter.class.getSimpleName();
     private OpenInformActivity mCallback;
 
 
@@ -30,14 +32,39 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
     public RvMovieAdapter() {
     }
 
+    public RvMovieAdapter(List<Movie> mMovies ) {
+        this.mMovies = mMovies;
+
+    }
+
     public RvMovieAdapter(OpenInformActivity call) {
         this.mCallback = call;
     }
+    public RvMovieAdapter(OpenInformActivity call, List<Movie> mMovies) {
+        this.mCallback = call;
+        this.mMovies = mMovies;
+    }
 
     public void addNewMovies(List<Movie> newMoviesList) {
+
         mMovies.addAll(newMoviesList);
         notifyDataSetChanged();
     }
+
+    public void clear() {
+        mMovies.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addNewMovie(Movie movie) {
+//        Log.d(TAG, "addNewMovie " + movie.toString());
+        HashSet<Movie> movies = new HashSet<>(mMovies);
+        movies.add(movie);
+        mMovies.clear();
+        mMovies.addAll(movies);
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -72,7 +99,6 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
 
 
     }
-
 
     @Override
     public int getItemCount() {

@@ -31,7 +31,7 @@ Check you email for activation code."
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:text="Activate"
         android:id="@+id/activate_btn"
         android:background="@drawable/ripple_btn_log"
@@ -40,8 +40,11 @@ Check you email for activation code."
         android:layout_below="@+id/view2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="29dp"
         android:layout_gravity="center_horizontal"
-        />
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp" />
 
 </LinearLayout>

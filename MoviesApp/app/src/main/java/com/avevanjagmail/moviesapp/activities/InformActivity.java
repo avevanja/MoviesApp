@@ -16,9 +16,13 @@ import com.avevanjagmail.moviesapp.Interface.MoviesService;
 import com.avevanjagmail.moviesapp.Models.Cast;
 import com.avevanjagmail.moviesapp.Models.CastList;
 import com.avevanjagmail.moviesapp.Models.Genre;
+import com.avevanjagmail.moviesapp.Models.Movie;
 import com.avevanjagmail.moviesapp.Models.MoviesInfo;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -29,33 +33,26 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by paulg on 03.08.2016.
- */
+
 public class InformActivity extends AppCompatActivity {
     private static final String TAG = "InformActivity";
-    private TextView TextTet, mOverviewTextView, mNameCast, mNameCast1,
-            mNameCast2, mNameCast3, mNameCast4, mNameCast5, mDataRealise,
-            mCountryName;
-    private ImageView TitleImageView, mCastFoto, mCastFoto1, mCastFoto2, mCastFoto3,
-            mCastFoto4, mCastFoto5;
+    private TextView TextTet, mOverviewTextView, mNameCast, mNameCast1, mNameCast2, mNameCast3, mNameCast4, mNameCast5, mDataRealise, mCountryName;
+    private ImageView TitleImageView, mCastFoto, mCastFoto1, mCastFoto2, mCastFoto3, mCastFoto4, mCastFoto5;
     private Toolbar toolbarInformActivity;
     private ArrayList<Genre> mListMovie;
     private ArrayList<Cast> mListCast;
     SharedPreferences sPref;
-    final String SAVED_TEXT = "saved_text";
-
+    ArrayList<Movie> movieArrayList = new ArrayList<>();
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    String passedArg1;
+    String passedArg;
     DatabaseReference mUserId = mRootRef.child("Users");
-
-
-    private SharedPreferences mSharedPref;
-
+    DatabaseReference mMovieId = mUserId.child("MovieId");
     private static final String MOVIE_ID = "movie.id";
     private static final String URL_Image = "url";
     private static final String TITLE = "movie_title";
     private boolean showingFirst;
-    private static int i = 1;
+
 
     public static void start(String movieId, String url, String title, Context context) {
         Intent starter = new Intent(context, InformActivity.class);
@@ -71,30 +68,91 @@ public class InformActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inform);
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_favourite_btn);
+
+        sPref = getSharedPreferences("SH", MODE_PRIVATE);
+
+
+        passedArg1 = sPref.getString("saved_text", "");
+        passedArg = passedArg1.replace(".", "a");
+
         showingFirst = true;
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
                 if (showingFirst) {
                     fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+
+
+
+                    mUserId.child(passedArg).child("Movies").child(getIntent().getStringExtra(MOVIE_ID)).setValue(getIntent().getStringExtra(MOVIE_ID));
                     showingFirst = false;
-                    sPref = getSharedPreferences("SH", MODE_PRIVATE);
-
-                    String passedArg1 = sPref.getString("saved_text", "");
-                    String passedArg = passedArg1.replace(".", "a");
-                    //   Log.d("blaa", passedArg);
-                    String iText = String.valueOf(i);
-
-                    mUserId.child(passedArg).child("Photo");
-                    i++;
 
                 } else {
                     fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                    mUserId.child(passedArg).child("Movies").child(getIntent().getStringExtra(MOVIE_ID)).removeValue();
                     showingFirst = true;
+
+
+
 
                 }
             }
+
         });
+        mUserId.child(passedArg).child("Movies").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                List<String> map = dataSnapshot.getValue(new GenericTypeIndicator<List<String>>() {});
+//                for (String id : map) {
+//                    if (id != null) {
+//                        if (id.equals(getIntent().getStringExtra(MOVIE_ID))) {
+//                            fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+//                        }
+//                    }
+//                }
+
+                String movie = dataSnapshot.getValue(String.class);
+
+
+                if (movie != null) {
+                    if (movie.equals(getIntent().getStringExtra(MOVIE_ID))) {
+                        fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+                       showingFirst = false;
+                    }
+                }
+                Log.d(TAG, "get map " + movie.toString());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//                showingFirst = false;
+//                fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         toolbarInformActivity = (Toolbar) findViewById(R.id.toolbar_inf_act);
         setSupportActionBar(toolbarInformActivity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -192,7 +250,9 @@ public class InformActivity extends AppCompatActivity {
                 }
                 mOverviewTextView.setText(response.body().getOverview());
                 mDataRealise.setText(response.body().getReleaseDate());
-                mCountryName.setText(response.body().getProductionCountries().get(0).getName());
+                if (response.body().getProductionCountries().get(0).getName() != null) {
+                    mCountryName.setText(response.body().getProductionCountries().get(0).getName());
+                }
 
 
             }
@@ -204,4 +264,24 @@ public class InformActivity extends AppCompatActivity {
             }
         };
     }
+//    private Callback<Movie> getCallbackFavorite() {
+//        Log.d(TAG, "getCallbackFavorite");
+//        return new Callback<Movie>() {
+//            @Override
+//            public void onResponse(Call<Movie> call, Response<Movie> response) {
+//                Log.d(TAG, "obResponse - " + response.body().toString());
+//                movieArrayList.add(response.body());
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Movie> call, Throwable t) {
+//
+//            }
+//
+//
+//        };
+//    }
+
+
 }
