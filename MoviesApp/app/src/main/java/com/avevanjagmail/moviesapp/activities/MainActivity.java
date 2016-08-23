@@ -15,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.Fragments.FavoriteTabFragment;
@@ -166,14 +165,22 @@ public class MainActivity extends AppCompatActivity {
                     final String accsesToken = mPref1.getString("saved_text1", "");
                     Call<LogoutResponse> requestInfo = mService.logout( new LogOutRequest(passedArg,accsesToken));
 
+            SharedPreferences.Editor ed = mPref.edit();
+            ed.clear();
+            ed.commit();
+
                     requestInfo.enqueue(new Callback<LogoutResponse>() {
                         @Override
                         public void onResponse(Call<LogoutResponse> call, Response<LogoutResponse> response) {
                             if (response.body().getSucceeded().success==true)
                             {
+
+                                Log.d("blavla", mPref.getString("saved_text", ""));
                                 Log.d("success",response.body().getSucceeded().toString());
                                 Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                                 startActivity(intent);
+                                finish();
+
                             }
                             else
                             {
@@ -188,6 +195,9 @@ public class MainActivity extends AppCompatActivity {
                              Toast.makeText(getApplicationContext(),"Check your Internet connnection",Toast.LENGTH_LONG);
                         }
                     });
+
+
+
 
                 }
 
