@@ -112,9 +112,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                                 String Uri = downloadUrl.toString();
                                 mUserId.child(newPassedArg).child("Photos").setValue(Uri);
-
                                 Log.d(TAG, "downloaded image - " + downloadUrl.toString());
-
                                 progressDialog.dismiss();
                             }
                         });
