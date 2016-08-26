@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 String word = getIntent().getStringExtra("mail");
                 intent.putExtra("query", query);
                 intent.putExtra("mail",word);
-                Log.d("aaa", word);
+
                 startActivity(intent);
                 return false;
             }

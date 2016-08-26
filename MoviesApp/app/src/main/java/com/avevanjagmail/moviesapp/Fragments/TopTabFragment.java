@@ -10,14 +10,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.EndlessRecyclerOnScrollListener;
 import com.avevanjagmail.moviesapp.Interface.MoviesService;
 import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
+import com.avevanjagmail.moviesapp.Models.Movie;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,6 +32,7 @@ import retrofit2.Response;
  * Created by John on 10.07.2016.
  */
 public class TopTabFragment extends Fragment implements OpenInformActivity {
+    List<Movie> localList;
 
 
     private RecyclerView rv;
@@ -56,6 +62,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity {
                              Bundle savedInstanceState) {
 
         View parentView = inflater.inflate(R.layout.fragment_topmovie, container, false);
+        localList = new ArrayList<>();
         rv = (RecyclerView) parentView.findViewById(R.id.rv);
 
         llm = new LinearLayoutManager(getContext());
@@ -90,12 +97,24 @@ public class TopTabFragment extends Fragment implements OpenInformActivity {
             public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
                 Log.d(TAG, "getCallback onResponse");
                 mMovieAdapter.addNewMovies(response.body().getResults());
+//                for (Movie movie : response.body().getResults()) {
+//                    movie.save();
+//                }
+//                DBManager.save(response.body().getResults());
+
+
+                Log.d(TAG, "jhhhj");
             }
 
             @Override
             public void onFailure(Call<ListMovie> call, Throwable t) {
                 Log.e(TAG, "Eror" + t.getMessage());
                 t.printStackTrace();
+
+//                localList = Movie.listAll(Movie.class);
+//                mMovieAdapter.addNewMovies(localList);
+                Toast.makeText(getActivity().getApplicationContext(), "No internet", Toast.LENGTH_SHORT).show();
+
             }
         };
     }

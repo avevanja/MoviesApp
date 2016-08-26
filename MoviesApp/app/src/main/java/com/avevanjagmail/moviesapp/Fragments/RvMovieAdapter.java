@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
-import com.avevanjagmail.moviesapp.Models.Movie;
+import com.avevanjagmail.moviesapp.Models.MovieApi;
 import com.avevanjagmail.moviesapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -26,13 +26,13 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
     private OpenInformActivity mCallback;
 
 
-    private List<Movie> mMovies = new ArrayList<>();
+    private List<MovieApi> mMovies = new ArrayList<>();
 
 
     public RvMovieAdapter() {
     }
 
-    public RvMovieAdapter(List<Movie> mMovies ) {
+    public RvMovieAdapter(List<MovieApi> mMovies ) {
         this.mMovies = mMovies;
 
     }
@@ -40,12 +40,12 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
     public RvMovieAdapter(OpenInformActivity call) {
         this.mCallback = call;
     }
-    public RvMovieAdapter(OpenInformActivity call, List<Movie> mMovies) {
+    public RvMovieAdapter(OpenInformActivity call, List<MovieApi> mMovies) {
         this.mCallback = call;
         this.mMovies = mMovies;
     }
 
-    public void addNewMovies(List<Movie> newMoviesList) {
+    public void addNewMovies(List<MovieApi> newMoviesList) {
 
         mMovies.addAll(newMoviesList);
         notifyDataSetChanged();
@@ -56,9 +56,9 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
         notifyDataSetChanged();
     }
 
-    public void addNewMovie(Movie movie) {
+    public void addNewMovie(MovieApi movie) {
 //        Log.d(TAG, "addNewMovie " + movie.toString());
-        HashSet<Movie> movies = new HashSet<>(mMovies);
+        HashSet<MovieApi> movies = new HashSet<>(mMovies);
         movies.add(movie);
         mMovies.clear();
         mMovies.addAll(movies);
@@ -87,9 +87,9 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                InformActivity.start(mMovies.get(position).getId(), holder.cv.getContext());
+//                InformActivity.start(mMovies.get(position).getMovieId(), holder.cv.getContext());
 //                Intent intent = new Intent(holder.cv.getContext(), InformActivity.class);
-//                intent.putExtra("id",mMovies.get(position).getId() );
+//                intent.putExtra("id",mMovies.get(position).getMovieId() );
 //                holder.cv.getContext().startActivity(intent);
                 mCallback.onClickOpen(mMovies.get(position).getId(), mMovies.get(position).getBackdropPath(), mMovies.get(position).getTitle());
 

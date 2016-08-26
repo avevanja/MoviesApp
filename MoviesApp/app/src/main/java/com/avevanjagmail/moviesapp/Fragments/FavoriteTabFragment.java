@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.avevanjagmail.moviesapp.Interface.MoviesService;
 import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
-import com.avevanjagmail.moviesapp.Models.Movie;
+import com.avevanjagmail.moviesapp.Models.MovieApi;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
@@ -89,11 +89,11 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity 
         return rootView;
     }
 
-    private Callback<Movie> getCallbackFavorite() {
+    private Callback<MovieApi> getCallbackFavorite() {
         Log.d(TAG, "getCallbackFavorite");
-        return new Callback<Movie>() {
+        return new Callback<MovieApi>() {
             @Override
-            public void onResponse(Call<Movie> call, Response<Movie> response) {
+            public void onResponse(Call<MovieApi> call, Response<MovieApi> response) {
 //                Log.d(TAG, "obResponse - " + response.body().toString());
 
                 mMovieAdapter.addNewMovie(response.body());
@@ -104,7 +104,7 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity 
             }
 
             @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
+            public void onFailure(Call<MovieApi> call, Throwable t) {
 
             }
 
@@ -132,7 +132,7 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity 
                 for(DataSnapshot dataSn : dataSnapshot.getChildren()){
                     String movie = dataSn.getValue(String.class);
                     MoviesService mService = RetrofitUtil.getMoviesService();
-                    Call<Movie> requestMovie = mService.getMovieForFavorite(movie, "ru");
+                    Call<MovieApi> requestMovie = mService.getMovieForFavorite(movie, "ru");
                     requestMovie.enqueue(getCallbackFavorite());
                 }
 

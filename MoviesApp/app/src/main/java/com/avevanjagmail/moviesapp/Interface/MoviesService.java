@@ -2,7 +2,7 @@ package com.avevanjagmail.moviesapp.Interface;
 
 import com.avevanjagmail.moviesapp.Models.CastList;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
-import com.avevanjagmail.moviesapp.Models.Movie;
+import com.avevanjagmail.moviesapp.Models.MovieApi;
 import com.avevanjagmail.moviesapp.Models.MoviesInfo;
 
 import retrofit2.Call;
@@ -38,7 +38,7 @@ public interface MoviesService {
     Call<ListMovie> getSearchMovies(@Query("query")String MovieName);
 
     @GET("3/movie/{id}?api_key=a143b2488bf72e7081edb871e0db3a7c")
-    Call<Movie> getMovieForFavorite(@Path("id")String idMovie, @Query("language") String lg);
+    Call<MovieApi> getMovieForFavorite(@Path("id")String idMovie, @Query("language") String lg);
 
 
 

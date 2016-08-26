@@ -13,9 +13,13 @@ import com.avevanjagmail.moviesapp.EndlessRecyclerOnScrollListener;
 import com.avevanjagmail.moviesapp.Interface.MoviesService;
 import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
+import com.avevanjagmail.moviesapp.Models.Movie;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +32,7 @@ public class NewTabFragment extends Fragment implements OpenInformActivity {
     private RecyclerView rv;
     private static final String TAG = "bla";
     private LinearLayoutManager llm;
+    private List<Movie> localList;
     public RvMovieAdapter mMovieAdapter;
     public NewTabFragment() {
     }
@@ -43,6 +48,7 @@ public class NewTabFragment extends Fragment implements OpenInformActivity {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View parentView = inflater.inflate(R.layout.fragment_main, container, false);
+        localList = new ArrayList<>();
         rv = (RecyclerView) parentView.findViewById(R.id.rv);
 
         llm = new LinearLayoutManager(getContext());
@@ -77,12 +83,18 @@ public class NewTabFragment extends Fragment implements OpenInformActivity {
             public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
                 Log.d(TAG, "getCallback onResponse");
                 mMovieAdapter.addNewMovies(response.body().getResults());
+//                DBManager.save(response.body().getResults());
+
             }
 
             @Override
             public void onFailure(Call<ListMovie> call, Throwable t) {
                 Log.e(TAG, "Eror" + t.getMessage());
                 t.printStackTrace();
+//                localList = Movie.listAll(Movie.class);
+//
+//
+//                mMovieAdapter.addNewMovies(localList);
             }
         };
     }
