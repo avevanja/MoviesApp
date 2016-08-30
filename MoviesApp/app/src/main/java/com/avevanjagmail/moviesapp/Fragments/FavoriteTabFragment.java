@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.avevanjagmail.moviesapp.ConnectivityReceiver;
 import com.avevanjagmail.moviesapp.Interface.MoviesService;
 import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
+import com.avevanjagmail.moviesapp.Models.Movie;
 import com.avevanjagmail.moviesapp.Models.MovieApi;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.InformActivity;
@@ -21,22 +23,28 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by John on 10.07.2016.
- */
+
 public class FavoriteTabFragment extends Fragment implements OpenInformActivity {
     private static final String TAG = FavoriteTabFragment.class.getSimpleName();
-    RecyclerView rv;
-//    ArrayList<Movie> movieArrayList = new ArrayList<>();
+    private RecyclerView rv;
+
+    private Movie movie;
     private RvMovieAdapter mMovieAdapter;
     private SharedPreferences sPref;
     private String passedArg1;
     private String passedArg;
+    private List<Movie> localList;
+    private DbAdapterRv mDbAdapterRv;
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference mUserId = mRootRef.child("Users");
 
@@ -62,29 +70,25 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity 
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
+        localList = new ArrayList<>();
 //        movieArrayList.clear();
         sPref = getActivity().getSharedPreferences("SH", getActivity().MODE_PRIVATE);
         mMovieAdapter = new RvMovieAdapter(this);
         rv.setAdapter(mMovieAdapter);
         passedArg1 = sPref.getString("saved_text", "");
         passedArg = passedArg1.replace(".", "a");
-//        mUserId.child(passedArg).child("Movies").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for(DataSnapshot dataSn : dataSnapshot.getChildren()){
-//                    String movie = dataSn.getValue(String.class);
-//                    MoviesService mService = RetrofitUtil.getMoviesService();
-//                    Call<Movie> requestMovie = mService.getMovieForFavorite(movie, "ru");
-//                    requestMovie.enqueue(getCallbackFavorite());
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        if(ConnectivityReceiver.isOnline(getActivity().getApplicationContext()) == false){
+            localList = Select.from(Movie.class)
+                    .where(Condition.prop("properties").eq("Favorite"))
+                    .list();
+
+            mDbAdapterRv = new DbAdapterRv();
+
+            mDbAdapterRv.addNewMovies(localList);
+            rv.setAdapter(mDbAdapterRv);
+
+        }
+
 
         return rootView;
     }
@@ -94,17 +98,17 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity 
         return new Callback<MovieApi>() {
             @Override
             public void onResponse(Call<MovieApi> call, Response<MovieApi> response) {
-//                Log.d(TAG, "obResponse - " + response.body().toString());
-
                 mMovieAdapter.addNewMovie(response.body());
-//                movieArrayList.add(response.body());
-//                mMovieAdapter.notifyDataSetChanged();
-              //  mMovieAdapter.addNewMovies(movieArrayList);
+                movie = new Movie(response.body(), "Favorite");
+                movie.save();
+
+
 
             }
 
             @Override
             public void onFailure(Call<MovieApi> call, Throwable t) {
+
 
             }
 
@@ -122,6 +126,7 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity 
         super.onStart();
         Log.d(TAG, "onStart");
         update();
+
     }
 
     public void update() {
@@ -129,17 +134,32 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity 
         mUserId.child(passedArg).child("Movies").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSn : dataSnapshot.getChildren()){
+                localList = Select.from(Movie.class)
+                        .where(Condition.prop("properties").eq("Favorite"))
+                        .list();
+                for (Movie movie1 : localList) {
+                    movie1.delete();
+
+                }
+                for (DataSnapshot dataSn : dataSnapshot.getChildren()) {
                     String movie = dataSn.getValue(String.class);
                     MoviesService mService = RetrofitUtil.getMoviesService();
                     Call<MovieApi> requestMovie = mService.getMovieForFavorite(movie, "ru");
                     requestMovie.enqueue(getCallbackFavorite());
+
                 }
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                localList = Select.from(Movie.class)
+                        .where(Condition.prop("propertis").eq("Favorite"))
+                        .list();
+                mDbAdapterRv = new DbAdapterRv();
+                mDbAdapterRv.addNewMovies(localList);
+                rv.setAdapter(mDbAdapterRv);
+
 
             }
         });

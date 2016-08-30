@@ -17,9 +17,12 @@ import com.avevanjagmail.moviesapp.Interface.MoviesService;
 import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
 import com.avevanjagmail.moviesapp.Models.ListMovie;
 import com.avevanjagmail.moviesapp.Models.Movie;
+import com.avevanjagmail.moviesapp.Models.MovieApi;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+import com.orm.query.Condition;
+import com.orm.query.Select;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +39,13 @@ public class TopTabFragment extends Fragment implements OpenInformActivity {
 
 
     private RecyclerView rv;
+    private Movie movie;
 
     private static final String TAG = TopTabFragment.class.getSimpleName();
     private LinearLayoutManager llm;
-    public RvMovieAdapter mMovieAdapter;
+    private RvMovieAdapter mMovieAdapter;
+    private DbAdapterRv mDbAdapterRv;
+    private ArrayList<MovieApi> movieApis;
 
 
 
@@ -62,11 +68,15 @@ public class TopTabFragment extends Fragment implements OpenInformActivity {
                              Bundle savedInstanceState) {
 
         View parentView = inflater.inflate(R.layout.fragment_topmovie, container, false);
-        localList = new ArrayList<>();
+
         rv = (RecyclerView) parentView.findViewById(R.id.rv);
+        localList = new ArrayList<>();
 
         llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
+        movieApis = new ArrayList<>();
+        mDbAdapterRv = new DbAdapterRv();
+
 
 
         MoviesService mService = RetrofitUtil.getMoviesService();
@@ -83,7 +93,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity {
             public void onLoadMore(int current_page) {
                 MoviesService mService = RetrofitUtil.getMoviesService();
                 Call<ListMovie> requestMovie = mService.getTopName("ru", current_page);
-                requestMovie.enqueue(getCallback());
+                requestMovie.enqueue(getCallbackLoadMore());
             }
         });
 
@@ -97,13 +107,20 @@ public class TopTabFragment extends Fragment implements OpenInformActivity {
             public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
                 Log.d(TAG, "getCallback onResponse");
                 mMovieAdapter.addNewMovies(response.body().getResults());
-//                for (Movie movie : response.body().getResults()) {
-//                    movie.save();
-//                }
-//                DBManager.save(response.body().getResults());
 
+                localList = Select.from(Movie.class)
+                        .where(Condition.prop("properties").eq("Top"))
+                        .list();
+                for (Movie movie1 : localList) {
+                    movie1.delete();
 
-                Log.d(TAG, "jhhhj");
+                }
+
+                for (MovieApi movieApi : response.body().getResults()) {
+                     movie = new Movie(movieApi, "Top");
+                     movie.save();
+                }
+
             }
 
             @Override
@@ -111,8 +128,35 @@ public class TopTabFragment extends Fragment implements OpenInformActivity {
                 Log.e(TAG, "Eror" + t.getMessage());
                 t.printStackTrace();
 
+                localList = Select.from(Movie.class)
+                        .where(Condition.prop("properties").eq("Top"))
+                                .list();
+
 //                localList = Movie.listAll(Movie.class);
-//                mMovieAdapter.addNewMovies(localList);
+
+                mDbAdapterRv = new DbAdapterRv();
+                mDbAdapterRv.addNewMovies(localList);
+                rv.setAdapter(mDbAdapterRv);
+                Toast.makeText(getActivity().getApplicationContext(), "No internet", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+    }
+    private Callback<ListMovie> getCallbackLoadMore() {
+        Log.d(TAG, "getCallback");
+        return new Callback<ListMovie>() {
+            @Override
+            public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
+                Log.d(TAG, "getCallback onResponse");
+                mMovieAdapter.addNewMovies(response.body().getResults());
+
+            }
+
+            @Override
+            public void onFailure(Call<ListMovie> call, Throwable t) {
+                Log.e(TAG, "Eror" + t.getMessage());
+                t.printStackTrace();
+
                 Toast.makeText(getActivity().getApplicationContext(), "No internet", Toast.LENGTH_SHORT).show();
 
             }
