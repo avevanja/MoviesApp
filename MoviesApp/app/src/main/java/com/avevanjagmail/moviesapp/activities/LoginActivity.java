@@ -23,8 +23,13 @@ import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,15 +38,14 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     SharedPreferences sPref;
     SharedPreferences sPref1;
-    private static final String TAG = LoginActivity.class.getSimpleName();
     private TextView tvReg;
     private Button btnLog;
     private EditText email, password1;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
-    private final String URL = "http://146.185.180.39:4020/login/email";
-    private String url;
 
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mUserId = mRootRef.child("Users");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -55,25 +59,51 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Profile profile = Profile.getCurrentProfile();
+               final Profile profile = Profile.getCurrentProfile();
                 sPref = getSharedPreferences("SH", MODE_PRIVATE);
                 SharedPreferences.Editor ed = sPref.edit();
                 ed.putString("saved_text", profile.getId().toString());
                 ed.commit();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-                startActivity(intent);
-                finish();
+
+              final  String imageUrl = String.valueOf(profile.getProfilePictureUri(717, 400));
+
+mRootRef.addValueEventListener(new ValueEventListener() {
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+        if (dataSnapshot.child("Users").child(profile.getId()).hasChild("need photo") == true)
+        {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else if (dataSnapshot.child("Users").child(profile.getId()).hasChild("need photo")== false)
+        {
+            mUserId.child(profile.getId()).child("Photos").setValue(imageUrl);
+            mUserId.child(profile.getId()).child("need photo").setValue("no");
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
+});
+
             }
 
             @Override
             public void onCancel() {
-                // App code
+                Log.d("On cancel", "cancel");
             }
 
             @Override
             public void onError(FacebookException exception) {
-                // App code
+                Log.d("On error", exception.getMessage().toString());
             }
         });
 

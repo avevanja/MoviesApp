@@ -106,6 +106,8 @@ public class InformActivity extends AppCompatActivity {
         });
         mUserId.child(passedArg).child("Movies").addChildEventListener(new ChildEventListener() {
             @Override
+
+
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 //                List<String> map = dataSnapshot.getValue(new GenericTypeIndicator<List<String>>() {});
 //                for (String id : map) {

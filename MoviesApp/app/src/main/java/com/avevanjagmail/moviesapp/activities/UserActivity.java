@@ -22,13 +22,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.avevanjagmail.moviesapp.Interface.LoginApiService;
-import com.avevanjagmail.moviesapp.Models.ActivateRequest;
-import com.avevanjagmail.moviesapp.Models.ActivateResponse;
-import com.avevanjagmail.moviesapp.Models.LogOutRequest;
-import com.avevanjagmail.moviesapp.Models.LogoutResponse;
+
 import com.avevanjagmail.moviesapp.R;
-import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,42 +44,56 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Objects;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.http.Url;
 
 
 public class UserActivity extends AppCompatActivity {
     private ImageView ivImage;
-    private String url1;
+    private Profile profile;
     private FloatingActionButton btnSelect;
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference mUserId = mRootRef.child("Users");
-    SharedPreferences mPref;
-    SharedPreferences mPref1;
+    SharedPreferences mPref, prefForUser, prefForEmail;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReferenceFromUrl("gs://movies-app-fda81.appspot.com");
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;
-    TextView exitButton;
+    private TextView info, emailText;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_user);
+
+        emailText = (TextView) findViewById(R.id.email);
+
+        prefForEmail = getSharedPreferences("SH", MODE_PRIVATE);
+
+        String email = prefForEmail.getString("saved_text","");
+
+
+        emailText.setText(email);
+
         ivImage = (ImageView) findViewById(R.id.expandedImage);
         FacebookSdk.sdkInitialize(getApplicationContext());
-        Profile profile = Profile.getCurrentProfile();
+         profile = Profile.getCurrentProfile();
+
 if (profile!=null)
 {
-    url1 = String.valueOf(profile.getProfilePictureUri(717, 400));
+    mRootRef.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
 
-            Log.d("bh", url1);
-            Picasso.with(this).load(url1).
-                    error(R.drawable.ava).resize(717, 400).into(ivImage);
+            String myUrl = dataSnapshot.child("Users").child(profile.getId()).child("Photos").getValue().toString();
+            Uri myUri = Uri.parse(myUrl);
+            Picasso.with(getApplicationContext()).load(myUri).fit().centerCrop().into(ivImage);
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    });
         }
         else
         {
@@ -231,8 +241,14 @@ if (profile!=null)
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                         String Uri = downloadUrl.toString();
-                        mUserId.child(passedArg).child("Photos").setValue(Uri);
-
+                        if (profile!= null)
+                        {
+                            mUserId.child(profile.getId()).child("Photos").setValue(Uri);
+                        }
+                        else
+                        {
+                            mUserId.child(passedArg).child("Photos").setValue(Uri);
+                        }
 
                     }
                 });
@@ -271,7 +287,14 @@ if (profile!=null)
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                         String Uri = downloadUrl.toString();
-                        mUserId.child(passedArg).child("Photos").setValue(Uri);
+                        if (profile!= null)
+                        {
+                            mUserId.child(profile.getId()).child("Photos").setValue(Uri);
+                        }
+                        else
+                        {
+                            mUserId.child(passedArg).child("Photos").setValue(Uri);
+                        }
 
 
 
