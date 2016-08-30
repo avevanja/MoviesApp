@@ -107,14 +107,6 @@ public class InformActivity extends AppCompatActivity {
         mUserId.child(passedArg).child("Movies").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                List<String> map = dataSnapshot.getValue(new GenericTypeIndicator<List<String>>() {});
-//                for (String id : map) {
-//                    if (id != null) {
-//                        if (id.equals(getIntent().getStringExtra(MOVIE_ID))) {
-//                            fab.setImageResource(R.drawable.ic_favorite_white_24dp);
-//                        }
-//                    }
-//                }
 
                 String movie = dataSnapshot.getValue(String.class);
 
@@ -135,8 +127,7 @@ public class InformActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-//                showingFirst = false;
-//                fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+
 
             }
 
@@ -184,7 +175,7 @@ public class InformActivity extends AppCompatActivity {
         String text = getIntent().getStringExtra(MOVIE_ID);
 
         Picasso.with(this).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + getIntent().getStringExtra(URL_Image)).
-                error(R.drawable.ava).resize(717, 400).into(TitleImageView);
+                error(R.drawable.nofim).resize(717, 400).into(TitleImageView);
 
 
         MoviesService mService = RetrofitUtil.getMoviesService();
@@ -208,22 +199,22 @@ public class InformActivity extends AppCompatActivity {
 
                     mNameCast.setText(mListCast.get(0).getName());
                     Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(0).getProfilePath()).
-                            error(R.drawable.ava).into(mCastFoto);
+                            error(R.drawable.user_icon).into(mCastFoto);
                     mNameCast1.setText(mListCast.get(1).getName());
                     Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(1).getProfilePath()).
-                            error(R.drawable.ava).into(mCastFoto1);
+                            error(R.drawable.user_icon).into(mCastFoto1);
                     mNameCast2.setText(mListCast.get(2).getName());
                     Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(2).getProfilePath()).
-                            error(R.drawable.ava).into(mCastFoto2);
+                            error(R.drawable.user_icon).into(mCastFoto2);
                     mNameCast3.setText(mListCast.get(3).getName());
                     Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(3).getProfilePath()).
-                            error(R.drawable.ava).into(mCastFoto3);
+                            error(R.drawable.user_icon).into(mCastFoto3);
                     mNameCast4.setText(mListCast.get(4).getName());
                     Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(4).getProfilePath()).
-                            error(R.drawable.ava).into(mCastFoto4);
+                            error(R.drawable.user_icon).into(mCastFoto4);
                     mNameCast5.setText(mListCast.get(5).getName());
                     Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(5).getProfilePath()).
-                            error(R.drawable.ava).into(mCastFoto5);
+                            error(R.drawable.user_icon).into(mCastFoto5);
                 }
 
 
@@ -264,24 +255,7 @@ public class InformActivity extends AppCompatActivity {
             }
         };
     }
-//    private Callback<Movie> getCallbackFavorite() {
-//        Log.d(TAG, "getCallbackFavorite");
-//        return new Callback<Movie>() {
-//            @Override
-//            public void onResponse(Call<Movie> call, Response<Movie> response) {
-//                Log.d(TAG, "obResponse - " + response.body().toString());
-//                movieArrayList.add(response.body());
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Movie> call, Throwable t) {
-//
-//            }
-//
-//
-//        };
-//    }
+
 
 
 }

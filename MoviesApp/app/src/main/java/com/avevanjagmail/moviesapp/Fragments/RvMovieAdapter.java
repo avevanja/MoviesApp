@@ -81,7 +81,7 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
         holder.setName(mMovies.get(position).getTitle());
         Context context = holder.ivPoster.getContext();
         Picasso.with(context).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + mMovies.get(position).getBackdropPath()).
-                error(R.drawable.ava).resize(717, 400).into(holder.ivPoster);
+                error(R.drawable.nofim).resize(717, 400).into(holder.ivPoster);
         holder.setDataMovie(mMovies.get(position).getReleaseDate());
         holder.setTopMark(mMovies.get(position).getVoteAverage());
         holder.cv.setOnClickListener(new View.OnClickListener() {

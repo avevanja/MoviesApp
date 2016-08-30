@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.avevanjagmail.moviesapp.Fragments.RvMovieAdapter;
 import com.avevanjagmail.moviesapp.Interface.MoviesService;
@@ -29,6 +31,17 @@ public class SearchActivity extends AppCompatActivity implements OpenInformActiv
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_search);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        setTitle(getIntent().getStringExtra("query"));
         rv = (RecyclerView) findViewById(R.id.rv_searc);
 
         llm = new LinearLayoutManager(getApplicationContext());
