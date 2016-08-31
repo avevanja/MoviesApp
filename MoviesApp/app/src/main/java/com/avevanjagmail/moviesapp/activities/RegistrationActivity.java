@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -57,17 +56,16 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText fName, lName, email, password;
     private Bitmap thumbnail;
     private Button btn_create;
+    private SharedPreferences prefForUsername,prefForEmail;
     private ProgressDialog progressDialog;
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference storageRef = storage.getReferenceFromUrl("gs://movies-app-fda81.appspot.com");
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef = storage.getReferenceFromUrl("gs://movies-app-fda81.appspot.com");
     private ImageView ivImage;
-
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;
-    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    SharedPreferences sPref;
-    DatabaseReference mUserId = mRootRef.child("Users");
-    final String argument = new String();
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mUserId = mRootRef.child("Users");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -98,6 +96,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
                 Log.d(TAG, "photoUri - " + tempUri.toString());
 
+
+
                 StorageReference mountainImagesRef = storageRef.child("images/" + tempUri.getLastPathSegment());
                 UploadTask uploadTask = mountainImagesRef.putFile(tempUri);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -127,15 +127,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
                         Log.d(TAG, "onResponse - " + response.body().toString());
 
-                    /*    if (response.body().getSucceeded().success == true) {
-                            Intent myintent = new Intent(getApplicationContext(), VerifyActivity.class).putExtra("<email>", email.getText().toString());
-                            startActivity(myintent);
-                        }
-
-                        if (response.body().getSucceeded().success == false) {
-                            Toast toast = Toast.makeText(getApplicationContext(), response.body().getSucceeded().message, Toast.LENGTH_LONG);
-                            toast.show();
-                        }*/
                     }
 
                     @Override
@@ -290,12 +281,6 @@ public class RegistrationActivity extends AppCompatActivity {
         return Uri.parse(path);
     }
 
-    public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }
 
 }
 

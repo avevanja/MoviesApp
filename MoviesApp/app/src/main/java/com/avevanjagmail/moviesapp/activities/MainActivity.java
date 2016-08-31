@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.Fragments.FavoriteTabFragment;
@@ -25,6 +26,10 @@ import com.avevanjagmail.moviesapp.Models.LogOutRequest;
 import com.avevanjagmail.moviesapp.Models.LogoutResponse;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+import com.facebook.FacebookActivity;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 
 import java.util.ArrayList;
 
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
+    private Profile profile;
     private SharedPreferences mPref;
     private SharedPreferences mPref1;
     private ViewPager mViewPager;
@@ -157,15 +162,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-        if (id== R.id.action_logout)
-        {
-
-                    LoginApiService mService = RetrofitUtil.getLoginService();
-                    mPref = getSharedPreferences("SH", MODE_PRIVATE);
-                    final String passedArg = mPref.getString("saved_text", "");
-                    mPref1 = getSharedPreferences("SH1", MODE_PRIVATE);
-                    final String accsesToken = mPref1.getString("saved_text1", "");
-                    Call<LogoutResponse> requestInfo = mService.logout( new LogOutRequest(passedArg,accsesToken));
+        if (id== R.id.action_logout) {
+            profile = Profile.getCurrentProfile();
+            if (profile == null) {
+                LoginApiService mService = RetrofitUtil.getLoginService();
+                mPref = getSharedPreferences("SH", MODE_PRIVATE);
+                final String passedArg = mPref.getString("saved_text", "");
+                mPref1 = getSharedPreferences("SH1", MODE_PRIVATE);
+                final String accsesToken = mPref1.getString("saved_text1", "");
+                Call<LogoutResponse> requestInfo = mService.logout(new LogOutRequest(passedArg, accsesToken));
 
             SharedPreferences.Editor ed = mPref.edit();
             ed.clear();
@@ -176,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(Call<LogoutResponse> call, Response<LogoutResponse> response) {
                             if (response.body().getSucceeded().success==true)
                             {
-
-                                Log.d("blavla", mPref.getString("saved_text", ""));
                                 Log.d("success",response.body().getSucceeded().toString());
                                 Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                                 startActivity(intent);
@@ -192,20 +195,22 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
 
-                        @Override
-                        public void onFailure(Call<LogoutResponse> call, Throwable t) {
-                             Toast.makeText(getApplicationContext(),"Check your Internet connnection",Toast.LENGTH_LONG);
-                        }
-                    });
+                    @Override
+                    public void onFailure(Call<LogoutResponse> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Check your Internet connnection", Toast.LENGTH_LONG);
+                    }
+                });
 
+            } else {
+                FacebookSdk.sdkInitialize(getApplicationContext());
+                LoginManager.getInstance().logOut();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
 
-
-
-                }
-
-
-        return super.onOptionsItemSelected(item);
-    }
+            }
+        }
+            return super.onOptionsItemSelected(item);
+        }
 
     /**
      * A placeholder fragment containing a simple view.
