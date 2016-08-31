@@ -1,9 +1,9 @@
 package com.avevanjagmail.moviesapp.Interface;
 
-import com.avevanjagmail.moviesapp.Models.CastList;
-import com.avevanjagmail.moviesapp.Models.ListMovie;
-import com.avevanjagmail.moviesapp.Models.MovieApi;
-import com.avevanjagmail.moviesapp.Models.MoviesInfo;
+import com.avevanjagmail.moviesapp.models.CastList;
+import com.avevanjagmail.moviesapp.models.ListMovie;
+import com.avevanjagmail.moviesapp.models.MovieApi;
+import com.avevanjagmail.moviesapp.models.MoviesInfo;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -20,7 +20,7 @@ public interface MoviesService {
 
 
     @GET("3/movie/top_rated/?api_key=a143b2488bf72e7081edb871e0db3a7c")
-    Call<ListMovie> getTopName(@Query("language") String lg, @Query("page") int page);
+    Call<ListMovie> getTopMovie(@Query("language") String lg, @Query("page") int page);
 
     @GET("3/movie/now_playing/?api_key=a143b2488bf72e7081edb871e0db3a7c")
     Call<ListMovie> getNewMovie(@Query("language") String lg, @Query("page") int page);

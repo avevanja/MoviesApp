@@ -12,8 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.Interface.LoginApiService;
-import com.avevanjagmail.moviesapp.Models.LoginRequest;
-import com.avevanjagmail.moviesapp.Models.LoginResponse;
+import com.avevanjagmail.moviesapp.models.LoginRequest;
+import com.avevanjagmail.moviesapp.models.LoginResponse;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 import com.facebook.CallbackManager;
@@ -28,8 +28,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import retrofit2.Call;
 import retrofit2.Callback;

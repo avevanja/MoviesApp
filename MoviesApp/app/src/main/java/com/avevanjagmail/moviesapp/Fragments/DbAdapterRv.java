@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp.Fragments;
+package com.avevanjagmail.moviesapp.fragments;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
-import com.avevanjagmail.moviesapp.Models.Movie;
+import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.R;
 import com.squareup.picasso.Picasso;
 

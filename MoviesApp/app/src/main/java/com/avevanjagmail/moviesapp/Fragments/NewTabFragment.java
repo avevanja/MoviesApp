@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp.Fragments;
+package com.avevanjagmail.moviesapp.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,9 +13,9 @@ import android.widget.Toast;
 import com.avevanjagmail.moviesapp.EndlessRecyclerOnScrollListener;
 import com.avevanjagmail.moviesapp.Interface.MoviesService;
 import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
-import com.avevanjagmail.moviesapp.Models.ListMovie;
-import com.avevanjagmail.moviesapp.Models.Movie;
-import com.avevanjagmail.moviesapp.Models.MovieApi;
+import com.avevanjagmail.moviesapp.models.ListMovie;
+import com.avevanjagmail.moviesapp.models.Movie;
+import com.avevanjagmail.moviesapp.models.MovieApi;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;

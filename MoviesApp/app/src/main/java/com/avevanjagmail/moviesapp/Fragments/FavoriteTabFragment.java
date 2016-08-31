@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp.Fragments;
+package com.avevanjagmail.moviesapp.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import com.avevanjagmail.moviesapp.ConnectivityReceiver;
 import com.avevanjagmail.moviesapp.Interface.MoviesService;
 import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
-import com.avevanjagmail.moviesapp.Models.Movie;
-import com.avevanjagmail.moviesapp.Models.MovieApi;
+import com.avevanjagmail.moviesapp.models.Movie;
+import com.avevanjagmail.moviesapp.models.MovieApi;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;

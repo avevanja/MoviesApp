@@ -1,7 +1,4 @@
-package com.avevanjagmail.moviesapp.Models;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package com.avevanjagmail.moviesapp.models;
 
 /**
  * Created by irabokalo on 17.08.2016.

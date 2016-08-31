@@ -1,15 +1,15 @@
 package com.avevanjagmail.moviesapp.Interface;
 
-import com.avevanjagmail.moviesapp.Models.LogOutRequest;
-import com.avevanjagmail.moviesapp.Models.LoginRequest;
-import com.avevanjagmail.moviesapp.Models.LoginResponse;
-import com.avevanjagmail.moviesapp.Models.LogoutResponse;
-import com.avevanjagmail.moviesapp.Models.RegisterRequest;
-import com.avevanjagmail.moviesapp.Models.RegisterResponse;
-import com.avevanjagmail.moviesapp.Models.ActivateRequest;
-import com.avevanjagmail.moviesapp.Models.ActivateResponse;
-import com.avevanjagmail.moviesapp.Models.VerifyRequest;
-import com.avevanjagmail.moviesapp.Models.VerifyResponse;
+import com.avevanjagmail.moviesapp.models.LogOutRequest;
+import com.avevanjagmail.moviesapp.models.LoginRequest;
+import com.avevanjagmail.moviesapp.models.LoginResponse;
+import com.avevanjagmail.moviesapp.models.LogoutResponse;
+import com.avevanjagmail.moviesapp.models.RegisterRequest;
+import com.avevanjagmail.moviesapp.models.RegisterResponse;
+import com.avevanjagmail.moviesapp.models.ActivateRequest;
+import com.avevanjagmail.moviesapp.models.ActivateResponse;
+import com.avevanjagmail.moviesapp.models.VerifyRequest;
+import com.avevanjagmail.moviesapp.models.VerifyResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

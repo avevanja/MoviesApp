@@ -13,11 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avevanjagmail.moviesapp.Interface.MoviesService;
-import com.avevanjagmail.moviesapp.Models.Cast;
-import com.avevanjagmail.moviesapp.Models.CastList;
-import com.avevanjagmail.moviesapp.Models.Genre;
-import com.avevanjagmail.moviesapp.Models.Movie;
-import com.avevanjagmail.moviesapp.Models.MoviesInfo;
+import com.avevanjagmail.moviesapp.models.Cast;
+import com.avevanjagmail.moviesapp.models.CastList;
+import com.avevanjagmail.moviesapp.models.Genre;
+import com.avevanjagmail.moviesapp.models.Movie;
+import com.avevanjagmail.moviesapp.models.MoviesInfo;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 import com.google.firebase.database.ChildEventListener;

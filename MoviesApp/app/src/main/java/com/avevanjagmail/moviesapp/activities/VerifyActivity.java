@@ -6,14 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.Interface.LoginApiService;
-import com.avevanjagmail.moviesapp.Models.ActivateRequest;
-import com.avevanjagmail.moviesapp.Models.ActivateResponse;
-import com.avevanjagmail.moviesapp.Models.VerifyRequest;
-import com.avevanjagmail.moviesapp.Models.VerifyResponse;
+import com.avevanjagmail.moviesapp.models.ActivateRequest;
+import com.avevanjagmail.moviesapp.models.ActivateResponse;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 

@@ -1,6 +1,6 @@
 package com.avevanjagmail.moviesapp.managers;
 
-import com.avevanjagmail.moviesapp.Models.Movie;
+import com.avevanjagmail.moviesapp.models.Movie;
 
 import java.util.List;
 

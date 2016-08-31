@@ -8,10 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.avevanjagmail.moviesapp.Fragments.RvMovieAdapter;
+import com.avevanjagmail.moviesapp.fragments.RvMovieAdapter;
 import com.avevanjagmail.moviesapp.Interface.MoviesService;
 import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
-import com.avevanjagmail.moviesapp.Models.ListMovie;
+import com.avevanjagmail.moviesapp.models.ListMovie;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 
