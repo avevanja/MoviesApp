@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.avevanjagmail.moviesapp.EndlessRecyclerOnScrollListener;
-import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
+import com.avevanjagmail.moviesapp.interfaces.OpenInformActivity;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.avevanjagmail.moviesapp.models.Movie;
@@ -20,22 +20,15 @@ import com.avevanjagmail.moviesapp.presenter.TopFragmentPresenter;
 import com.avevanjagmail.moviesapp.view.TopFragmentView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by John on 10.07.2016.
  */
 public class TopTabFragment extends Fragment implements OpenInformActivity, TopFragmentView {
-    List<Movie> localList;
-
-
     private RecyclerView rv;
-
-
     private LinearLayoutManager llm;
     private RvMovieAdapter mMovieAdapter;
     private DbAdapterRv mDbAdapterRv;
-
     private TopFragmentPresenter topFragmentPresenter;
 
 
@@ -59,7 +52,6 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
         View parentView = inflater.inflate(R.layout.fragment_topmovie, container, false);
 
         rv = (RecyclerView) parentView.findViewById(R.id.rv);
-        localList = new ArrayList<>();
         llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
 
@@ -68,6 +60,8 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
         topFragmentPresenter.setTopFragmentView(this);
         mMovieAdapter = new RvMovieAdapter(this);
         rv.setAdapter(mMovieAdapter);
+        topFragmentPresenter.loadTopMovies();
+
 
 
 //        MoviesService mService = RetrofitUtil.getMoviesService();
@@ -82,7 +76,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
                 topFragmentPresenter.loadMoreTopMovies(current_page);
             }
         });
-        topFragmentPresenter.loadTopMovies();
+//        topFragmentPresenter.loadTopMovies();
 
         return parentView;
     }

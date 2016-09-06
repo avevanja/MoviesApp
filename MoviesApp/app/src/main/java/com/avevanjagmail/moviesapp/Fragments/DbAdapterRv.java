@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.avevanjagmail.moviesapp.Interface.OpenInformActivity;
+import com.avevanjagmail.moviesapp.interfaces.OpenInformActivity;
 import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.R;
 import com.squareup.picasso.Picasso;
