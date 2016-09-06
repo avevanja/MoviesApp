@@ -2,7 +2,7 @@ package com.avevanjagmail.moviesapp.presenter;
 
 import android.util.Log;
 
-import com.avevanjagmail.moviesapp.Interface.MoviesService;
+import com.avevanjagmail.moviesapp.interfaces.MoviesService;
 import com.avevanjagmail.moviesapp.models.ListMovie;
 import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.models.MovieApi;
@@ -28,18 +28,18 @@ public class NewFragmentPresenter {
     private static final String TAG = TopFragmentPresenter.class.getSimpleName();
 
 
-    public void setTopFragmentView(NewFragmentView newFragmentView){
+    public void setNewFragmentView(NewFragmentView newFragmentView){
         this.newFragmentView = newFragmentView;
     }
 
-    public void loadTopMovies(){
+    public void loadNewMovies(){
         MoviesService mService = RetrofitUtil.getMoviesService();
         Call<ListMovie> requestMovie = mService.getNewMovie("ru", 1);
         requestMovie.enqueue(getCallback());
     }
 
 
-    public void loadMoreTopMovies(int current_page){
+    public void loadMoreNewMovies(int current_page){
         MoviesService mService = RetrofitUtil.getMoviesService();
         Call<ListMovie> requestMovie = mService.getNewMovie("ru", current_page);
         requestMovie.enqueue(getCallbackLoadMore());
@@ -82,7 +82,7 @@ public class NewFragmentPresenter {
                 Log.e(TAG, "Eror" + t.getMessage());
                 t.printStackTrace();
                 localList = (ArrayList<Movie>) Select.from(Movie.class)
-                        .where(Condition.prop("properties").eq("Top"))
+                        .where(Condition.prop("properties").eq("New"))
                         .list();
                 newFragmentView.setLocalNewMovies(localList);
 

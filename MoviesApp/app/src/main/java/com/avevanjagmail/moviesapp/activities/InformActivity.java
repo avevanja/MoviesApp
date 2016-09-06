@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.avevanjagmail.moviesapp.Interface.MoviesService;
+import com.avevanjagmail.moviesapp.interfaces.MoviesService;
 import com.avevanjagmail.moviesapp.models.Cast;
 import com.avevanjagmail.moviesapp.models.CastList;
 import com.avevanjagmail.moviesapp.models.Genre;

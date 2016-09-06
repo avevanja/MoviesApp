@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp.Interface;
+package com.avevanjagmail.moviesapp.interfaces;
 
 /**
  * Created by paulg on 04.08.2016.

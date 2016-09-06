@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avevanjagmail.moviesapp.Interface.LoginApiService;
+import com.avevanjagmail.moviesapp.interfaces.LoginApiService;
 import com.avevanjagmail.moviesapp.models.LoginRequest;
 import com.avevanjagmail.moviesapp.models.LoginResponse;
 import com.avevanjagmail.moviesapp.R;

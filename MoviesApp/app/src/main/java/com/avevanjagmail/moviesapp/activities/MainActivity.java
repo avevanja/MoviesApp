@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.avevanjagmail.moviesapp.fragments.FavoriteTabFragment;
 import com.avevanjagmail.moviesapp.fragments.NewTabFragment;
 import com.avevanjagmail.moviesapp.fragments.TopTabFragment;
-import com.avevanjagmail.moviesapp.Interface.LoginApiService;
+import com.avevanjagmail.moviesapp.interfaces.LoginApiService;
 import com.avevanjagmail.moviesapp.models.LogOutRequest;
 import com.avevanjagmail.moviesapp.models.LogoutResponse;
 import com.avevanjagmail.moviesapp.R;

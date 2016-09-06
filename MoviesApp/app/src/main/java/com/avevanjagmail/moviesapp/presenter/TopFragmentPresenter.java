@@ -2,7 +2,7 @@ package com.avevanjagmail.moviesapp.presenter;
 
 import android.util.Log;
 
-import com.avevanjagmail.moviesapp.Interface.MoviesService;
+import com.avevanjagmail.moviesapp.interfaces.MoviesService;
 import com.avevanjagmail.moviesapp.models.ListMovie;
 import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.models.MovieApi;
@@ -80,7 +80,7 @@ public class TopFragmentPresenter {
 
             @Override
             public void onFailure(Call<ListMovie> call, Throwable t) {
-                Log.e(TAG, "Eror" + t.getMessage());
+                Log.e(TAG, "Error" + t.getMessage());
                 t.printStackTrace();
                 localList = (ArrayList<Movie>) Select.from(Movie.class)
                         .where(Condition.prop("properties").eq("Top"))
@@ -103,11 +103,12 @@ public class TopFragmentPresenter {
                 topFragmentView.setMoreTopMovies(topListMovies);
 
 
+
             }
 
             @Override
             public void onFailure(Call<ListMovie> call, Throwable t) {
-                Log.e(TAG, "Eror" + t.getMessage());
+                Log.e(TAG, "Error" + t.getMessage());
                 t.printStackTrace();
 
 

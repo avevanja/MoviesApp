@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp.Interface;
+package com.avevanjagmail.moviesapp.interfaces;
 
 import com.avevanjagmail.moviesapp.models.CastList;
 import com.avevanjagmail.moviesapp.models.ListMovie;

@@ -1,7 +1,7 @@
 package com.avevanjagmail.moviesapp.utils;
 
-import com.avevanjagmail.moviesapp.Interface.LoginApiService;
-import com.avevanjagmail.moviesapp.Interface.MoviesService;
+import com.avevanjagmail.moviesapp.interfaces.LoginApiService;
+import com.avevanjagmail.moviesapp.interfaces.MoviesService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
