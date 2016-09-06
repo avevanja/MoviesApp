@@ -41,4 +41,15 @@ public class MovieApi {
     public String getBackdropPath() {
         return backdropPath;
     }
+
+    @Override
+    public String toString() {
+        return "MovieApi{" +
+                "backdropPath='" + backdropPath + '\'' +
+                ", title='" + title + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", id='" + id + '\'' +
+                ", voteAverage=" + voteAverage +
+                '}';
+    }
 }

@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by paulg on 09.08.2016.
@@ -12,9 +11,9 @@ import java.util.List;
 public class CastList {
     @SerializedName("cast")
     @Expose
-    private List<Cast> cast = new ArrayList<Cast>();
+    private ArrayList<Cast> cast = new ArrayList<Cast>();
 
-    public List<Cast> getCast() {
+    public ArrayList<Cast> getCast() {
         return cast;
     }
 }

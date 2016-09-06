@@ -24,15 +24,15 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
     private static final String TAG = FavoriteTabFragment.class.getSimpleName();
     private RecyclerView rv;
 
-//    private Movie movie;
+    //    private Movie movie;
     private RvMovieAdapter mMovieAdapter;
-//    private SharedPreferences sPref;
+    //    private SharedPreferences sPref;
 //    private String passedArg1;
 //    private String passedArg;
 //    private List<Movie> localList;
     private DbAdapterRv mDbAdapterRv;
     private FavoriteFragmentPresenter mFavoriteFragmentPresenter;
- //   DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    //   DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 //    DatabaseReference mUserId = mRootRef.child("Users");
 
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -78,6 +78,8 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
 //
 //        }
 
+        Log.d(TAG, "onCreateView: ");
+        mFavoriteFragmentPresenter.UpdateRemoutDb();
 
         return rootView;
     }
@@ -114,12 +116,15 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
-        mMovieAdapter.clear();
-        mFavoriteFragmentPresenter.UpdateRemoutDb();
-
     }
 
-//    public void update() {
+    @Override
+    public void onStop() {
+        super.onStop();
+        mFavoriteFragmentPresenter.onStop();
+    }
+
+    //    public void update() {
 //        mMovieAdapter.clear();
 //        mUserId.child(passedArg).child("Movies").addListenerForSingleValueEvent(new ValueEventListener() {
 //            @Override
@@ -152,8 +157,6 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
     @Override
     public void setFavoriteMovies(MovieApi movieApi) {
         mMovieAdapter.addNewMovie(movieApi);
-
-
     }
 
     @Override

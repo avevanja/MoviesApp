@@ -12,9 +12,9 @@ import java.util.List;
 public class MoviesInfo {
     @SerializedName("genres")
     @Expose
-    private List<Genre> genres = new ArrayList<Genre>();
+    private ArrayList<Genre> genres = new ArrayList<Genre>();
 
-    public List<Genre> getGenres() {
+    public ArrayList<Genre> getGenres() {
         return genres;
     }
     @SerializedName("overview")

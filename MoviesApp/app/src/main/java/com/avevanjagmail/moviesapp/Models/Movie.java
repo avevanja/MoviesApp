@@ -21,8 +21,8 @@ public class Movie extends SugarRecord {
     public Double getVoteAverage() {
         return voteAverage;
     }
-    private String properties ;
 
+    private String properties;
 
 
     private String title;
@@ -30,20 +30,15 @@ public class Movie extends SugarRecord {
     private String backdropPath;
     private String releaseDate;
     private Double voteAverage;
-    private String id;
 
 
-
-    public  Movie (MovieApi movieApi, String properties){
+    public Movie(MovieApi movieApi, String properties) {
         this.movieApi = movieApi;
         this.properties = properties;
         title = movieApi.getTitle();
         backdropPath = movieApi.getBackdropPath();
         releaseDate = movieApi.getReleaseDate();
         voteAverage = movieApi.getVoteAverage();
-        id = movieApi.getId();
-
-
 
 
     }
@@ -55,7 +50,6 @@ public class Movie extends SugarRecord {
 
     public Movie() {
     }
-
 
 
 }

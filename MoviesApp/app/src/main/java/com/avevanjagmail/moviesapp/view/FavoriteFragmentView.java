@@ -12,6 +12,8 @@ import java.util.ArrayList;
  */
 public interface FavoriteFragmentView {
     void setFavoriteMovies(MovieApi movieApi);
+
     void setLocalFavoriteMovies(ArrayList<Movie> localFavoriteMovies);
-    Context getContext ();
+
+    Context getContext();
 }

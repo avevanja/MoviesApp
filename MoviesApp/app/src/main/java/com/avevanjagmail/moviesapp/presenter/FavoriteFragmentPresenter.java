@@ -1,6 +1,7 @@
 package com.avevanjagmail.moviesapp.presenter;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.avevanjagmail.moviesapp.ConnectivityReceiver;
 import com.avevanjagmail.moviesapp.interfaces.MoviesService;
@@ -27,6 +28,7 @@ import retrofit2.Response;
  * Created by paulg on 06.09.2016.
  */
 public class FavoriteFragmentPresenter {
+    private static final String TAG = FavoriteFragmentPresenter.class.getSimpleName();
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mUserId = mRootRef.child("Users");
     private SharedPreferences sPref;
@@ -34,25 +36,25 @@ public class FavoriteFragmentPresenter {
     private String passedArg;
     private List<Movie> localList = new ArrayList<>();
     private Movie movie;
-    FavoriteFragmentView favoriteFragmentView;
+    private FavoriteFragmentView favoriteFragmentView;
 
-    public void setFavoriteFragmentView(FavoriteFragmentView favoriteFragmentView){
+    public void setFavoriteFragmentView(FavoriteFragmentView favoriteFragmentView) {
         this.favoriteFragmentView = favoriteFragmentView;
     }
 
     public void UpdateRemoutDb() {
-        sPref = favoriteFragmentView.getContext().getSharedPreferences("SH",favoriteFragmentView.getContext().MODE_PRIVATE);
+        sPref = favoriteFragmentView.getContext().getSharedPreferences("SH", favoriteFragmentView.getContext().MODE_PRIVATE);
         passedArg1 = sPref.getString("saved_text", "");
         passedArg = passedArg1.replace(".", "a");
-        if (ConnectivityReceiver.isOnline(favoriteFragmentView.getContext().getApplicationContext()) == false) {
+        if (!ConnectivityReceiver.isOnline(favoriteFragmentView.getContext())) {
             localList = Select.from(Movie.class)
                     .where(Condition.prop("properties").eq("Favorite"))
                     .list();
             favoriteFragmentView.setLocalFavoriteMovies((ArrayList<Movie>) localList);
 
 
-
         }
+
         mUserId.child(passedArg).child("Movies").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -65,6 +67,7 @@ public class FavoriteFragmentPresenter {
                 }
                 for (DataSnapshot dataSn : dataSnapshot.getChildren()) {
                     String movie = dataSn.getValue(String.class);
+                    Log.d(TAG, "onDataChange: movieId is " + movie);
                     MoviesService mService = RetrofitUtil.getMoviesService();
                     Call<MovieApi> requestMovie = mService.getMovieForFavorite(movie, "ru");
                     requestMovie.enqueue(getCallbackFavorite());
@@ -79,23 +82,25 @@ public class FavoriteFragmentPresenter {
         });
 
     }
+
     private Callback<MovieApi> getCallbackFavorite() {
         return new Callback<MovieApi>() {
             @Override
             public void onResponse(Call<MovieApi> call, Response<MovieApi> response) {
-                favoriteFragmentView.setFavoriteMovies(response.body());
+                if (response.body() != null) {
+                    Log.d(TAG, "onResponse: movies recieved " + response.body().toString());
+                    favoriteFragmentView.setFavoriteMovies(response.body());
+                    movie = new Movie(response.body(), "Favorite");
+                    movie.save();
 
-                movie = new Movie(response.body(), "Favorite");
-                movie.save();
-
-
-
-
+                } else {
+                    Log.e(TAG, "onResponse: body is null");
+                }
             }
 
             @Override
             public void onFailure(Call<MovieApi> call, Throwable t) {
-
+                t.printStackTrace();
 
 
             }
@@ -104,5 +109,8 @@ public class FavoriteFragmentPresenter {
         };
     }
 
+    public void onStop() {
+
     }
+}
 
