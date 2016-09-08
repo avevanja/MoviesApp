@@ -49,18 +49,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_main);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
-
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(2);
@@ -91,14 +82,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
 
 
@@ -118,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView)
@@ -126,19 +108,17 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-//                Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();
+
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 String word = getIntent().getStringExtra("mail");
                 intent.putExtra("query", query);
                 intent.putExtra("mail",word);
-
                 startActivity(intent);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                Toast.makeText(getApplicationContext(), newText, Toast.LENGTH_LONG).show();
                 return false;
 
             }
@@ -149,12 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, UserActivity.class);
             startActivity(intent);
@@ -167,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
                 mPref = getSharedPreferences("SH", MODE_PRIVATE);
                 final String passedArg = mPref.getString("saved_text", "");
                 mPref1 = getSharedPreferences("SH1", MODE_PRIVATE);
-                final String accsesToken = mPref1.getString("saved_text1", "");
-                Call<LogoutResponse> requestInfo = mService.logout(new LogOutRequest(passedArg, accsesToken));
+                final String accessToken = mPref1.getString("saved_text1", "");
+                Call<LogoutResponse> requestInfo = mService.logout(new LogOutRequest(passedArg, accessToken));
 
             SharedPreferences.Editor ed = mPref.edit();
             ed.clear();
@@ -188,14 +163,14 @@ public class MainActivity extends AppCompatActivity {
                             else
                             {
                                 Log.d("u_email",passedArg);
-                                Log.d("token",accsesToken);
+                                Log.d("token",accessToken);
                                 Log.d("exit",response.body().getSucceeded().toString());
                             }
                         }
 
                     @Override
                     public void onFailure(Call<LogoutResponse> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Check your Internet connnection", Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(), "Check your Internet connection", Toast.LENGTH_LONG);
                     }
                 });
 
@@ -210,9 +185,7 @@ public class MainActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
+
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> mFragmentList = new ArrayList<>();
@@ -224,14 +197,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             return mFragmentList.get(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return mFragmentList.size();
         }
         public void addFragment(Fragment fragment, String title){

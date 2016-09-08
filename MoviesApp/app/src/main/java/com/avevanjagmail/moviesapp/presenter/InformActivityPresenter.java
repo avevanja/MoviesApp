@@ -1,22 +1,26 @@
 package com.avevanjagmail.moviesapp.presenter;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.avevanjagmail.moviesapp.interfaces.MoviesService;
 import com.avevanjagmail.moviesapp.models.CastList;
 import com.avevanjagmail.moviesapp.models.MoviesInfo;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 import com.avevanjagmail.moviesapp.view.InformActivityView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by paulg on 06.09.2016.
- *
- */
+
 public class InformActivityPresenter {
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mUserId = mRootRef.child("Users");
+    private SharedPreferences sPref;
+    private String passedArg1;
+    private String passedArg;
 
     private static final String TAG = InformActivityPresenter.class.getSimpleName();
 
@@ -25,14 +29,20 @@ public class InformActivityPresenter {
     }
     private InformActivityView mInformActivityView;
     public void getMovieInfo(String text) {
-        MoviesService mService = RetrofitUtil.getMoviesService();
-        Call<MoviesInfo> requestMovie = mService.getMovieInfoFromId(text, "ru");
-        requestMovie.enqueue(getCallback());
+        RetrofitUtil.getMoviesService()
+                .getMovieInfoFromId(text, "ru")
+                .enqueue(getCallback());
+//        MoviesService mService = RetrofitUtil.getMoviesService();
+//        Call<MoviesInfo> requestMovie = mService.getMovieInfoFromId(text, "ru");
+//        requestMovie.enqueue(getCallback());
     }
     public void getCastList(String text){
-        MoviesService mServiceCastList = RetrofitUtil.getMoviesService();
-        Call<CastList> requestCastList = mServiceCastList.getCastList(text);
-        requestCastList.enqueue(getCastListCallback());
+        RetrofitUtil.getMoviesService()
+                .getCastList(text)
+                .enqueue(getCastListCallback());
+//        MoviesService mServiceCastList = RetrofitUtil.getMoviesService();
+//        Call<CastList> requestCastList = mServiceCastList.getCastList(text);
+//        requestCastList.enqueue(getCastListCallback());
     }
     private Callback<MoviesInfo> getCallback() {
 
@@ -42,10 +52,6 @@ public class InformActivityPresenter {
                 if (response.body() != null) {
                     mInformActivityView.setMovieInfo(response.body());
                 }
-
-
-
-
             }
 
             @Override
@@ -76,4 +82,19 @@ public class InformActivityPresenter {
             }
         };
     }
+
+    public void addFavoriteMovieInRemoteDb(String movieId){
+        mUserId.child(getSPref()).child("Movies").child(movieId).setValue(movieId);
+    }
+    public void deleteFavoriteMovieFromRemoteDb(String movieId){
+        mUserId.child(getSPref()).child("Movies").child(movieId).removeValue();
+
+    }
+    public String getSPref() {
+        sPref = mInformActivityView.getContext().getSharedPreferences("SH", mInformActivityView.getContext().MODE_PRIVATE);
+        passedArg1 = sPref.getString("saved_text", "");
+        passedArg = passedArg1.replace(".", "a");
+        return passedArg;
+    }
+
 }

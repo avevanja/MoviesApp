@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.avevanjagmail.moviesapp.ConnectivityReceiver;
-import com.avevanjagmail.moviesapp.interfaces.MoviesService;
 import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.models.MovieApi;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
@@ -24,9 +23,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by paulg on 06.09.2016.
- */
 public class FavoriteFragmentPresenter {
     private static final String TAG = FavoriteFragmentPresenter.class.getSimpleName();
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -37,12 +33,13 @@ public class FavoriteFragmentPresenter {
     private List<Movie> localList = new ArrayList<>();
     private Movie movie;
     private FavoriteFragmentView favoriteFragmentView;
+    ArrayList<String> listId = new ArrayList<>();
 
     public void setFavoriteFragmentView(FavoriteFragmentView favoriteFragmentView) {
         this.favoriteFragmentView = favoriteFragmentView;
     }
 
-    public void UpdateRemoutDb() {
+    public void UpdateRemoteDb() {
         sPref = favoriteFragmentView.getContext().getSharedPreferences("SH", favoriteFragmentView.getContext().MODE_PRIVATE);
         passedArg1 = sPref.getString("saved_text", "");
         passedArg = passedArg1.replace(".", "a");
@@ -68,9 +65,14 @@ public class FavoriteFragmentPresenter {
                 for (DataSnapshot dataSn : dataSnapshot.getChildren()) {
                     String movie = dataSn.getValue(String.class);
                     Log.d(TAG, "onDataChange: movieId is " + movie);
-                    MoviesService mService = RetrofitUtil.getMoviesService();
-                    Call<MovieApi> requestMovie = mService.getMovieForFavorite(movie, "ru");
-                    requestMovie.enqueue(getCallbackFavorite());
+
+                    listId.add(movie);
+                    RetrofitUtil.getMoviesService()
+                            .getMovieForFavorite(movie, "ru")
+                            .enqueue(getCallbackFavorite());
+//                    MoviesService mService = RetrofitUtil.getMoviesService();
+//                    Call<MovieApi> requestMovie = mService.getMovieForFavorite(movie, "ru");
+//                    requestMovie.enqueue(getCallbackFavorite());
 
                 }
 
@@ -88,7 +90,7 @@ public class FavoriteFragmentPresenter {
             @Override
             public void onResponse(Call<MovieApi> call, Response<MovieApi> response) {
                 if (response.body() != null) {
-                    Log.d(TAG, "onResponse: movies recieved " + response.body().toString());
+                    Log.d(TAG, "onResponse: movies received " + response.body().toString());
                     favoriteFragmentView.setFavoriteMovies(response.body());
                     movie = new Movie(response.body(), "Favorite");
                     movie.save();

@@ -2,7 +2,6 @@ package com.avevanjagmail.moviesapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.models.Cast;
 import com.avevanjagmail.moviesapp.models.Genre;
-import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.models.MoviesInfo;
 import com.avevanjagmail.moviesapp.presenter.InformActivityPresenter;
 import com.avevanjagmail.moviesapp.view.InformActivityView;
@@ -32,17 +30,12 @@ import java.util.ArrayList;
 public class InformActivity extends AppCompatActivity implements InformActivityView {
     private static final String TAG = "InformActivity";
     private TextView TextTet, mOverviewTextView, mNameCast, mNameCast1, mNameCast2, mNameCast3, mNameCast4, mNameCast5, mDataRealise, mCountryName;
-    private ImageView TitleImageView, mCastFoto, mCastFoto1, mCastFoto2, mCastFoto3, mCastFoto4, mCastFoto5;
+    private ImageView TitleImageView, mCastPhoto, mCastPhoto1, mCastPhoto2, mCastPhoto3, mCastPhoto4, mCastPhoto5;
     private Toolbar toolbarInformActivity;
     private ArrayList<Genre> mListMovie;
     private ArrayList<Cast> mListCast;
-    SharedPreferences sPref;
-    ArrayList<Movie> movieArrayList = new ArrayList<>();
-    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    String passedArg1;
-    String passedArg;
-    DatabaseReference mUserId = mRootRef.child("Users");
-    DatabaseReference mMovieId = mUserId.child("MovieId");
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mUserId = mRootRef.child("Users");
     private static final String MOVIE_ID = "movie.id";
     private static final String URL_Image = "url";
     private static final String TITLE = "movie_title";
@@ -68,11 +61,7 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
         mInformActivityPresenter.setInformActivityView(this);
 
 
-        sPref = getSharedPreferences("SH", MODE_PRIVATE);
 
-
-        passedArg1 = sPref.getString("saved_text", "");
-        passedArg = passedArg1.replace(".", "a");
 
         showingFirst = true;
 
@@ -84,14 +73,12 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
 
                 if (showingFirst) {
                     fab.setImageResource(R.drawable.ic_favorite_white_24dp);
-
-
-                    mUserId.child(passedArg).child("Movies").child(getIntent().getStringExtra(MOVIE_ID)).setValue(getIntent().getStringExtra(MOVIE_ID));
+                    mInformActivityPresenter.addFavoriteMovieInRemoteDb(getIntent().getStringExtra(MOVIE_ID));
                     showingFirst = false;
 
                 } else {
                     fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
-                    mUserId.child(passedArg).child("Movies").child(getIntent().getStringExtra(MOVIE_ID)).removeValue();
+                    mInformActivityPresenter.deleteFavoriteMovieFromRemoteDb(getIntent().getStringExtra(MOVIE_ID));
                     showingFirst = true;
 
 
@@ -99,7 +86,7 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
             }
 
         });
-        mUserId.child(passedArg).child("Movies").addChildEventListener(new ChildEventListener() {
+        mUserId.child(mInformActivityPresenter.getSPref()).child("Movies").addChildEventListener(new ChildEventListener() {
             @Override
 
 
@@ -152,13 +139,14 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
             }
         });
         setTitle(getIntent().getStringExtra(TITLE));
+
         TitleImageView = (ImageView) findViewById(R.id.expandedImage);
-        mCastFoto = (ImageView) findViewById(R.id.cast_foto);
-        mCastFoto1 = (ImageView) findViewById(R.id.cast_foto1);
-        mCastFoto2 = (ImageView) findViewById(R.id.cast_foto2);
-        mCastFoto3 = (ImageView) findViewById(R.id.cast_foto3);
-        mCastFoto4 = (ImageView) findViewById(R.id.cast_foto4);
-        mCastFoto5 = (ImageView) findViewById(R.id.cast_foto5);
+        mCastPhoto = (ImageView) findViewById(R.id.cast_foto);
+        mCastPhoto1 = (ImageView) findViewById(R.id.cast_foto1);
+        mCastPhoto2 = (ImageView) findViewById(R.id.cast_foto2);
+        mCastPhoto3 = (ImageView) findViewById(R.id.cast_foto3);
+        mCastPhoto4 = (ImageView) findViewById(R.id.cast_foto4);
+        mCastPhoto5 = (ImageView) findViewById(R.id.cast_foto5);
         TextTet = (TextView) findViewById(R.id.inform_movie_text);
         mOverviewTextView = (TextView) findViewById(R.id.text_overview);
         mNameCast = (TextView) findViewById(R.id.name_cast_text_view);
@@ -175,15 +163,6 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
                 error(R.drawable.nofim).resize(717, 400).into(TitleImageView);
         mInformActivityPresenter.getMovieInfo(text);
         mInformActivityPresenter.getCastList(text);
-
-
-//        MoviesService mService = RetrofitUtil.getMoviesService();
-//        Call<MoviesInfo> requestMovie = mService.getMovieInfoFromId(text, "ru");
-//        requestMovie.enqueue(getCallback());
-//        MoviesService mServiceCastList = RetrofitUtil.getMoviesService();
-//        Call<CastList> requestCastList = mServiceCastList.getCastList(text);
-//        requestCastList.enqueue(getCastListCallback());
-
     }
 
     @Override
@@ -193,23 +172,23 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
 
 
             mNameCast.setText(mListCast.get(0).getName());
-            Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(0).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastFoto);
+            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(0).getProfilePath()).
+                    error(R.drawable.user_icon).into(mCastPhoto);
             mNameCast1.setText(mListCast.get(1).getName());
-            Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(1).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastFoto1);
+            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(1).getProfilePath()).
+                    error(R.drawable.user_icon).into(mCastPhoto1);
             mNameCast2.setText(mListCast.get(2).getName());
-            Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(2).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastFoto2);
+            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(2).getProfilePath()).
+                    error(R.drawable.user_icon).into(mCastPhoto2);
             mNameCast3.setText(mListCast.get(3).getName());
-            Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(3).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastFoto3);
+            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(3).getProfilePath()).
+                    error(R.drawable.user_icon).into(mCastPhoto3);
             mNameCast4.setText(mListCast.get(4).getName());
-            Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(4).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastFoto4);
+            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(4).getProfilePath()).
+                    error(R.drawable.user_icon).into(mCastPhoto4);
             mNameCast5.setText(mListCast.get(5).getName());
-            Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(5).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastFoto5);
+            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(5).getProfilePath()).
+                    error(R.drawable.user_icon).into(mCastPhoto5);
         }
 
     }
@@ -222,80 +201,16 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
         }
         mOverviewTextView.setText(movieInfo.getOverview());
         mDataRealise.setText(movieInfo.getReleaseDate());
-        if (movieInfo.getProductionCountries().get(0).getName() != null && movieInfo.getProductionCountries().size()>0) {
+        if (movieInfo.getProductionCountries().size()>0 && movieInfo.getProductionCountries().get(0).getName() != null ) {
             mCountryName.setText(movieInfo.getProductionCountries().get(0).getName());
         }
 
     }
 
-//    private Callback<CastList> getCastListCallback() {
-//        return new Callback<CastList>() {
-//            @Override
-//            public void onResponse(Call<CastList> call, Response<CastList> response) {
-//                Log.d(TAG, "getCallback onResponse");
-//
-//                mListCast = (ArrayList<Cast>) response.body().getCast();
-//                if (mListCast.size() >= 6) {
-//
-//
-//                    mNameCast.setText(mListCast.get(0).getName());
-//                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(0).getProfilePath()).
-//                            error(R.drawable.user_icon).into(mCastFoto);
-//                    mNameCast1.setText(mListCast.get(1).getName());
-//                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(1).getProfilePath()).
-//                            error(R.drawable.user_icon).into(mCastFoto1);
-//                    mNameCast2.setText(mListCast.get(2).getName());
-//                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(2).getProfilePath()).
-//                            error(R.drawable.user_icon).into(mCastFoto2);
-//                    mNameCast3.setText(mListCast.get(3).getName());
-//                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(3).getProfilePath()).
-//                            error(R.drawable.user_icon).into(mCastFoto3);
-//                    mNameCast4.setText(mListCast.get(4).getName());
-//                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(4).getProfilePath()).
-//                            error(R.drawable.user_icon).into(mCastFoto4);
-//                    mNameCast5.setText(mListCast.get(5).getName());
-//                    Picasso.with(mCastFoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(5).getProfilePath()).
-//                            error(R.drawable.user_icon).into(mCastFoto5);
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<CastList> call, Throwable t) {
-//                Log.e(TAG, "Eror" + t.getMessage());
-//                t.printStackTrace();
-//
-//            }
-//        };
-//    }
-
-//    private Callback<MoviesInfo> getCallback() {
-//        Log.d(TAG, "getCallback");
-//        return new Callback<MoviesInfo>() {
-//            @Override
-//            public void onResponse(Call<MoviesInfo> call, Response<MoviesInfo> response) {
-//                Log.d(TAG, "getCallback onResponse");
-//                mListMovie = (ArrayList<Genre>) response.body().getGenres();
-//                for (Genre genre : mListMovie) {
-//                    TextTet.setText(genre.getName() + " ");
-//                }
-//                mOverviewTextView.setText(response.body().getOverview());
-//                mDataRealise.setText(response.body().getReleaseDate());
-//                if (response.body().getProductionCountries().get(0).getName() != null) {
-//                    mCountryName.setText(response.body().getProductionCountries().get(0).getName());
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<MoviesInfo> call, Throwable t) {
-//                Log.e(TAG, "Eror" + t.getMessage());
-//                t.printStackTrace();
-//            }
-//        };
-//    }
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
 
 
 }

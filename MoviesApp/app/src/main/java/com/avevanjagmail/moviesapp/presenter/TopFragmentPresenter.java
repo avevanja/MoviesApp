@@ -2,7 +2,6 @@ package com.avevanjagmail.moviesapp.presenter;
 
 import android.util.Log;
 
-import com.avevanjagmail.moviesapp.interfaces.MoviesService;
 import com.avevanjagmail.moviesapp.models.ListMovie;
 import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.models.MovieApi;
@@ -41,9 +40,12 @@ public class TopFragmentPresenter {
 
 
     public void loadMoreTopMovies(int current_page){
-        MoviesService mService = RetrofitUtil.getMoviesService();
-        Call<ListMovie> requestMovie = mService.getTopMovie("ru", current_page);
-        requestMovie.enqueue(getCallbackLoadMore());
+        RetrofitUtil.getMoviesService()
+                .getTopMovie("ru", current_page)
+                .enqueue(getCallbackLoadMore());
+//        MoviesService mService = RetrofitUtil.getMoviesService();
+//        Call<ListMovie> requestMovie = mService.getTopMovie("ru", current_page);
+//        requestMovie.enqueue(getCallbackLoadMore());
     }
 
 
@@ -60,7 +62,7 @@ public class TopFragmentPresenter {
             @Override
             public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
                 Log.d(TAG, "getCallback onResponse");
-                topListMovies = (ArrayList<MovieApi>)response.body().getResults();
+                topListMovies = response.body().getResults();
                 topFragmentView.setTopMovies(topListMovies);
 
                 localList = (ArrayList<Movie>) Select.from(Movie.class)
@@ -99,7 +101,7 @@ public class TopFragmentPresenter {
             @Override
             public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
                 Log.d(TAG, "getCallback onResponse");
-                topListMovies = (ArrayList<MovieApi>)response.body().getResults();
+                topListMovies = response.body().getResults();
                 topFragmentView.setMoreTopMovies(topListMovies);
 
 
@@ -110,9 +112,6 @@ public class TopFragmentPresenter {
             public void onFailure(Call<ListMovie> call, Throwable t) {
                 Log.e(TAG, "Error" + t.getMessage());
                 t.printStackTrace();
-
-
-
             }
         };
     }

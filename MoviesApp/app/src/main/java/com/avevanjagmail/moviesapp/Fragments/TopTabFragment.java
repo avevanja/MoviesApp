@@ -64,11 +64,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
 
 
 
-//        MoviesService mService = RetrofitUtil.getMoviesService();
-//        Call<ListMovie> requestMovie = mService.getTopMovie("ru", 1);
 
-
-//        requestMovie.enqueue(getCallback());
 
         rv.setOnScrollListener(new EndlessRecyclerOnScrollListener(llm) {
             @Override
@@ -76,73 +72,13 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
                 topFragmentPresenter.loadMoreTopMovies(current_page);
             }
         });
-//        topFragmentPresenter.loadTopMovies();
+
 
         return parentView;
     }
 
 
-//    private Callback<ListMovie> getCallback() {
-//        Log.d(TAG, "getCallback");
-//        return new Callback<ListMovie>() {
-//            @Override
-//            public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
-//                Log.d(TAG, "getCallback onResponse");
-//                mMovieAdapter.addNewMovies(response.body().getResults());
-//                localList = Select.from(Movie.class)
-//                        .where(Condition.prop("properties").eq("Top"))
-//                        .list();
-//                for (Movie movie1 : localList) {
-//                    movie1.delete();
-//
-//                }
-//
-//                for (MovieApi movieApi : response.body().getResults()) {
-//                     movie = new Movie(movieApi, "Top");
-//                     movie.save();
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ListMovie> call, Throwable t) {
-//                Log.e(TAG, "Eror" + t.getMessage());
-//                t.printStackTrace();
-//
-//                localList = Select.from(Movie.class)
-//                        .where(Condition.prop("properties").eq("Top"))
-//                                .list();
-//
-////                localList = Movie.listAll(Movie.class);
-//
-//                mDbAdapterRv = new DbAdapterRv();
-//                mDbAdapterRv.addNewMovies(localList);
-//                rv.setAdapter(mDbAdapterRv);
-//                Toast.makeText(getActivity().getApplicationContext(), "No internet", Toast.LENGTH_SHORT).show();
-//
-//            }
-//        };
-//    }
-//    private Callback<ListMovie> getCallbackLoadMore() {
-//        Log.d(TAG, "getCallback");
-//        return new Callback<ListMovie>() {
-//            @Override
-//            public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
-//                Log.d(TAG, "getCallback onResponse");
-//                mMovieAdapter.addNewMovies(response.body().getResults());
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ListMovie> call, Throwable t) {
-//                Log.e(TAG, "Eror" + t.getMessage());
-//                t.printStackTrace();
-//
-//                Toast.makeText(getActivity().getApplicationContext(), "No internet", Toast.LENGTH_SHORT).show();
-//
-//            }
-//        };
-//    }
+
 
     @Override
     public void onClickOpen(String id, String url, String title) {

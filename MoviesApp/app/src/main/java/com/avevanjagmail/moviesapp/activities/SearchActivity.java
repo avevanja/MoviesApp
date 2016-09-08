@@ -1,31 +1,29 @@
 package com.avevanjagmail.moviesapp.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
-import com.avevanjagmail.moviesapp.fragments.RvMovieAdapter;
-import com.avevanjagmail.moviesapp.interfaces.MoviesService;
-import com.avevanjagmail.moviesapp.interfaces.OpenInformActivity;
-import com.avevanjagmail.moviesapp.models.ListMovie;
 import com.avevanjagmail.moviesapp.R;
-import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+import com.avevanjagmail.moviesapp.fragments.RvMovieAdapter;
+import com.avevanjagmail.moviesapp.interfaces.OpenInformActivity;
+import com.avevanjagmail.moviesapp.models.MovieApi;
+import com.avevanjagmail.moviesapp.presenter.SearchActivityPresenter;
+import com.avevanjagmail.moviesapp.view.SearchActivityView;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.ArrayList;
 
-/**
- * Created by paulg on 11.08.2016.
- */
-public class SearchActivity extends AppCompatActivity implements OpenInformActivity {
+
+public class SearchActivity extends AppCompatActivity implements OpenInformActivity, SearchActivityView {
     private LinearLayoutManager llm;
     public RvMovieAdapter mMovieAdapter;
     private RecyclerView rv;
+    private SearchActivityPresenter mSearchActivityPresenter;
     private static final String TAG = SearchActivity.class.getSimpleName();
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -41,42 +39,39 @@ public class SearchActivity extends AppCompatActivity implements OpenInformActiv
                 onBackPressed();
             }
         });
+        mSearchActivityPresenter = new SearchActivityPresenter();
+        mSearchActivityPresenter.setSearchActivityView(this);
         setTitle(getIntent().getStringExtra("query"));
         rv = (RecyclerView) findViewById(R.id.rv_searc);
 
         llm = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(llm);
+        mSearchActivityPresenter.loadSearchMovies(getIntent().getStringExtra("query"));
 
-
-        MoviesService mService = RetrofitUtil.getMoviesService();
-
-        Call<ListMovie> requestMovie = mService.getSearchMovies(getIntent().getStringExtra("query"));
 
         mMovieAdapter = new RvMovieAdapter(this);
         rv.setAdapter(mMovieAdapter);
 
-        requestMovie.enqueue(getCallback());
-    }
-    private Callback<ListMovie> getCallback() {
-        Log.d(TAG, "getCallback");
-        return new Callback<ListMovie>() {
-            @Override
-            public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
-                Log.d(TAG, "getCallback onResponse");
-                mMovieAdapter.addNewMovies(response.body().getResults());
-            }
 
-            @Override
-            public void onFailure(Call<ListMovie> call, Throwable t) {
-                Log.e(TAG, "Eror" + t.getMessage());
-                t.printStackTrace();
-            }
-        };
     }
 
     @Override
     public void onClickOpen(String id, String url, String title) {
         InformActivity.start(id, url, title, this);
+    }
+
+    @Override
+    public void setSearchMoviesList(ArrayList<MovieApi> searchMoviesList) {
+        if(searchMoviesList.size() == 0){
+            Toast.makeText(SearchActivity.this, "Nothing found", Toast.LENGTH_SHORT).show();
+        }
+        mMovieAdapter.addNewMovies(searchMoviesList);
+
+    }
+
+    @Override
+    public Context getContext() {
+        return null;
     }
 }
 
