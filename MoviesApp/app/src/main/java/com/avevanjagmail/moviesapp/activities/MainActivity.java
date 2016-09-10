@@ -1,5 +1,6 @@
 package com.avevanjagmail.moviesapp.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,7 +25,9 @@ import com.avevanjagmail.moviesapp.interfaces.LoginApiService;
 import com.avevanjagmail.moviesapp.models.LogOutRequest;
 import com.avevanjagmail.moviesapp.models.LogoutResponse;
 import com.avevanjagmail.moviesapp.R;
+import com.avevanjagmail.moviesapp.presenter.MainActivityPresenter;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+import com.avevanjagmail.moviesapp.view.MainActivityView;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
@@ -35,20 +38,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityView {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private Profile profile;
-    private SharedPreferences mPref;
-    private SharedPreferences mPref1;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private MainActivityPresenter mMainActivityPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_main);
+        mMainActivityPresenter = new MainActivityPresenter();
+        mMainActivityPresenter.setMainActivityView(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -80,13 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
     }
 
     private void setupViewPager(ViewPager mViewPager) {
@@ -135,56 +132,41 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-        if (id== R.id.action_logout) {
+        if (id == R.id.action_logout) {
+
             profile = Profile.getCurrentProfile();
             if (profile == null) {
-                LoginApiService mService = RetrofitUtil.getLoginService();
-                mPref = getSharedPreferences("SH", MODE_PRIVATE);
-                final String passedArg = mPref.getString("saved_text", "");
-                mPref1 = getSharedPreferences("SH1", MODE_PRIVATE);
-                final String accessToken = mPref1.getString("saved_text1", "");
-                Call<LogoutResponse> requestInfo = mService.logout(new LogOutRequest(passedArg, accessToken));
-
-            SharedPreferences.Editor ed = mPref.edit();
-            ed.clear();
-            ed.commit();
-
-                    requestInfo.enqueue(new Callback<LogoutResponse>() {
-                        @Override
-                        public void onResponse(Call<LogoutResponse> call, Response<LogoutResponse> response) {
-                            if (response.body().getSucceeded().success==true)
-                            {
-                                Log.d("success",response.body().getSucceeded().toString());
-                                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                                startActivity(intent);
-                                finish();
-
-                            }
-                            else
-                            {
-                                Log.d("u_email",passedArg);
-                                Log.d("token",accessToken);
-                                Log.d("exit",response.body().getSucceeded().toString());
-                            }
-                        }
-
-                    @Override
-                    public void onFailure(Call<LogoutResponse> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Check your Internet connection", Toast.LENGTH_LONG);
-                    }
-                });
-
-            } else {
-                FacebookSdk.sdkInitialize(getApplicationContext());
-                LoginManager.getInstance().logOut();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
+                mMainActivityPresenter.logout();
 
             }
-        }
+            else {
+                mMainActivityPresenter.logOutFromFB();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            }
+
             return super.onOptionsItemSelected(item);
         }
 
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
+
+    @Override
+    public void setLogOut(boolean success) {
+        if(success){
+            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+            startActivity(intent);
+            finish();}
+
+
+        else {
+            Toast.makeText(getApplicationContext(), "Something wrong", Toast.LENGTH_LONG).show();
+        }
+    }
 
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
