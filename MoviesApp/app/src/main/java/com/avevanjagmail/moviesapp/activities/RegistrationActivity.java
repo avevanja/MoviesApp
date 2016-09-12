@@ -74,7 +74,7 @@ public class RegistrationActivity extends AppCompatActivity {
         lName = (EditText) findViewById(R.id.lastName);
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
-        ivImage = (ImageView) findViewById(R.id.cast_foto3);
+        ivImage = (ImageView) findViewById(R.id.cast_photo3_iv);
         btn_create = (Button) (findViewById(R.id.btn_create));
         ivImage.setBackgroundResource(R.drawable.screenshot);
         progressDialog = new ProgressDialog(this);

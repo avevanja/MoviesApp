@@ -24,10 +24,12 @@ public class InformActivityPresenter {
 
     private static final String TAG = InformActivityPresenter.class.getSimpleName();
 
-    public void setInformActivityView(InformActivityView mInformActivityView){
+    private InformActivityView mInformActivityView;
+
+    public void setInformActivityView(InformActivityView mInformActivityView) {
         this.mInformActivityView = mInformActivityView;
     }
-    private InformActivityView mInformActivityView;
+
     public void getMovieInfo(String text) {
         RetrofitUtil.getMoviesService()
                 .getMovieInfoFromId(text, "ru")
@@ -36,7 +38,8 @@ public class InformActivityPresenter {
 //        Call<MoviesInfo> requestMovie = mService.getMovieInfoFromId(text, "ru");
 //        requestMovie.enqueue(getCallback());
     }
-    public void getCastList(String text){
+
+    public void getCastList(String text) {
         RetrofitUtil.getMoviesService()
                 .getCastList(text)
                 .enqueue(getCastListCallback());
@@ -44,6 +47,7 @@ public class InformActivityPresenter {
 //        Call<CastList> requestCastList = mServiceCastList.getCastList(text);
 //        requestCastList.enqueue(getCastListCallback());
     }
+
     private Callback<MoviesInfo> getCallback() {
 
         return new Callback<MoviesInfo>() {
@@ -61,6 +65,7 @@ public class InformActivityPresenter {
             }
         };
     }
+
     private Callback<CastList> getCastListCallback() {
         return new Callback<CastList>() {
             @Override
@@ -83,13 +88,15 @@ public class InformActivityPresenter {
         };
     }
 
-    public void addFavoriteMovieInRemoteDb(String movieId){
+    public void addFavoriteMovieInRemoteDb(String movieId) {
         mUserId.child(getSPref()).child("Movies").child(movieId).setValue(movieId);
     }
-    public void deleteFavoriteMovieFromRemoteDb(String movieId){
+
+    public void deleteFavoriteMovieFromRemoteDb(String movieId) {
         mUserId.child(getSPref()).child("Movies").child(movieId).removeValue();
 
     }
+
     public String getSPref() {
         sPref = mInformActivityView.getContext().getSharedPreferences("SH", mInformActivityView.getContext().MODE_PRIVATE);
         passedArg1 = sPref.getString("saved_text", "");

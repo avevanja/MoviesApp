@@ -56,7 +56,6 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
         rv = (RecyclerView) parentView.findViewById(R.id.rv);
         llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
-
         topFragmentPresenter = new TopFragmentPresenter();
         mDbAdapterRv = new DbAdapterRv();
         topFragmentPresenter.setTopFragmentView(this);
@@ -68,6 +67,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
             @Override
             public void onRefresh() {
                 mMovieAdapter.clear();
+                mDbAdapterRv.clear();
                 topFragmentPresenter.loadTopMovies();
             }
         });
@@ -112,6 +112,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
     public void setLocalTopMovies(ArrayList<Movie> localTopMovies) {
         mDbAdapterRv.addNewMovies(localTopMovies);
         rv.setAdapter(mDbAdapterRv);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }
 

@@ -2,13 +2,12 @@ package com.avevanjagmail.moviesapp.presenter;
 
 import android.util.Log;
 
+import com.avevanjagmail.moviesapp.managers.DBManager;
 import com.avevanjagmail.moviesapp.models.ListMovie;
 import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.models.MovieApi;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 import com.avevanjagmail.moviesapp.view.TopFragmentView;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import java.util.ArrayList;
 
@@ -21,7 +20,6 @@ public class TopFragmentPresenter {
     private TopFragmentView topFragmentView;
     private ArrayList<Movie> localList = new ArrayList<>();
     private ArrayList<MovieApi> topListMovies = new ArrayList<>();
-    private Movie movie;
     private static final String TAG = TopFragmentPresenter.class.getSimpleName();
 
 
@@ -30,9 +28,6 @@ public class TopFragmentPresenter {
     }
 
     public void loadTopMovies(){
-//        MoviesService mService = RetrofitUtil.getMoviesService();
-//        Call<ListMovie> requestMovie = mService.getTopMovie("ru", 1);
-//        requestMovie.enqueue(getCallback());
         RetrofitUtil.getMoviesService()
                 .getTopMovie("ru", 1)
                 .enqueue(getCallback());
@@ -43,14 +38,7 @@ public class TopFragmentPresenter {
         RetrofitUtil.getMoviesService()
                 .getTopMovie("ru", current_page)
                 .enqueue(getCallbackLoadMore());
-//        MoviesService mService = RetrofitUtil.getMoviesService();
-//        Call<ListMovie> requestMovie = mService.getTopMovie("ru", current_page);
-//        requestMovie.enqueue(getCallbackLoadMore());
     }
-
-
-
-
 
 
 
@@ -65,17 +53,13 @@ public class TopFragmentPresenter {
                 topListMovies = response.body().getResults();
                 topFragmentView.setTopMovies(topListMovies);
 
-                localList = (ArrayList<Movie>) Select.from(Movie.class)
-                        .where(Condition.prop("properties").eq("Top"))
-                        .list();
+                localList = DBManager.getLocalListMovie("Top");
                 for (Movie movie1 : localList) {
                     movie1.delete();
-
                 }
 
                 for (MovieApi movieApi : response.body().getResults()) {
-                    movie = new Movie(movieApi, "Top");
-                    movie.save();
+                    DBManager.save(new Movie(movieApi, "Top"));
                 }
 
             }
@@ -84,13 +68,8 @@ public class TopFragmentPresenter {
             public void onFailure(Call<ListMovie> call, Throwable t) {
                 Log.e(TAG, "Error" + t.getMessage());
                 t.printStackTrace();
-                localList = (ArrayList<Movie>) Select.from(Movie.class)
-                        .where(Condition.prop("properties").eq("Top"))
-                        .list();
+                localList = DBManager.getLocalListMovie("Top");
                 topFragmentView.setLocalTopMovies(localList);
-
-
-
 
             }
         };

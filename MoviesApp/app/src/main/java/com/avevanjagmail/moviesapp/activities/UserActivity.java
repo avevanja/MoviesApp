@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -74,7 +73,7 @@ public class UserActivity extends AppCompatActivity {
 
         emailText.setText(email);
 
-        ivImage = (ImageView) findViewById(R.id.expandedImage);
+        ivImage = (ImageView) findViewById(R.id.movie_poster_iv);
         FacebookSdk.sdkInitialize(getApplicationContext());
          profile = Profile.getCurrentProfile();
 

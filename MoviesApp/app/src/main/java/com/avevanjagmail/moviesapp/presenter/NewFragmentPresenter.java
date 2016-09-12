@@ -2,13 +2,12 @@ package com.avevanjagmail.moviesapp.presenter;
 
 import android.util.Log;
 
+import com.avevanjagmail.moviesapp.managers.DBManager;
 import com.avevanjagmail.moviesapp.models.ListMovie;
 import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.models.MovieApi;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 import com.avevanjagmail.moviesapp.view.NewFragmentView;
-import com.orm.query.Condition;
-import com.orm.query.Select;
 
 import java.util.ArrayList;
 
@@ -25,27 +24,22 @@ public class NewFragmentPresenter {
     private static final String TAG = TopFragmentPresenter.class.getSimpleName();
 
 
-    public void setNewFragmentView(NewFragmentView newFragmentView){
+    public void setNewFragmentView(NewFragmentView newFragmentView) {
         this.newFragmentView = newFragmentView;
     }
 
-    public void loadNewMovies(){
+    public void loadNewMovies() {
         RetrofitUtil.getMoviesService()
                 .getNewMovie("ru", 1)
                 .enqueue(getCallback());
-//        MoviesService mService = RetrofitUtil.getMoviesService();
-//        Call<ListMovie> requestMovie = mService.getNewMovie("ru", 1);
-//        requestMovie.enqueue(getCallback());
     }
 
 
-    public void loadMoreNewMovies(int current_page){
+    public void loadMoreNewMovies(int current_page) {
         RetrofitUtil.getMoviesService()
                 .getNewMovie("ru", current_page)
                 .enqueue(getCallbackLoadMore());
-//        MoviesService mService = RetrofitUtil.getMoviesService();
-//        Call<ListMovie> requestMovie = mService.getNewMovie("ru", current_page);
-//        requestMovie.enqueue(getCallbackLoadMore());
+
     }
 
 
@@ -58,12 +52,9 @@ public class NewFragmentPresenter {
                 newListMovies = response.body().getResults();
                 newFragmentView.setNewMovies(newListMovies);
 
-                localList = (ArrayList<Movie>) Select.from(Movie.class)
-                        .where(Condition.prop("properties").eq("New"))
-                        .list();
+                localList = DBManager.getLocalListMovie("New");
                 for (Movie movie1 : localList) {
                     movie1.delete();
-
                 }
 
                 for (MovieApi movieApi : response.body().getResults()) {
@@ -77,17 +68,12 @@ public class NewFragmentPresenter {
             public void onFailure(Call<ListMovie> call, Throwable t) {
                 Log.e(TAG, "Error" + t.getMessage());
                 t.printStackTrace();
-                localList = (ArrayList<Movie>) Select.from(Movie.class)
-                        .where(Condition.prop("properties").eq("New"))
-                        .list();
+                localList = DBManager.getLocalListMovie("New");
                 newFragmentView.setLocalNewMovies(localList);
-
-
-
-
             }
         };
     }
+
     private Callback<ListMovie> getCallbackLoadMore() {
         Log.d(TAG, "getCallback");
         return new Callback<ListMovie>() {
@@ -106,11 +92,9 @@ public class NewFragmentPresenter {
                 t.printStackTrace();
 
 
-
             }
         };
     }
-
 
 
 }

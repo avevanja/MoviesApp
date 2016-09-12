@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private Profile profile;
+    private Profile mProfile;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private MainActivityPresenter mMainActivityPresenter;
@@ -122,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         }
         if (id == R.id.action_logout) {
 
-            profile = Profile.getCurrentProfile();
-            if (profile == null) {
+            mProfile = Profile.getCurrentProfile();
+            if (mProfile == null) {
                 mMainActivityPresenter.logout();
 
             }

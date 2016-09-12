@@ -8,14 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.avevanjagmail.moviesapp.interfaces.OpenInformActivity;
-import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.R;
+import com.avevanjagmail.moviesapp.models.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -23,7 +22,6 @@ import java.util.List;
  */
 public class DbAdapterRv extends RecyclerView.Adapter<DbAdapterRv.MovieViewHolder> {
     private static final String TAG = RvMovieAdapter.class.getSimpleName();
-    private OpenInformActivity mCallback;
 
 
     private List<Movie> mMovies = new ArrayList<>();
@@ -31,38 +29,18 @@ public class DbAdapterRv extends RecyclerView.Adapter<DbAdapterRv.MovieViewHolde
     public DbAdapterRv() {
     }
 
-    public DbAdapterRv(List<Movie> mMovies ) {
-        this.mMovies = mMovies;
-
-    }
-
-    public DbAdapterRv(OpenInformActivity call) {
-        this.mCallback = call;
-    }
-    public DbAdapterRv(OpenInformActivity call, List<Movie> mMovies) {
-        this.mCallback = call;
-        this.mMovies = mMovies;
-    }
 
     public void addNewMovies(List<Movie> newMoviesList) {
 
         mMovies.addAll(newMoviesList);
         notifyDataSetChanged();
     }
-
     public void clear() {
         mMovies.clear();
         notifyDataSetChanged();
     }
 
-    public void addNewMovie(Movie movie) {
-//        Log.d(TAG, "addNewMovie " + movie.toString());
-        HashSet<Movie> movies = new HashSet<>(mMovies);
-        movies.add(movie);
-        mMovies.clear();
-        mMovies.addAll(movies);
-        notifyDataSetChanged();
-    }
+
 
 
     @Override
@@ -78,20 +56,20 @@ public class DbAdapterRv extends RecyclerView.Adapter<DbAdapterRv.MovieViewHolde
     public void onBindViewHolder(final MovieViewHolder holder, final int position) {
 
         holder.setName(mMovies.get(position).getTitle());
-        Context context = holder.ivPoster.getContext();
+        final Context context = holder.ivPoster.getContext();
         Picasso.with(context).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + mMovies.get(position).getBackdropPath()).
                 error(R.drawable.nofim).resize(717, 400).into(holder.ivPoster);
         holder.setDataMovie(mMovies.get(position).getReleaseDate());
         holder.setTopMark(mMovies.get(position).getVoteAverage());
-//        holder.cv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                mCallback.onClickOpen(mMovies.get(position).getId(), mMovies.get(position).getBackdropPath(), mMovies.get(position).getTitle());
-//
-//
-//            }
-//        });
+        holder.cv.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+
+               Toast.makeText(context, "No Internet", Toast.LENGTH_SHORT).show();
+
+
+           }
+       });
 
 
     }
@@ -109,13 +87,11 @@ public class DbAdapterRv extends RecyclerView.Adapter<DbAdapterRv.MovieViewHolde
         TextView topText;
 
 
-        private final View parentView;
+        private View parentView;
 
 
-        public MovieViewHolder(final View parentView) {
+        public MovieViewHolder(View parentView) {
             super(parentView);
-
-
             this.parentView = parentView;
             cv = (CardView) itemView.findViewById(R.id.movie_card_view);
             ivPoster = (ImageView) itemView.findViewById(R.id.movie_poster_image_view);

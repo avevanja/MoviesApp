@@ -5,4 +5,9 @@
     <string name="action_logout">Logout</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="facebook_app_id">707035546111803</string>
+    <string name="data_release_hint">Дата Релиза</string>
+    <string name="country_hint">Страна</string>
+    <string name="genre_hint">Жанр</string>
+    <string name="overview_hint">Cюжет</string>
+    <string name="cast_hint">В главных ролях</string>
 </resources>

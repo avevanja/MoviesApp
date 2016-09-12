@@ -24,9 +24,6 @@ public class SearchActivityPresenter {
         RetrofitUtil.getMoviesService()
                 .getSearchMovies(query)
                 .enqueue(getCallback());
-//        MoviesService mService = RetrofitUtil.getMoviesService();
-//        Call<ListMovie> requestMovie = mService.getSearchMovies(query);
-//        requestMovie.enqueue(getCallback());
     }
     private Callback<ListMovie> getCallback() {
         Log.d(TAG, "getCallback");

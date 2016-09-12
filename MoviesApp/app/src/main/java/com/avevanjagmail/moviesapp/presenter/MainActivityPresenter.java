@@ -28,7 +28,7 @@ public class MainActivityPresenter {
 
     public void logout() {
 
-        LoginApiService mService = RetrofitUtil.getLoginService();;
+        LoginApiService mService = RetrofitUtil.getLoginService();
         Call<LogoutResponse> requestInfo = mService.logout(new LogOutRequest(getParametersForLogOut()[0], getParametersForLogOut()[1]));
         requestInfo.enqueue(new Callback<LogoutResponse>() {
             @Override

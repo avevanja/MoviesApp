@@ -2,6 +2,7 @@ package com.avevanjagmail.moviesapp.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,11 +25,12 @@ import java.util.ArrayList;
  */
 public class NewTabFragment extends Fragment implements OpenInformActivity, NewFragmentView {
     private RecyclerView rv;
-    private static final String TAG = "bla";
+    private static final String TAG = NewTabFragment.class.getSimpleName();
     private LinearLayoutManager llm;
     private RvMovieAdapter mMovieAdapter;
     private DbAdapterRv mDbAdapterRv;
     private NewFragmentPresenter mNewFragmentPresenter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public NewTabFragment() {
     }
@@ -48,6 +50,7 @@ public class NewTabFragment extends Fragment implements OpenInformActivity, NewF
         mNewFragmentPresenter.setNewFragmentView(this);
 
         rv = (RecyclerView) parentView.findViewById(R.id.rv);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) parentView.findViewById(R.id.swipeRefreshLayout);
 
         llm = new LinearLayoutManager(getContext());
 
@@ -59,6 +62,13 @@ public class NewTabFragment extends Fragment implements OpenInformActivity, NewF
         mMovieAdapter = new RvMovieAdapter(this);
         rv.setAdapter(mMovieAdapter);
         mNewFragmentPresenter.loadNewMovies();
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mMovieAdapter.clear();
+                mNewFragmentPresenter.loadNewMovies();
+            }
+        });
 
 
 
@@ -81,7 +91,9 @@ public class NewTabFragment extends Fragment implements OpenInformActivity, NewF
 
     @Override
     public void setNewMovies(ArrayList<MovieApi> newMovies) {
+
         mMovieAdapter.addNewMovies(newMovies);
+        mSwipeRefreshLayout.setRefreshing(false);
 
     }
 
