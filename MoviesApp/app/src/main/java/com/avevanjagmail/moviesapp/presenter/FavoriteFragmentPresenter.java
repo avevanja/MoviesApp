@@ -33,7 +33,7 @@ public class FavoriteFragmentPresenter {
     private List<Movie> localList = new ArrayList<>();
     private Movie movie;
     private FavoriteFragmentView favoriteFragmentView;
-    ArrayList<String> listId = new ArrayList<>();
+    private ArrayList<String> listId = new ArrayList<>();
 
     public void setFavoriteFragmentView(FavoriteFragmentView favoriteFragmentView) {
         this.favoriteFragmentView = favoriteFragmentView;

@@ -2,6 +2,7 @@ package com.avevanjagmail.moviesapp.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
     private DbAdapterRv mDbAdapterRv;
     private FavoriteFragmentPresenter mFavoriteFragmentPresenter;
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public FavoriteTabFragment() {
     }
@@ -51,12 +53,17 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
         mFavoriteFragmentPresenter = new FavoriteFragmentPresenter();
         mFavoriteFragmentPresenter.setFavoriteFragmentView(this);
         mDbAdapterRv = new DbAdapterRv();
-
         mMovieAdapter = new RvMovieAdapter(this);
         rv.setAdapter(mMovieAdapter);
-
-
         Log.d(TAG, "onCreateView: ");
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mMovieAdapter.clear();
+                mFavoriteFragmentPresenter.UpdateRemoteDb();
+            }
+        });
         mFavoriteFragmentPresenter.UpdateRemoteDb();
 
         return rootView;
@@ -85,12 +92,14 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
     @Override
     public void setFavoriteMovies(MovieApi movieApi) {
         mMovieAdapter.addNewMovie(movieApi);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void setLocalFavoriteMovies(ArrayList<Movie> localFavoriteMovies) {
         mDbAdapterRv.addNewMovies(localFavoriteMovies);
         rv.setAdapter(mDbAdapterRv);
+
     }
 
 }
