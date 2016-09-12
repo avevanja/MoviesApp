@@ -22,8 +22,6 @@
                 android:id="@+id/expandedImage"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/ic_movies_top"
-
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7"

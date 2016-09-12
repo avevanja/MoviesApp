@@ -28,7 +28,7 @@
                 android:id="@+id/expandedImage"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/user_foto"
+                android:src="@drawable/user_icon"
                 android:fitsSystemWindows="true"
 
                 android:scaleType="centerCrop"

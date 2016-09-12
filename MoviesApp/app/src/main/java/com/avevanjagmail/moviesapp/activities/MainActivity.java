@@ -2,7 +2,6 @@ package com.avevanjagmail.moviesapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -21,22 +19,12 @@ import android.widget.Toast;
 import com.avevanjagmail.moviesapp.fragments.FavoriteTabFragment;
 import com.avevanjagmail.moviesapp.fragments.NewTabFragment;
 import com.avevanjagmail.moviesapp.fragments.TopTabFragment;
-import com.avevanjagmail.moviesapp.interfaces.LoginApiService;
-import com.avevanjagmail.moviesapp.models.LogOutRequest;
-import com.avevanjagmail.moviesapp.models.LogoutResponse;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.presenter.MainActivityPresenter;
-import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 import com.avevanjagmail.moviesapp.view.MainActivityView;
-import com.facebook.FacebookSdk;
 import com.facebook.Profile;
-import com.facebook.login.LoginManager;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements MainActivityView {
 
@@ -53,21 +41,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         setContentView( R.layout.activity_main);
         mMainActivityPresenter = new MainActivityPresenter();
         mMainActivityPresenter.setMainActivityView(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_tb);
         setSupportActionBar(toolbar);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.movies_list_mcv);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(2);
         setupViewPager(mViewPager);
 
-        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mTabLayout = (TabLayout) findViewById(R.id.tabs_mcv);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 2) {
-                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+                    Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.movies_list_mcv);
                     if (fragment instanceof FavoriteTabFragment) {
 //                        ((FavoriteTabFragment) fragment).update();
                     }

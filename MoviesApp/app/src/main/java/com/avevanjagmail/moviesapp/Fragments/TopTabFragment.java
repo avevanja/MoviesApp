@@ -49,7 +49,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View parentView = inflater.inflate(R.layout.fragment_topmovie, container, false);
+        View parentView = inflater.inflate(R.layout.fragment_main, container, false);
 
         rv = (RecyclerView) parentView.findViewById(R.id.rv);
         llm = new LinearLayoutManager(getContext());
