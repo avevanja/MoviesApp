@@ -49,7 +49,7 @@ public class LoginActivityPresentor {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 Log.d(TAG, "onResponse - " + response.body().toString());
 
-                if (response.body().getSucceeded().success==true)
+                if (response.body().getSucceeded().success)
                 {
                     Toast toast = Toast.makeText(mLoginActivityView.getContext(), "You have logged successfully",Toast.LENGTH_LONG);
                     toast.show();
@@ -70,7 +70,7 @@ public class LoginActivityPresentor {
 
 
                 }
-                else if (response.body().getSucceeded().success==false)
+                else if (!response.body().getSucceeded().success)
                 {
                     Toast toast = Toast.makeText(mLoginActivityView.getContext(), "Password or Login is incorrect. Try again.",Toast.LENGTH_LONG);
                     toast.show();

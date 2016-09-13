@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
             }
         });
         sPref = getSharedPreferences("SH", MODE_PRIVATE);
-        if(sPref.contains("email")==true){
+        if(sPref.contains("email")){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
