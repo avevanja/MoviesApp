@@ -63,6 +63,7 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
             @Override
             public void onRefresh() {
                 mMovieAdapter.clear();
+                mLocalDbRecyclerAdapter.clear();
                 mFavoriteFragmentPresenter.UpdateRemoteDb();
             }
         });

@@ -50,7 +50,7 @@ public class LocalDbRecyclerAdapter extends RecyclerView.Adapter<LocalDbRecycler
     }
 
     @Override
-    public void onBindViewHolder(final MovieViewHolder holder, final int position) {
+    public void onBindViewHolder(MovieViewHolder holder,  int position) {
 
         holder.setName(mMovies.get(position).getTitle());
         final Context context = holder.mImagePosterMovie.getContext();

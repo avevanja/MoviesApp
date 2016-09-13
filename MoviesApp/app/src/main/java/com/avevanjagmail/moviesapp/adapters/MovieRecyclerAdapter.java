@@ -42,7 +42,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
 
     public void clear() {
         mMovies.clear();
-//        notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     public void addNewMovie(MovieApi movie) {
@@ -97,10 +97,10 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
         TextView mMarkMovieTextView;
 
 
-        private final View parentView;
+        private View parentView;
 
 
-        public MovieViewHolder(final View parentView) {
+        public MovieViewHolder(View parentView) {
             super(parentView);
 
             this.parentView = parentView;
