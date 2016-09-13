@@ -47,7 +47,7 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_favorite_movies, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
 
         LinearLayoutManager sLinearLayoutManager = new LinearLayoutManager(getContext());
@@ -101,6 +101,7 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
     public void setLocalFavoriteMovies(ArrayList<Movie> localFavoriteMovies) {
         mLocalDbRecyclerAdapter.addNewMovies(localFavoriteMovies);
         mRecyclerView.setAdapter(mLocalDbRecyclerAdapter);
+        mSwipeRefreshLayout.setRefreshing(false);
 
     }
 

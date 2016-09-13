@@ -42,7 +42,7 @@ public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdap
 
     public void clear() {
         mMovies.clear();
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
     }
 
     public void addNewMovie(MovieApi movie) {

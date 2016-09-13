@@ -4,7 +4,6 @@ package com.avevanjagmail.moviesapp.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.avevanjagmail.moviesapp.EndlessRecyclerOnScrollListener;
+import com.avevanjagmail.moviesapp.R;
+import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.avevanjagmail.moviesapp.adapters.LocalDbRecyclerAdapter;
 import com.avevanjagmail.moviesapp.adapters.MovieRecyclerAdapter;
 import com.avevanjagmail.moviesapp.interfaces.OpenInformActivity;
-import com.avevanjagmail.moviesapp.R;
-import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.models.MovieApi;
 import com.avevanjagmail.moviesapp.presenter.TopFragmentPresenter;
@@ -33,7 +32,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
     private MovieRecyclerAdapter mMovieAdapter;
     private LocalDbRecyclerAdapter mLocalDbRecyclerAdapter;
     private TopFragmentPresenter mTopFragmentPresenter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+
 
 
     public TopTabFragment() {
@@ -53,9 +52,9 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View parentView = inflater.inflate(R.layout.fragment_main, container, false);
+        View parentView = inflater.inflate(R.layout.fragment_top_movies, container, false);
 
-        mRecyclerView = (RecyclerView) parentView.findViewById(R.id.rv);
+        mRecyclerView = (RecyclerView) parentView.findViewById(R.id.top_movies_rv);
         mLinearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mTopFragmentPresenter = new TopFragmentPresenter();
@@ -64,15 +63,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
         mMovieAdapter = new MovieRecyclerAdapter(this);
         mRecyclerView.setAdapter(mMovieAdapter);
         mTopFragmentPresenter.loadTopMovies();
-        mSwipeRefreshLayout = (SwipeRefreshLayout) parentView.findViewById(R.id.swipeRefreshLayout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mMovieAdapter.clear();
-                mLocalDbRecyclerAdapter.clear();
-                mTopFragmentPresenter.loadTopMovies();
-            }
-        });
+
 
 
 
@@ -101,7 +92,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
     @Override
     public void setTopMovies(ArrayList<MovieApi> topMovies) {
         mMovieAdapter.addNewMovies(topMovies);
-        mSwipeRefreshLayout.setRefreshing(false);
+
     }
 
     @Override
@@ -114,7 +105,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
     public void setLocalTopMovies(ArrayList<Movie> localTopMovies) {
         mLocalDbRecyclerAdapter.addNewMovies(localTopMovies);
         mRecyclerView.setAdapter(mLocalDbRecyclerAdapter);
-        mSwipeRefreshLayout.setRefreshing(false);
+//        mSwipeRefreshLayout.setRefreshing(false);
     }
 }
 
