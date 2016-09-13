@@ -167,9 +167,9 @@ public class MainActivity extends AppCompatActivity {
             if (profile == null) {
                 LoginApiService mService = RetrofitUtil.getLoginService();
                 mPref = getSharedPreferences("SH", MODE_PRIVATE);
-                final String passedArg = mPref.getString("saved_text", "");
+                final String passedArg = mPref.getString("email", "");
                 mPref1 = getSharedPreferences("SH1", MODE_PRIVATE);
-                final String accsesToken = mPref1.getString("saved_text1", "");
+                final String accsesToken = mPref1.getString("accessToken", "");
                 Call<LogoutResponse> requestInfo = mService.logout(new LogOutRequest(passedArg, accsesToken));
 
             SharedPreferences.Editor ed = mPref.edit();
