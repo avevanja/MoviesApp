@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:hint="first name"
+            android:hint="@string/first_name"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
 
@@ -56,7 +56,7 @@
             android:id="@+id/lastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="last name"
+            android:hint="@string/second_name"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
@@ -71,7 +71,7 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="email"
+            android:hint="@string/email"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
 
@@ -132,7 +132,7 @@
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="password"
+        android:hint="@string/password"
         android:textColor="#ffffff"
 
         android:layout_below="@+id/view3"
@@ -145,7 +145,7 @@
         android:id="@+id/password_checkout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="type password again"
+        android:hint="@string/type_password_again"
         android:textColor="#ffffff"
         android:password="true"
         android:layout_below="@+id/password"

@@ -5,4 +5,9 @@
     <string name="action_logout">Logout</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="facebook_app_id">707035546111803</string>
+    <string name="first_name">first name</string>
+    <string name="second_name">second name</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="type_password_again">type password again</string>
 </resources>

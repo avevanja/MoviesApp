@@ -21,6 +21,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.avevanjagmail.moviesapp.Interface.RegistrationActivityView;
 import com.avevanjagmail.moviesapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -52,6 +54,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     private ImageView ivImage;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask;
+    private TextView registered;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mUserId = mRootRef.child("Users");
     private RegistrationActivityPresentor registrationActivityPresentor = new RegistrationActivityPresentor();
@@ -66,13 +69,21 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         password = (EditText) findViewById(R.id.password);
         ivImage = (ImageView) findViewById(R.id.cast_foto3);
         btn_create = (Button) (findViewById(R.id.btn_create));
-        ivImage.setBackgroundResource(R.drawable.screenshot);
+        registered = (TextView) (findViewById(R.id.registered));
+
         progressDialog = new ProgressDialog(this);
         ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ivImage.setBackgroundResource(0);
                 selectImage();
+            }
+        });
+        registered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
         registrationActivityPresentor.setRegistrationActivityView(this);
