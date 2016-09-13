@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.R;
-import com.avevanjagmail.moviesapp.fragments.RvMovieAdapter;
+import com.avevanjagmail.moviesapp.adapters.MovieRecyclerAdapter;
 import com.avevanjagmail.moviesapp.interfaces.OpenInformActivity;
 import com.avevanjagmail.moviesapp.models.MovieApi;
 import com.avevanjagmail.moviesapp.presenter.SearchActivityPresenter;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity implements OpenInformActivity, SearchActivityView {
     private LinearLayoutManager llm;
-    public RvMovieAdapter mMovieAdapter;
+    public MovieRecyclerAdapter mMovieAdapter;
     private RecyclerView rv;
     private SearchActivityPresenter mSearchActivityPresenter;
     private static final String TAG = SearchActivity.class.getSimpleName();
@@ -29,7 +29,7 @@ public class SearchActivity extends AppCompatActivity implements OpenInformActiv
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_search);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.search_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -42,14 +42,14 @@ public class SearchActivity extends AppCompatActivity implements OpenInformActiv
         mSearchActivityPresenter = new SearchActivityPresenter();
         mSearchActivityPresenter.setSearchActivityView(this);
         setTitle(getIntent().getStringExtra("query"));
-        rv = (RecyclerView) findViewById(R.id.rv_searc);
+        rv = (RecyclerView) findViewById(R.id.search_activity_rv);
 
         llm = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(llm);
         mSearchActivityPresenter.loadSearchMovies(getIntent().getStringExtra("query"));
 
 
-        mMovieAdapter = new RvMovieAdapter(this);
+        mMovieAdapter = new MovieRecyclerAdapter(this);
         rv.setAdapter(mMovieAdapter);
 
 

@@ -8,6 +8,11 @@
     <string name="data_release_hint">Дата Релиза</string>
     <string name="country_hint">Страна</string>
     <string name="genre_hint">Жанр</string>
-    <string name="overview_hint">Cюжет</string>
+    <string name="overview_hint">Описание</string>
     <string name="cast_hint">В главных ролях</string>
+    <string name="error_logout">Something wrong</string>
+    <string name="error_no_internet">No Internet</string>
+    <string name="tab_first_name">TOP</string>
+    <string name="tab_second_name">NEW</string>
+    <string name="tab_third_name">FAVORITE</string>
 </resources>

@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.InformActivity;
+import com.avevanjagmail.moviesapp.adapters.LocalDbRecyclerAdapter;
+import com.avevanjagmail.moviesapp.adapters.MovieRecyclerAdapter;
 import com.avevanjagmail.moviesapp.interfaces.OpenInformActivity;
 import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.models.MovieApi;
@@ -23,9 +25,9 @@ import java.util.ArrayList;
 
 public class FavoriteTabFragment extends Fragment implements OpenInformActivity, FavoriteFragmentView {
     private static final String TAG = FavoriteTabFragment.class.getSimpleName();
-    private RecyclerView rv;
-    private RvMovieAdapter mMovieAdapter;
-    private DbAdapterRv mDbAdapterRv;
+    private RecyclerView mRecyclerView;
+    private MovieRecyclerAdapter mMovieAdapter;
+    private LocalDbRecyclerAdapter mLocalDbRecyclerAdapter;
     private FavoriteFragmentPresenter mFavoriteFragmentPresenter;
     private static final String ARG_SECTION_NUMBER = "section_number";
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -46,15 +48,15 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        rv = (RecyclerView) rootView.findViewById(R.id.rv);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv);
 
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        rv.setLayoutManager(llm);
+        LinearLayoutManager sLinearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(sLinearLayoutManager);
         mFavoriteFragmentPresenter = new FavoriteFragmentPresenter();
         mFavoriteFragmentPresenter.setFavoriteFragmentView(this);
-        mDbAdapterRv = new DbAdapterRv();
-        mMovieAdapter = new RvMovieAdapter(this);
-        rv.setAdapter(mMovieAdapter);
+        mLocalDbRecyclerAdapter = new LocalDbRecyclerAdapter();
+        mMovieAdapter = new MovieRecyclerAdapter(this);
+        mRecyclerView.setAdapter(mMovieAdapter);
         Log.d(TAG, "onCreateView: ");
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -97,8 +99,8 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
 
     @Override
     public void setLocalFavoriteMovies(ArrayList<Movie> localFavoriteMovies) {
-        mDbAdapterRv.addNewMovies(localFavoriteMovies);
-        rv.setAdapter(mDbAdapterRv);
+        mLocalDbRecyclerAdapter.addNewMovies(localFavoriteMovies);
+        mRecyclerView.setAdapter(mLocalDbRecyclerAdapter);
 
     }
 

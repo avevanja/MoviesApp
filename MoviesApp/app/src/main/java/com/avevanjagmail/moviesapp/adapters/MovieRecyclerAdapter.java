@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp.fragments;
+package com.avevanjagmail.moviesapp.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -21,29 +21,18 @@ import java.util.List;
 /**
  * Created by John on 12.07.2016.
  */
-public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieViewHolder> {
-    private static final String TAG = RvMovieAdapter.class.getSimpleName();
+public class MovieRecyclerAdapter extends RecyclerView.Adapter<MovieRecyclerAdapter.MovieViewHolder> {
+    private static final String TAG = MovieRecyclerAdapter.class.getSimpleName();
     private OpenInformActivity mCallback;
 
 
     private List<MovieApi> mMovies = new ArrayList<>();
 
 
-    public RvMovieAdapter() {
-    }
-
-    public RvMovieAdapter(List<MovieApi> mMovies ) {
-        this.mMovies = mMovies;
-
-    }
-
-    public RvMovieAdapter(OpenInformActivity call) {
+    public MovieRecyclerAdapter(OpenInformActivity call) {
         this.mCallback = call;
     }
-    public RvMovieAdapter(OpenInformActivity call, List<MovieApi> mMovies) {
-        this.mCallback = call;
-        this.mMovies = mMovies;
-    }
+
 
     public void addNewMovies(List<MovieApi> newMoviesList) {
 
@@ -57,7 +46,6 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
     }
 
     public void addNewMovie(MovieApi movie) {
-//        Log.d(TAG, "addNewMovie " + movie.toString());
         HashSet<MovieApi> movies = new HashSet<>(mMovies);
         movies.add(movie);
         mMovies.clear();
@@ -79,18 +67,14 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
     public void onBindViewHolder(final MovieViewHolder holder, final int position) {
 
         holder.setName(mMovies.get(position).getTitle());
-        Context context = holder.ivPoster.getContext();
+        Context context = holder.mPosterImageView.getContext();
         Picasso.with(context).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + mMovies.get(position).getBackdropPath()).
-                error(R.drawable.nofim).resize(717, 400).into(holder.ivPoster);
-        holder.setDataMovie(mMovies.get(position).getReleaseDate());
+                error(R.drawable.nofim).resize(717, 400).into(holder.mPosterImageView);
+        holder.setDataMovieTextView(mMovies.get(position).getReleaseDate());
         holder.setTopMark(mMovies.get(position).getVoteAverage());
-        holder.cv.setOnClickListener(new View.OnClickListener() {
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                InformActivity.start(mMovies.get(position).getMovieId(), holder.cv.getContext());
-//                Intent intent = new Intent(holder.cv.getContext(), InformActivity.class);
-//                intent.putExtra("id",mMovies.get(position).getMovieId() );
-//                holder.cv.getContext().startActivity(intent);
                 mCallback.onClickOpen(mMovies.get(position).getId(), mMovies.get(position).getBackdropPath(), mMovies.get(position).getTitle());
 
 
@@ -106,11 +90,11 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        CardView cv;
-        ImageView ivPoster;
-        TextView tvNameMovie;
-        TextView dataMovie;
-        TextView topText;
+        CardView mCardView;
+        ImageView mPosterImageView;
+        TextView mNameMovieTextView;
+        TextView mDataMovieTextView;
+        TextView mMarkMovieTextView;
 
 
         private final View parentView;
@@ -118,36 +102,25 @@ public class RvMovieAdapter extends RecyclerView.Adapter<RvMovieAdapter.MovieVie
 
         public MovieViewHolder(final View parentView) {
             super(parentView);
-//            parentView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(parentView.getContext(), InformActivity.class);
-//                    intent.putExtra("id", topText.getText());
-//                    parentView.getContext().startActivity(intent);
-//
-//
-//                }
-//            });
 
             this.parentView = parentView;
-            cv = (CardView) itemView.findViewById(R.id.movie_card_view);
-            ivPoster = (ImageView) itemView.findViewById(R.id.movie_poster_image_view);
-
-            tvNameMovie = (TextView) itemView.findViewById(R.id.name_movi_tv);
-            dataMovie = (TextView) itemView.findViewById(R.id.ganre_text);
-            topText = (TextView) itemView.findViewById(R.id.top_text);
+            mCardView = (CardView) itemView.findViewById(R.id.movie_card_view);
+            mPosterImageView = (ImageView) itemView.findViewById(R.id.movie_poster_image_view);
+            mNameMovieTextView = (TextView) itemView.findViewById(R.id.name_movi_tv);
+            mDataMovieTextView = (TextView) itemView.findViewById(R.id.ganre_text);
+            mMarkMovieTextView = (TextView) itemView.findViewById(R.id.top_text);
         }
 
         public void setName(String name) {
-            tvNameMovie.setText(name);
+            mNameMovieTextView.setText(name);
         }
 
-        public void setDataMovie(String datamovie) {
-            dataMovie.setText(datamovie);
+        public void setDataMovieTextView(String dataRealiseMovie) {
+            mDataMovieTextView.setText(dataRealiseMovie);
         }
 
         public void setTopMark(Double mark) {
-            topText.setText(mark.toString());
+            mMarkMovieTextView.setText(mark.toString());
         }
 
 

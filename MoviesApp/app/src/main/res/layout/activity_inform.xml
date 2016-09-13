@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/data_release_hint"
-                android:id="@+id/data_tv"
+                android:id="@+id/data_hint_tv"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:textColor="#8A000000" />
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/country_hint"
-                android:id="@+id/country_tv"
+                android:id="@+id/country_hint_tv"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:textColor="#8A000000" />
@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/genre_hint"
-                android:id="@+id/genre_tv"
+                android:id="@+id/genre_hint_tv"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:textColor="#8A000000" />
@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/overview_hint"
-                android:id="@+id/overview_tv"
+                android:id="@+id/overview_hint_tv"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"
                 android:textColor="#8A000000" />
@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/cast_hint"
-                android:id="@+id/cast_tv"
+                android:id="@+id/cast_hint_tv"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="16dp"
                 android:textColor="#8A000000" />

@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import com.avevanjagmail.moviesapp.EndlessRecyclerOnScrollListener;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.InformActivity;
+import com.avevanjagmail.moviesapp.adapters.LocalDbRecyclerAdapter;
+import com.avevanjagmail.moviesapp.adapters.MovieRecyclerAdapter;
 import com.avevanjagmail.moviesapp.interfaces.OpenInformActivity;
 import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.models.MovieApi;
@@ -24,11 +26,11 @@ import java.util.ArrayList;
  * Created by John on 10.07.2016.
  */
 public class NewTabFragment extends Fragment implements OpenInformActivity, NewFragmentView {
-    private RecyclerView rv;
+    private RecyclerView mRecyclerView;
     private static final String TAG = NewTabFragment.class.getSimpleName();
-    private LinearLayoutManager llm;
-    private RvMovieAdapter mMovieAdapter;
-    private DbAdapterRv mDbAdapterRv;
+    private LinearLayoutManager mLinearLayoutManager;
+    private MovieRecyclerAdapter mMovieAdapter;
+    private LocalDbRecyclerAdapter mLocalDbRecyclerAdapter;
     private NewFragmentPresenter mNewFragmentPresenter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -48,19 +50,13 @@ public class NewTabFragment extends Fragment implements OpenInformActivity, NewF
         View parentView = inflater.inflate(R.layout.fragment_main, container, false);
         mNewFragmentPresenter = new NewFragmentPresenter();
         mNewFragmentPresenter.setNewFragmentView(this);
-
-        rv = (RecyclerView) parentView.findViewById(R.id.rv);
+        mRecyclerView = (RecyclerView) parentView.findViewById(R.id.rv);
         mSwipeRefreshLayout = (SwipeRefreshLayout) parentView.findViewById(R.id.swipeRefreshLayout);
-
-        llm = new LinearLayoutManager(getContext());
-
-        rv.setLayoutManager(llm);
-
-
-        mDbAdapterRv = new DbAdapterRv();
-
-        mMovieAdapter = new RvMovieAdapter(this);
-        rv.setAdapter(mMovieAdapter);
+        mLinearLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mLocalDbRecyclerAdapter = new LocalDbRecyclerAdapter();
+        mMovieAdapter = new MovieRecyclerAdapter(this);
+        mRecyclerView.setAdapter(mMovieAdapter);
         mNewFragmentPresenter.loadNewMovies();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -72,7 +68,7 @@ public class NewTabFragment extends Fragment implements OpenInformActivity, NewF
 
 
 
-        rv.setOnScrollListener(new EndlessRecyclerOnScrollListener(llm) {
+        mRecyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener(mLinearLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
                 mNewFragmentPresenter.loadMoreNewMovies(current_page);
@@ -91,7 +87,6 @@ public class NewTabFragment extends Fragment implements OpenInformActivity, NewF
 
     @Override
     public void setNewMovies(ArrayList<MovieApi> newMovies) {
-
         mMovieAdapter.addNewMovies(newMovies);
         mSwipeRefreshLayout.setRefreshing(false);
 
@@ -105,8 +100,8 @@ public class NewTabFragment extends Fragment implements OpenInformActivity, NewF
 
     @Override
     public void setLocalNewMovies(ArrayList<Movie> localNewMovies) {
-        mDbAdapterRv.addNewMovies(localNewMovies);
-        rv.setAdapter(mDbAdapterRv);
+        mLocalDbRecyclerAdapter.addNewMovies(localNewMovies);
+        mRecyclerView.setAdapter(mLocalDbRecyclerAdapter);
 
     }
 }

@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
 
         else {
-            Toast.makeText(getApplicationContext(), "Something wrong", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.error_logout, Toast.LENGTH_LONG).show();
         }
     }
 

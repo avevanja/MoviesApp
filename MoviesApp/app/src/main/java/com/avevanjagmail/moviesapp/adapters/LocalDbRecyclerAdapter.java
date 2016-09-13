@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp.fragments;
+package com.avevanjagmail.moviesapp.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -17,16 +17,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by paulg on 29.08.2016.
- */
-public class DbAdapterRv extends RecyclerView.Adapter<DbAdapterRv.MovieViewHolder> {
-    private static final String TAG = RvMovieAdapter.class.getSimpleName();
+
+public class LocalDbRecyclerAdapter extends RecyclerView.Adapter<LocalDbRecyclerAdapter.MovieViewHolder> {
+    private static final String TAG = MovieRecyclerAdapter.class.getSimpleName();
 
 
     private List<Movie> mMovies = new ArrayList<>();
 
-    public DbAdapterRv() {
+    public LocalDbRecyclerAdapter() {
     }
 
 
@@ -35,12 +33,11 @@ public class DbAdapterRv extends RecyclerView.Adapter<DbAdapterRv.MovieViewHolde
         mMovies.addAll(newMoviesList);
         notifyDataSetChanged();
     }
+
     public void clear() {
         mMovies.clear();
         notifyDataSetChanged();
     }
-
-
 
 
     @Override
@@ -56,20 +53,20 @@ public class DbAdapterRv extends RecyclerView.Adapter<DbAdapterRv.MovieViewHolde
     public void onBindViewHolder(final MovieViewHolder holder, final int position) {
 
         holder.setName(mMovies.get(position).getTitle());
-        final Context context = holder.ivPoster.getContext();
+        final Context context = holder.mImagePosterMovie.getContext();
         Picasso.with(context).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + mMovies.get(position).getBackdropPath()).
-                error(R.drawable.nofim).resize(717, 400).into(holder.ivPoster);
-        holder.setDataMovie(mMovies.get(position).getReleaseDate());
+                error(R.drawable.nofim).resize(717, 400).into(holder.mImagePosterMovie);
+        holder.setDataMovieTextView(mMovies.get(position).getReleaseDate());
         holder.setTopMark(mMovies.get(position).getVoteAverage());
-        holder.cv.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-               Toast.makeText(context, "No Internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.error_no_internet, Toast.LENGTH_SHORT).show();
 
 
-           }
-       });
+            }
+        });
 
 
     }
@@ -80,37 +77,35 @@ public class DbAdapterRv extends RecyclerView.Adapter<DbAdapterRv.MovieViewHolde
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        CardView cv;
-        ImageView ivPoster;
-        TextView tvNameMovie;
-        TextView dataMovie;
-        TextView topText;
-
-
+        private CardView mCardView;
+        private ImageView mImagePosterMovie;
+        private TextView mNameMovieTextView;
+        private TextView mDataMovieTextView;
+        private TextView mMarkTextView;
         private View parentView;
 
 
         public MovieViewHolder(View parentView) {
             super(parentView);
             this.parentView = parentView;
-            cv = (CardView) itemView.findViewById(R.id.movie_card_view);
-            ivPoster = (ImageView) itemView.findViewById(R.id.movie_poster_image_view);
+            mCardView = (CardView) itemView.findViewById(R.id.movie_card_view);
+            mImagePosterMovie = (ImageView) itemView.findViewById(R.id.movie_poster_image_view);
 
-            tvNameMovie = (TextView) itemView.findViewById(R.id.name_movi_tv);
-            dataMovie = (TextView) itemView.findViewById(R.id.ganre_text);
-            topText = (TextView) itemView.findViewById(R.id.top_text);
+            mNameMovieTextView = (TextView) itemView.findViewById(R.id.name_movi_tv);
+            mDataMovieTextView = (TextView) itemView.findViewById(R.id.ganre_text);
+            mMarkTextView = (TextView) itemView.findViewById(R.id.top_text);
         }
 
         public void setName(String name) {
-            tvNameMovie.setText(name);
+            mNameMovieTextView.setText(name);
         }
 
-        public void setDataMovie(String datamovie) {
-            dataMovie.setText(datamovie);
+        public void setDataMovieTextView(String dataRealiseMovie) {
+            mDataMovieTextView.setText(dataRealiseMovie);
         }
 
         public void setTopMark(Double mark) {
-            topText.setText(mark.toString());
+            mMarkTextView.setText(mark.toString());
         }
 
 
