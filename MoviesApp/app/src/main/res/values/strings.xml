@@ -16,4 +16,9 @@
     <string name="tab_first_name">TOP</string>
     <string name="tab_second_name">NEW</string>
     <string name="tab_third_name">FAVORITE</string>
+    <string name="first_name">first name</string>
+    <string name="second_name">second name</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="type_password_again">type password again</string>
 </resources>
