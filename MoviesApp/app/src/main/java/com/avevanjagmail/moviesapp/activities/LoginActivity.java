@@ -11,7 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avevanjagmail.moviesapp.Interface.LoginActivityView;
+import com.avevanjagmail.moviesapp.presenter.LoginActivityPresenter;
+import com.avevanjagmail.moviesapp.view.LoginActivityView;
 import com.avevanjagmail.moviesapp.R;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;

@@ -1,6 +1,6 @@
-package com.avevanjagmail.moviesapp.activities;
+package com.avevanjagmail.moviesapp.presenter;
 
-import com.avevanjagmail.moviesapp.Interface.VerifyActivityView;
+import com.avevanjagmail.moviesapp.view.VerifyActivityView;
 import com.avevanjagmail.moviesapp.interfaces.LoginApiService;
 import com.avevanjagmail.moviesapp.models.ActivateRequest;
 import com.avevanjagmail.moviesapp.models.ActivateResponse;

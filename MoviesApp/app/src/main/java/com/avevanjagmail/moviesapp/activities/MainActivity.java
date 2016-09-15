@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView( R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         mMainActivityPresenter = new MainActivityPresenter();
         mMainActivityPresenter.setMainActivityView(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_tb);
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 String word = getIntent().getStringExtra("mail");
                 intent.putExtra("query", query);
-                intent.putExtra("mail",word);
+                intent.putExtra("mail", word);
                 startActivity(intent);
                 return false;
             }
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
             startActivity(intent);
             return true;
         }
-        if(id == R.id.action_about){
+        if (id == R.id.action_about) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("About")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -141,19 +141,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
             mProfile = Profile.getCurrentProfile();
             if (mProfile == null) {
                 mMainActivityPresenter.logout();
-                finish();
 
-            }
-            else {
+            } else {
                 mMainActivityPresenter.logOutFromFB();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
-            }
-
-            return super.onOptionsItemSelected(item);
         }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public Context getContext() {
@@ -162,13 +160,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public void setLogOut(boolean success) {
-        if(success){
-            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+        if (success) {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
-            finish();}
-
-
-        else {
+            finish();
+        } else {
             Toast.makeText(getApplicationContext(), R.string.error_logout, Toast.LENGTH_LONG).show();
         }
     }
@@ -191,14 +187,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         public int getCount() {
             return mFragmentList.size();
         }
-        public void addFragment(Fragment fragment, String title){
+
+        public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentListTitle.add(title);
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-           return mFragmentListTitle.get(position);
+            return mFragmentListTitle.get(position);
         }
     }
 }

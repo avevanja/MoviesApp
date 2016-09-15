@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,18 +21,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avevanjagmail.moviesapp.Interface.RegistrationActivityView;
+import com.avevanjagmail.moviesapp.presenter.RegistrationActivityPresenter;
+import com.avevanjagmail.moviesapp.view.RegistrationActivityView;
 import com.avevanjagmail.moviesapp.R;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 /**
  * Created by John on 08.07.2016.
@@ -43,17 +35,13 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     private EditText fName, lName, email, password, confirmPassword;
     private Bitmap thumbnail;
     private Button btn_create;
-    private SharedPreferences prefForUsername, prefForEmail;
     private ProgressDialog progressDialog;
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference storageRef = storage.getReferenceFromUrl("gs://movies-app-fda81.appspot.com");
     private ImageView ivImage;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private String userChoosenTask, passedArg, newPassedArg;
     private TextView registered;
-    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference mUserId = mRootRef.child("Users");
-    private RegistrationActivityPresenter registrationActivityPresenter = new RegistrationActivityPresenter();
+    private RegistrationActivityPresenter mRegistrationActivityPresenter;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +56,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         btn_create = (Button) (findViewById(R.id.btn_create));
         registered = (TextView) (findViewById(R.id.registered));
         confirmPassword = (EditText) findViewById(R.id.confirm_password);
+        mRegistrationActivityPresenter = new RegistrationActivityPresenter();
 
 
         progressDialog = new ProgressDialog(this);
@@ -85,7 +74,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
                 startActivity(intent);
             }
         });
-        registrationActivityPresenter.setRegistrationActivityView(this);
+        mRegistrationActivityPresenter.setRegistrationActivityView(this);
 
 
         btn_create.setOnClickListener(new View.OnClickListener() {
@@ -117,37 +106,21 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
                     error = true;
                 }
                 if (!error) {
-                    progressDialog.show();
                     passedArg = email.getText().toString();
                     newPassedArg = passedArg.replace(".", "a");
-                    Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
-                    Log.d(TAG, "photoUri - " + tempUri.toString());
-                    registrationActivityPresenter.doRegisterAndSendVerify(fName.getText().toString(), lName.getText().toString(), email.getText().toString(),
-                            password.getText().toString());
-                    registrationActivityPresenter.uploadPhoto(tempUri, newPassedArg);
+                    if(thumbnail==null){
+                        Toast.makeText(RegistrationActivity.this, "Please add photo", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        progressDialog.show();
+                        Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
+                        Log.d(TAG, "photoUri - " + tempUri.toString());
 
-//                    StorageReference mountainImagesRef = storageRef.child("images/" + tempUri.getLastPathSegment());
-////                    progressDialog.dismiss();
-////                    progressDialog.show();
-//                    UploadTask uploadTask = mountainImagesRef.putFile(tempUri);
-//                    uploadTask.addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            e.printStackTrace();
-//                            e.printStackTrace();
-//                        }
-//                    })
-//                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                                @Override
-//                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-//                                    String Uri = downloadUrl.toString();
-//                                    mUserId.child(newPassedArg).child("Photos").setValue(Uri);
-//                                    Log.d(TAG, "downloaded image - " + downloadUrl.toString());
-//                                    progressDialog.dismiss();
-//
-//                                }
-//                            });
+                        mRegistrationActivityPresenter.uploadPhoto(tempUri, newPassedArg);
+                        mRegistrationActivityPresenter.doRegisterAndSendVerify(fName.getText().toString(), lName.getText().toString(), email.getText().toString(),
+                                password.getText().toString(), newPassedArg);
+                    }
+
                 }
             }
         });
@@ -190,7 +163,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
                     else if (userChoosenTask.equals("Choose from Library"))
                         galleryIntent();
                 } else {
-                    //code for deny
+
                 }
                 break;
         }
@@ -208,21 +181,6 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         startActivityForResult(intent, REQUEST_CAMERA);
     }
 
-    @SuppressWarnings("deprecation")
-    private void onSelectFromGalleryResult(Intent data) {
-
-
-        if (data != null) {
-            try {
-                thumbnail = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        ivImage.setImageBitmap(thumbnail);
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -230,42 +188,15 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == SELECT_FILE)
-                onSelectFromGalleryResult(data);
+                mRegistrationActivityPresenter.onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA) {
                 progressDialog.setMessage("Photo is uploading...");
                 progressDialog.show();
-                onCaptureImageResult(data);
+                mRegistrationActivityPresenter.onCaptureImageResult(data);
             }
         }
     }
 
-    private void onCaptureImageResult(Intent data) {
-        thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-
-
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
-
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        ivImage.setImageBitmap(thumbnail);
-        progressDialog.dismiss();
-
-
-    }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -284,6 +215,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         Intent myIntent = new Intent(getApplicationContext(), VerifyActivity.class).putExtra("email", email);
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(myIntent);
+        finish();
     }
 
     @Override
@@ -296,6 +228,13 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         Toast.makeText(RegistrationActivity.this, error, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void setImage(Bitmap thumbnail) {
+        ivImage.setImageBitmap(thumbnail);
+        progressDialog.dismiss();
+        this.thumbnail = thumbnail;
+
+    }
 
 
 }

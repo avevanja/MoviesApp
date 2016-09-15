@@ -37,7 +37,7 @@
                 />
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_inf_act"
+                android:id="@+id/toolbar_inf_act1"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
@@ -85,7 +85,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/email"
+                        android:id="@+id/name_user_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="16dp"
@@ -101,7 +101,7 @@
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:paddingTop="16dp"
-                        android:text="email"
+                        android:text="name"
                         android:layout_marginBottom="8dp" />
 
                 </LinearLayout>

@@ -1,9 +1,14 @@
-package com.avevanjagmail.moviesapp.activities;
+package com.avevanjagmail.moviesapp.presenter;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
-import com.avevanjagmail.moviesapp.Interface.RegistrationActivityView;
+import com.avevanjagmail.moviesapp.view.RegistrationActivityView;
 import com.avevanjagmail.moviesapp.models.RegisterRequest;
 import com.avevanjagmail.moviesapp.models.RegisterResponse;
 import com.avevanjagmail.moviesapp.models.VerifyRequest;
@@ -17,6 +22,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,54 +38,23 @@ public class RegistrationActivityPresenter {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReferenceFromUrl("gs://movies-app-fda81.appspot.com");
     private RegistrationActivityView registrationActivityView;
+    private Bitmap thumbnail;
+
 
     public void setRegistrationActivityView(RegistrationActivityView registrationActivityView) {
         this.registrationActivityView = registrationActivityView;
     }
 
-    public void doRegisterAndSendVerify(String Name, String Surname, String email, String password) {
+    public void doRegisterAndSendVerify(String Name, String Surname, String email, String password, String newPassedArg) {
         RetrofitUtil.getLoginService().register(new RegisterRequest(Name, Surname, email, password, "0"))
                 .enqueue(doRegisterAndSendVerify());
-//        LoginApiService mService = RetrofitUtil.getLoginService();
-//        Call<RegisterResponse> requestMovie = mService.register(new RegisterRequest(Name, Surname, email, password, "0"));
-//        requestMovie.enqueue(new Callback<RegisterResponse>() {
-//            @Override
-//            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RegisterResponse> call, Throwable t) {
-//                Toast toast = Toast.makeText(registrationActivityView.getContext(), t.getCause().toString(), Toast.LENGTH_LONG);
-//                toast.show();
-//            }
-//        });
         RetrofitUtil.getLoginService().verify(new VerifyRequest(email))
                 .enqueue(doVerify());
-//        Call<VerifyResponse> requestInfo = mService.verify(new VerifyRequest(email));
-//        requestInfo.enqueue(new Callback<VerifyResponse>() {
-//
-//
-//            @Override
-//            public void onResponse(Call<VerifyResponse> call, Response<VerifyResponse> response) {
-//                if (response.body().getSucceeded().success) {
-//                    Intent myIntent = new Intent(registrationActivityView.getContext(), VerifyActivity.class).putExtra("email", response.body().getData());
-//                    myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    registrationActivityView.getContext().startActivity(myIntent);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<VerifyResponse> call, Throwable t) {
-//                Toast toast = Toast.makeText(registrationActivityView.getContext(), t.getCause().toString(), Toast.LENGTH_LONG);
-//                toast.show();
-//            }
-//        });
+         mUserId.child(newPassedArg).child("Name").setValue(Name + " " + Surname);
     }
 
     public void uploadPhoto(Uri tempUri, final String newPassedArg) {
-                StorageReference mountainImagesRef = storageRef.child("images/" + tempUri.getLastPathSegment());
-        //                    progressDialog.dismiss();
-//                    progressDialog.show();
+        StorageReference mountainImagesRef = storageRef.child("images/" + tempUri.getLastPathSegment());
         UploadTask uploadTask = mountainImagesRef.putFile(tempUri);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
@@ -93,7 +73,8 @@ public class RegistrationActivityPresenter {
                     }
                 });
     }
-   private Callback<RegisterResponse> doRegisterAndSendVerify(){
+
+    private Callback<RegisterResponse> doRegisterAndSendVerify() {
         return new Callback<RegisterResponse>() {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
@@ -108,11 +89,11 @@ public class RegistrationActivityPresenter {
             }
         };
     }
-    private Callback<VerifyResponse> doVerify(){
+
+    private Callback<VerifyResponse> doVerify() {
         return new Callback<VerifyResponse>() {
             @Override
             public void onResponse(Call<VerifyResponse> call, Response<VerifyResponse> response) {
-//                registrationActivityView.setEmail(response.body().getData());
                 registrationActivityView.onSuccessVerify(response.body().getData());
 
             }
@@ -124,5 +105,45 @@ public class RegistrationActivityPresenter {
             }
         };
     }
+
+    public void onCaptureImageResult(Intent data) {
+        thumbnail = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+
+
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");
+
+        FileOutputStream fileOutputStream;
+        try {
+            destination.createNewFile();
+            fileOutputStream = new FileOutputStream(destination);
+            fileOutputStream.write(bytes.toByteArray());
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        registrationActivityView.setImage(thumbnail);
+
+
+    }
+    @SuppressWarnings("deprecation")
+    public void onSelectFromGalleryResult(Intent data) {
+
+        if (data != null) {
+            try {
+                thumbnail = MediaStore.Images.Media.getBitmap(registrationActivityView.getContext().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        registrationActivityView.setImage(thumbnail);
+
+    }
+
 
 }

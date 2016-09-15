@@ -1,11 +1,11 @@
-package com.avevanjagmail.moviesapp.activities;
+package com.avevanjagmail.moviesapp.presenter;
 
 
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.avevanjagmail.moviesapp.Interface.LoginActivityView;
+import com.avevanjagmail.moviesapp.view.LoginActivityView;
 import com.avevanjagmail.moviesapp.interfaces.LoginApiService;
 import com.avevanjagmail.moviesapp.models.LoginRequest;
 import com.avevanjagmail.moviesapp.models.LoginResponse;

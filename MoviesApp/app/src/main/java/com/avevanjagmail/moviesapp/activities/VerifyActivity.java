@@ -8,7 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.avevanjagmail.moviesapp.Interface.VerifyActivityView;
+import com.avevanjagmail.moviesapp.presenter.VerifyActivityPresenter;
+import com.avevanjagmail.moviesapp.view.VerifyActivityView;
 import com.avevanjagmail.moviesapp.R;
 
 

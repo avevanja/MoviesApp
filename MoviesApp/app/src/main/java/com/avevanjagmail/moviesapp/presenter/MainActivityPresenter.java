@@ -34,10 +34,11 @@ public class MainActivityPresenter {
         requestInfo.enqueue(new Callback<LogoutResponse>() {
             @Override
             public void onResponse(Call<LogoutResponse> call, Response<LogoutResponse> response) {
-                mMainActivityView.setLogOut(response.body().getSucceeded().success);
+
                 SharedPreferences.Editor ed = mPref.edit();
                 ed.clear();
                 ed.commit();
+                mMainActivityView.setLogOut(response.body().getSucceeded().success);
             }
 
             @Override

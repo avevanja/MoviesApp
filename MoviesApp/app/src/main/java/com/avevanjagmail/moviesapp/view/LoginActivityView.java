@@ -1,4 +1,4 @@
-package com.avevanjagmail.moviesapp.Interface;
+package com.avevanjagmail.moviesapp.view;
 
 import android.content.Context;
 
