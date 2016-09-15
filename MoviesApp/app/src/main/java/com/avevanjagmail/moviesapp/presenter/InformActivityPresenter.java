@@ -21,6 +21,7 @@ public class InformActivityPresenter {
     private SharedPreferences sPref;
     private String passedArg1;
     private String passedArg;
+    private static final String SHARED = "emailOrId";
 
     private static final String TAG = InformActivityPresenter.class.getSimpleName();
 
@@ -99,7 +100,7 @@ public class InformActivityPresenter {
 
     public String getSPref() {
         sPref = mInformActivityView.getContext().getSharedPreferences("SH", mInformActivityView.getContext().MODE_PRIVATE);
-        passedArg1 = sPref.getString("saved_text", "");
+        passedArg1 = sPref.getString(SHARED, "");
         passedArg = passedArg1.replace(".", "a");
         return passedArg;
     }

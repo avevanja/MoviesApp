@@ -8,5 +8,7 @@ import android.content.Context;
  */
 public interface LoginActivityView {
     Context getContext();
+    void onSuccessLoginFaceBook();
+    void onSuccessLogin();
 
 }

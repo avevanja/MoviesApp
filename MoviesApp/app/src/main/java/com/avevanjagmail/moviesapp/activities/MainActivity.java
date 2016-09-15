@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
             mProfile = Profile.getCurrentProfile();
             if (mProfile == null) {
                 mMainActivityPresenter.logout();
+                finish();
 
             }
             else {

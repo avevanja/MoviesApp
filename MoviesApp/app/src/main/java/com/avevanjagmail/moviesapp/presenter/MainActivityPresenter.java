@@ -21,6 +21,7 @@ public class MainActivityPresenter {
     private SharedPreferences mPref;
     private SharedPreferences mPref1;
     private MainActivityView mMainActivityView;
+    private static final String SHARED = "emailOrId";
 
     public void setMainActivityView(MainActivityView mMainActivityView) {
         this.mMainActivityView = mMainActivityView;
@@ -49,15 +50,20 @@ public class MainActivityPresenter {
     }
 
     public void logOutFromFB() {
+        mPref = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
+        SharedPreferences.Editor ed = mPref.edit();
+        ed.clear();
+        ed.commit();
         FacebookSdk.sdkInitialize(mMainActivityView.getContext());
         LoginManager.getInstance().logOut();
+
 
     }
     public String[] getParametersForLogOut(){
         mPref = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
-        String passedArg = mPref.getString("saved_text", "");
-        mPref1 = mMainActivityView.getContext().getSharedPreferences("SH1", mMainActivityView.getContext().MODE_PRIVATE);
-        String accessToken = mPref1.getString("saved_text1", "");
+        String passedArg = mPref.getString(SHARED, "");
+        mPref1 = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
+        String accessToken = mPref1.getString("accessToken", "");
         String[] sListParameters = new String[2];
         sListParameters[0] = passedArg;
         sListParameters[1] = accessToken;

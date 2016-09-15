@@ -7,5 +7,10 @@ import android.content.Context;
  */
 public interface RegistrationActivityView {
     Context getContext();
+    void onSuccessVerify(String email);
+    void failRegistration(String error);
+    void failVerify(String error);
+
+
 
 }

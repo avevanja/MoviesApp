@@ -33,6 +33,7 @@ public class FavoriteFragmentPresenter {
     private Movie movie;
     private FavoriteFragmentView favoriteFragmentView;
     private ArrayList<String> listId = new ArrayList<>();
+    private static final String SHARED = "emailOrId";
 
     public void setFavoriteFragmentView(FavoriteFragmentView favoriteFragmentView) {
         this.favoriteFragmentView = favoriteFragmentView;
@@ -40,7 +41,7 @@ public class FavoriteFragmentPresenter {
 
     public void UpdateRemoteDb() {
         sPref = favoriteFragmentView.getContext().getSharedPreferences("SH", favoriteFragmentView.getContext().MODE_PRIVATE);
-        passedArg1 = sPref.getString("saved_text", "");
+        passedArg1 = sPref.getString(SHARED, "");
         passedArg = passedArg1.replace(".", "a");
         if (!ConnectivityReceiver.isOnline(favoriteFragmentView.getContext())) {
             localList = DBManager.getLocalListMovie("Favorite");
