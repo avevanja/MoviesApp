@@ -18,13 +18,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="MoviesApp"
+        android:text="MovieBox"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/bright_foreground_inverse_material_light"
         android:textSize="56dp"
-        android:textStyle="normal|italic"
         android:visibility="visible"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="24dp"
+        android:textStyle="italic"
+        android:textIsSelectable="false" />
 
 
     <android.support.design.widget.TextInputLayout
@@ -39,7 +40,7 @@
             android:id="@+id/firstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:drawableLeft="@drawable/ic_person_white_24dp"
             android:hint="@string/first_name"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
@@ -56,6 +57,7 @@
             android:id="@+id/lastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_person_white_24dp"
             android:hint="@string/second_name"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
@@ -71,6 +73,7 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_email_white_24dp"
             android:hint="@string/email"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
@@ -86,6 +89,7 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_lock_open_white_24dp"
 
             android:hint="@string/password"
             android:textColor="#ffffff"
@@ -103,6 +107,7 @@
             android:id="@+id/confirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_lock_white_24dp"
 
             android:hint="confirm password"
             android:textColor="#ffffff"

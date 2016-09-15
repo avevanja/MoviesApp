@@ -125,7 +125,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         }
         if (id == R.id.action_about) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("About")
+            builder
+                    .setTitle("About")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

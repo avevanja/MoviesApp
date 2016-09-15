@@ -66,7 +66,12 @@ public class UserActivityPresenter {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String myUrl = dataSnapshot.child("Users").child(child).child("Photos").getValue().toString();
-                userActivityView.setName(dataSnapshot.child("Users").child(child).child("Name").getValue().toString());
+                if(profile == null) {
+                    userActivityView.setName(dataSnapshot.child("Users").child(child).child("Name").getValue().toString());
+                }
+                else{
+                    userActivityView.setName(profile.getFirstName() + " " + profile.getLastName());
+                }
                 Uri myUri = Uri.parse(myUrl);
                 userActivityView.setUrl(myUri);
             }

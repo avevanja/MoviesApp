@@ -1,6 +1,7 @@
 package com.avevanjagmail.moviesapp.fragments;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,7 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
     private MovieRecyclerAdapter mMovieAdapter;
     private LocalDbRecyclerAdapter mLocalDbRecyclerAdapter;
     private TopFragmentPresenter mTopFragmentPresenter;
+    private ProgressDialog mProgredDIalog;
 
 
 
@@ -62,6 +64,8 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
         mTopFragmentPresenter.setTopFragmentView(this);
         mMovieAdapter = new MovieRecyclerAdapter(this);
         mRecyclerView.setAdapter(mMovieAdapter);
+        mProgredDIalog = new ProgressDialog(getContext());
+        mProgredDIalog.show();
         mTopFragmentPresenter.loadTopMovies();
 
 
@@ -106,6 +110,11 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
         mLocalDbRecyclerAdapter.addNewMovies(localTopMovies);
         mRecyclerView.setAdapter(mLocalDbRecyclerAdapter);
 //        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void stopProgress() {
+        mProgredDIalog.dismiss();
     }
 }
 

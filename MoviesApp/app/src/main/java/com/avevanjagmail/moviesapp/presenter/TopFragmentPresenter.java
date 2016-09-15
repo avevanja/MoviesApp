@@ -52,6 +52,7 @@ public class TopFragmentPresenter {
                 Log.d(TAG, "getCallback onResponse");
                 topListMovies = response.body().getResults();
                 topFragmentView.setTopMovies(topListMovies);
+                topFragmentView.stopProgress();
 
                 localList = DBManager.getLocalListMovie("Top");
                 for (Movie movie1 : localList) {
@@ -70,6 +71,7 @@ public class TopFragmentPresenter {
                 t.printStackTrace();
                 localList = DBManager.getLocalListMovie("Top");
                 topFragmentView.setLocalTopMovies(localList);
+                topFragmentView.stopProgress();
 
             }
         };

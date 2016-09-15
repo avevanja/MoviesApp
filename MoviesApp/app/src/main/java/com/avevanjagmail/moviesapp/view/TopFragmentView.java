@@ -12,5 +12,7 @@ public interface TopFragmentView {
     void setTopMovies(ArrayList<MovieApi> topMovies);
     void setMoreTopMovies( ArrayList<MovieApi> topMovies);
     void setLocalTopMovies(ArrayList<Movie> localTopMovies);
+    void stopProgress();
+
 
 }

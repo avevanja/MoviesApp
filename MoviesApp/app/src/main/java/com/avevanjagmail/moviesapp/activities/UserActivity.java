@@ -156,11 +156,6 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
 
     @Override
     public void setName(String name) {
-        if (profile == null) {
-            email = name;
-        } else {
-            email = profile.getFirstName() + " " + profile.getLastName();
-        }
-        emailText.setText(email);
+        emailText.setText(name);
     }
 }

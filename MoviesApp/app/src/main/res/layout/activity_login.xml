@@ -18,14 +18,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginTop="67dp"
-        android:text="MoviesApp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="36dp"
+        android:text="MovieBox"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/bright_foreground_inverse_material_light"
         android:textSize="56dp"
-        android:textStyle="normal|italic"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:textStyle="normal|italic" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:border_width="2dp"
+        app:border_color="#000000"
+        android:id="@+id/cast_foto4"
+        android:layout_below="@+id/textView"
+
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/labl"
+        android:layout_marginBottom="8dp" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/view"
@@ -33,13 +45,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView">
+        android:layout_below="@+id/cast_foto4">
 
         <EditText
             android:id="@+id/lastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="email"
+            android:maxLines="1"
+            android:drawableLeft="@drawable/ic_email_white_24dp"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
 
@@ -53,11 +67,13 @@
 
         <EditText
             android:id="@+id/email"
+            android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="password"
             android:textColor="#ffffff"
-            android:password="true" />
+            android:password="true"
+            android:drawableLeft="@drawable/ic_lock_white_24dp" />
     </android.support.design.widget.TextInputLayout>
 
 
@@ -70,7 +86,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/view2"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="46dp"
         android:background="@drawable/ripple_btn_log"
         android:onClick="onClick1"
         android:text="Login"
@@ -91,7 +107,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="36dp"
         android:clickable="true"
         android:onClick="onClick"
         android:text="Register now"
