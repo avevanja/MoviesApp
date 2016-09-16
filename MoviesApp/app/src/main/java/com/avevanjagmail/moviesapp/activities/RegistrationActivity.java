@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -32,42 +31,42 @@ import java.io.ByteArrayOutputStream;
  */
 public class RegistrationActivity extends AppCompatActivity implements RegistrationActivityView {
     final String TAG = RegistrationActivity.class.getSimpleName();
-    private EditText fName, lName, email, password, confirmPassword;
+    private EditText mEditTextName, mEditTextLastName, mEditTextEmail, mEditTextPassword, mEditTextConfirmPassword;
     private Bitmap thumbnail;
-    private Button btn_create;
-    private ProgressDialog progressDialog;
-    private ImageView ivImage;
+    private Button mButtonRegistration;
+    private ProgressDialog mProgressDialog;
+    private ImageView mImageViewAvatar;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private String userChoosenTask, passedArg, newPassedArg;
-    private TextView registered;
+    private String mUserChooseTask, mPassedArg, mNewPassedArg;
+    private TextView mTextViewRegistered;
     private RegistrationActivityPresenter mRegistrationActivityPresenter;
-    private SharedPreferences mSharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        fName = (EditText) findViewById(R.id.firstName);
-        lName = (EditText) findViewById(R.id.lastName);
-        email = (EditText) findViewById(R.id.email);
-        password = (EditText) findViewById(R.id.password);
-        ivImage = (ImageView) findViewById(R.id.cast_foto3);
-        btn_create = (Button) (findViewById(R.id.btn_create));
-        registered = (TextView) (findViewById(R.id.registered));
-        confirmPassword = (EditText) findViewById(R.id.confirm_password);
+        mEditTextName = (EditText) findViewById(R.id.firstName);
+        mEditTextLastName = (EditText) findViewById(R.id.lastName);
+        mEditTextEmail = (EditText) findViewById(R.id.email);
+        mEditTextPassword = (EditText) findViewById(R.id.password);
+        mImageViewAvatar = (ImageView) findViewById(R.id.cast_foto3);
+        mButtonRegistration = (Button) (findViewById(R.id.btn_create));
+        mTextViewRegistered = (TextView) (findViewById(R.id.registered));
+        mEditTextConfirmPassword = (EditText) findViewById(R.id.confirm_password);
         mRegistrationActivityPresenter = new RegistrationActivityPresenter();
 
 
-        progressDialog = new ProgressDialog(this);
-        ivImage.setOnClickListener(new View.OnClickListener() {
+        mProgressDialog = new ProgressDialog(this);
+        mImageViewAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ivImage.setBackgroundResource(0);
+                mImageViewAvatar.setBackgroundResource(0);
                 selectImage();
             }
         });
-        registered.setOnClickListener(new View.OnClickListener() {
+        mTextViewRegistered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -77,48 +76,47 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         mRegistrationActivityPresenter.setRegistrationActivityView(this);
 
 
-        btn_create.setOnClickListener(new View.OnClickListener() {
+        mButtonRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean error = false;
-                if (fName.getText().length() == 0) {
-                    fName.setError("please write name");
+                if (mEditTextName.getText().length() == 0) {
+                    mEditTextName.setError("please write name");
                     error = true;
                 }
-                if (lName.getText().length() == 0) {
-                    lName.setError("please write second name");
+                if (mEditTextLastName.getText().length() == 0) {
+                    mEditTextLastName.setError("please write second name");
                     error = true;
                 }
-                if (email.getText().length() == 0) {
-                    email.setError("please write email");
+                if (mEditTextEmail.getText().length() == 0) {
+                    mEditTextEmail.setError("please write email");
                     error = true;
                 }
-                if (password.getText().length() == 0) {
-                    password.setError("please write password");
+                if (mEditTextPassword.getText().length() == 0) {
+                    mEditTextPassword.setError("please write password");
                     error = true;
                 }
-                if (confirmPassword.getText().length() == 0) {
-                    confirmPassword.setError("please confirm password");
+                if (mEditTextConfirmPassword.getText().length() == 0) {
+                    mEditTextConfirmPassword.setError("please confirm password");
                     error = true;
                 }
-                if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
-                    password.setError("confirm password not correct");
+                if (!mEditTextPassword.getText().toString().equals(mEditTextConfirmPassword.getText().toString())) {
+                    mEditTextPassword.setError("confirm mEditTextPassword not correct");
                     error = true;
                 }
                 if (!error) {
-                    passedArg = email.getText().toString();
-                    newPassedArg = passedArg.replace(".", "a");
-                    if(thumbnail==null){
+                    mPassedArg = mEditTextEmail.getText().toString();
+                    mNewPassedArg = mPassedArg.replace(".", "a");
+                    if (thumbnail == null) {
                         Toast.makeText(RegistrationActivity.this, "Please add photo", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        progressDialog.show();
+                    } else {
+                        mProgressDialog.show();
                         Uri tempUri = getImageUri(getApplicationContext(), thumbnail);
                         Log.d(TAG, "photoUri - " + tempUri.toString());
 
-                        mRegistrationActivityPresenter.uploadPhoto(tempUri, newPassedArg);
-                        mRegistrationActivityPresenter.doRegisterAndSendVerify(fName.getText().toString(), lName.getText().toString(), email.getText().toString(),
-                                password.getText().toString(), newPassedArg);
+                        mRegistrationActivityPresenter.uploadPhoto(tempUri, mNewPassedArg);
+                        mRegistrationActivityPresenter.doRegisterAndSendVerify(mEditTextName.getText().toString(), mEditTextLastName.getText().toString(), mEditTextEmail.getText().toString(),
+                                mEditTextPassword.getText().toString(), mNewPassedArg);
                     }
 
                 }
@@ -128,25 +126,27 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     private void selectImage() {
-        final CharSequence[] items = {"Take Photo", "Choose from Library",
-                "Cancel"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final CharSequence[] items = {"Take Photo", "Choose from Library"};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
 
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 boolean result = com.avevanjagmail.moviesapp.utils.Utility.checkPermission(getApplicationContext());
                 if (items[item].equals("Take Photo")) {
-                    userChoosenTask = "Take Photo";
+                    mUserChooseTask = "Take Photo";
                     if (result)
                         cameraIntent();
                 } else if (items[item].equals("Choose from Library")) {
-                    userChoosenTask = "Choose from Library";
+                    mUserChooseTask = "Choose from Library";
                     if (result)
                         galleryIntent();
-
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
                 }
             }
         });
@@ -158,9 +158,9 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         switch (requestCode) {
             case com.avevanjagmail.moviesapp.utils.Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Take Photo"))
+                    if (mUserChooseTask.equals("Take Photo"))
                         cameraIntent();
-                    else if (userChoosenTask.equals("Choose from Library"))
+                    else if (mUserChooseTask.equals("Choose from Library"))
                         galleryIntent();
                 } else {
 
@@ -190,8 +190,8 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
             if (requestCode == SELECT_FILE)
                 mRegistrationActivityPresenter.onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA) {
-                progressDialog.setMessage("Photo is uploading...");
-                progressDialog.show();
+                mProgressDialog.setMessage("Photo is uploading...");
+                mProgressDialog.show();
                 mRegistrationActivityPresenter.onCaptureImageResult(data);
             }
         }
@@ -230,8 +230,8 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
     @Override
     public void setImage(Bitmap thumbnail) {
-        ivImage.setImageBitmap(thumbnail);
-        progressDialog.dismiss();
+        mImageViewAvatar.setImageBitmap(thumbnail);
+        mProgressDialog.dismiss();
         this.thumbnail = thumbnail;
 
     }

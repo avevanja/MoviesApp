@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,21 +56,29 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
 
                 String login = mEmailEditText.getText().toString();
                 String password = mPasswordEditText.getText().toString();
-                if ((mEmailEditText.getText().toString().equals("") ) && (mPasswordEditText.getText().toString().equals(""))) {
-                    Toast.makeText(getApplicationContext(), "Input login and password, please", Toast.LENGTH_SHORT).show();
-                } else {
-                    if (mEmailEditText.getText().toString() == "") {
-                        Toast.makeText(getApplicationContext(), "Input login, please", Toast.LENGTH_SHORT).show();
-                    }
-                    if (mPasswordEditText.getText().toString() == "") {
-                        Toast.makeText(getApplicationContext(), "Input password,please", Toast.LENGTH_LONG).show();
-                    } else {
-                        mLoginActivityPresenter.doLogin(login, password);
-
-                    }
+                boolean error = false;
+                if(login.length()==0){
+                    mEmailEditText.setError("please write email");
+                    error = true;
+                }
+                if(password.length()==0){
+                    mPasswordEditText.setError("please write password");
+                    error = true;
+                }
+                if(!error) {
+                    mLoginActivityPresenter.doLogin(login, password);
                 }
             }
         });
+//        mEmailEditText.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+//                if(i == KeyEvent.KEYCODE_ENTER) {
+//                    mEmailEditText.requestFocus();
+//                }
+//                return true;
+//            }
+//        });
         mRegisterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

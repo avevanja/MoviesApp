@@ -22,34 +22,31 @@ import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.presenter.UserActivityPresenter;
 import com.avevanjagmail.moviesapp.view.UserActivityView;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
 import com.squareup.picasso.Picasso;
 
 
 public class UserActivity extends AppCompatActivity implements UserActivityView {
-    private ImageView ivImage;
-    private FloatingActionButton btnSelect;
+    private ImageView mImageViewPhotoUser;
+    private FloatingActionButton mButtonSelectPhoto;
     private int REQUEST_CAMERA = 0, SELECT_FILE = 1;
-    private String userChoosenTask, email;
-    private TextView info, emailText;
-    private Profile profile;
+    private String userChooseTask;
+    private TextView mTextViewEmail;
     private UserActivityPresenter mUserActivityPresenter;
-    private Toolbar mToolbarInformActivity;
+    private Toolbar mToolbarUserActivity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_user);
-        profile = Profile.getCurrentProfile();
-        emailText = (TextView) findViewById(R.id.name_user_tv);
+        mTextViewEmail = (TextView) findViewById(R.id.name_user_tv);
 
-        ivImage = (ImageView) findViewById(R.id.expandedImage);
-        mToolbarInformActivity = (Toolbar) findViewById(R.id.toolbar_inf_act1);
-        setSupportActionBar(mToolbarInformActivity);
+        mImageViewPhotoUser = (ImageView) findViewById(R.id.expandedImage);
+        mToolbarUserActivity = (Toolbar) findViewById(R.id.toolbar_inf_act1);
+        setSupportActionBar(mToolbarUserActivity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        mToolbarInformActivity.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbarUserActivity.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -59,8 +56,8 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
         mUserActivityPresenter = new UserActivityPresenter(this);
         mUserActivityPresenter.downloadPhotoFromFireBase();
 
-        btnSelect = (FloatingActionButton) findViewById(R.id.change_photo);
-        btnSelect.setOnClickListener(new View.OnClickListener() {
+        mButtonSelectPhoto = (FloatingActionButton) findViewById(R.id.change_photo);
+        mButtonSelectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectImage();
@@ -75,34 +72,37 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
         switch (requestCode) {
             case com.avevanjagmail.moviesapp.utils.Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Take Photo"))
+                    if (userChooseTask.equals("Take Photo"))
                         cameraIntent();
-                    else if (userChoosenTask.equals("Choose from Library"))
+                    else if (userChooseTask.equals("Choose from Library"))
                         galleryIntent();
-                } else {
-                    //code for deny
                 }
                 break;
         }
     }
 
     private void selectImage() {
-        final CharSequence[] items = {"Take Photo", "Choose from Library",
-                "Cancel"};
+        final CharSequence[] items = {"Take Photo", "Choose from Library"};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 boolean result = com.avevanjagmail.moviesapp.utils.Utility.checkPermission(getApplicationContext());
 
                 if (items[item].equals("Take Photo")) {
-                    userChoosenTask = "Take Photo";
+                    userChooseTask = "Take Photo";
                     if (result)
                         cameraIntent();
 
                 } else if (items[item].equals("Choose from Library")) {
-                    userChoosenTask = "Choose from Library";
+                    userChooseTask = "Choose from Library";
                     if (result)
                         galleryIntent();
 
@@ -146,16 +146,16 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
 
     @Override
     public void setUrl(Uri uri) {
-        Picasso.with(getApplicationContext()).load(uri).fit().centerCrop().into(ivImage);
+        Picasso.with(getApplicationContext()).load(uri).fit().centerCrop().into(mImageViewPhotoUser);
     }
 
     @Override
     public void setBm(Bitmap bitmap) {
-        ivImage.setImageBitmap(bitmap);
+        mImageViewPhotoUser.setImageBitmap(bitmap);
     }
 
     @Override
     public void setName(String name) {
-        emailText.setText(name);
+        mTextViewEmail.setText(name);
     }
 }
