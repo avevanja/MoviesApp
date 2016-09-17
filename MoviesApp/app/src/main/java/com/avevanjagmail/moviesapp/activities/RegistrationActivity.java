@@ -138,6 +138,8 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
+                //check for Api 23 - Context should come from activity
+                //best way - to give activity to method
                 boolean result = com.avevanjagmail.moviesapp.utils.Utility.checkPermission(getApplicationContext());
                 if (items[item].equals("Take Photo")) {
                     mUserChooseTask = "Take Photo";

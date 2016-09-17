@@ -39,6 +39,8 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
     public static FavoriteTabFragment newInstance(int sectionNumber) {
         FavoriteTabFragment fragment = new FavoriteTabFragment();
         Bundle args = new Bundle();
+        //??
+        //де використовується?
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
@@ -59,6 +61,7 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
         mRecyclerView.setAdapter(mMovieAdapter);
         Log.d(TAG, "onCreateView: ");
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
+        //в презентер
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

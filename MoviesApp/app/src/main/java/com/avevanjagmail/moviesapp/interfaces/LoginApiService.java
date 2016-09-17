@@ -20,6 +20,7 @@ import retrofit2.http.PUT;
  * Created by irabokalo on 27.07.2016.
  */
 public interface LoginApiService {
+    //перенести до Ретрофіту
     String BASE_URL = "http://146.185.180.39:4020/";
 
     @POST("login/email/")

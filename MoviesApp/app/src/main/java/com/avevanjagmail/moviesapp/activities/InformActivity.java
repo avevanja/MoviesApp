@@ -35,6 +35,10 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
     private ArrayList<Genre> mListMovie;
     private ArrayList<Cast> mListCast;
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    //це тут не має бути
+    //в презентер
+    //робота з даними
+    //View отримує лише готові дані
     private DatabaseReference mUserId = mRootRef.child("Users");
     private static final String MOVIE_ID = "movie.id";
     private static final String URL_IMAGE = "url";
@@ -86,6 +90,7 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
 
         });
 
+        //Listener теж в презентер
         eventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {

@@ -55,11 +55,14 @@ public class SearchActivity extends AppCompatActivity implements OpenInformActiv
 
     }
 
+    //в Презентер
     @Override
     public void onClickOpen(String id, String url, String title) {
         InformActivity.start(id, url, title, this);
     }
 
+    //перевірки, логіку в презентер!
+    //в'юшкам лише готові дані
     @Override
     public void setSearchMoviesList(ArrayList<MovieApi> searchMoviesList) {
         if(searchMoviesList.size() == 0){
@@ -69,6 +72,7 @@ public class SearchActivity extends AppCompatActivity implements OpenInformActiv
 
     }
 
+    //WTF???
     @Override
     public Context getContext() {
         return null;

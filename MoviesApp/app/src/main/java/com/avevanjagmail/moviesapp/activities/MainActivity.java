@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                //в Презентер!
 
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 String word = getIntent().getStringExtra("mail");
@@ -140,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         }
         if (id == R.id.action_logout) {
+            //всю логіку (онлайн/офлайн, фейсбук/не-фейсбук) в Презентер
             if (ConnectivityReceiver.isOnline(getApplicationContext())) {
 
 
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         }
     }
 
-
+//в окремий клас
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> mFragmentList = new ArrayList<>();
         private ArrayList<String> mFragmentListTitle = new ArrayList<>();
