@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mTabLayout = (TabLayout) findViewById(R.id.tabs_mcv);
         mTabLayout.setupWithViewPager(mViewPager);
         mMainActivityPresenter.saveFaceBook();
+
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
             mProfile = Profile.getCurrentProfile();
             if (mProfile == null) {
                 mMainActivityPresenter.logout();
+                finish();
 
             } else {
                 mMainActivityPresenter.logOutFromFB();

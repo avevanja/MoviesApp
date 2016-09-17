@@ -84,27 +84,29 @@ public class MainActivityPresenter {
     }
 
     public void saveFaceBook() {
+
         profile = Profile.getCurrentProfile();
-
-        saveInSharedPreferences(profile.getId().toString(), SHARED);
-        mImageUrl = String.valueOf(profile.getProfilePictureUri(717, 400));
-        mRootRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.child("Users").child(profile.getId()).hasChild("Photos")) {
-                    mUserId.child(profile.getId()).child("Photos").setValue(mImageUrl);
+        if (profile != null) {
+            saveInSharedPreferences(profile.getId().toString(), SHARED);
+            mImageUrl = String.valueOf(profile.getProfilePictureUri(717, 400));
+            mRootRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (!dataSnapshot.child("Users").child(profile.getId()).hasChild("Photos")) {
+                        mUserId.child(profile.getId()).child("Photos").setValue(mImageUrl);
+                    }
                 }
-            }
 
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
-   private void saveInSharedPreferences(String values, String key) {
+    private void saveInSharedPreferences(String values, String key) {
         mSharedPreferences = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(key, values);
