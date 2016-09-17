@@ -1,8 +1,6 @@
 package com.avevanjagmail.moviesapp.models;
 
-/**
- * Created by irabokalo on 01.08.2016.
- */
+
 public class VerifyResponse {
    private Succeeded succeeded;
    private String data;

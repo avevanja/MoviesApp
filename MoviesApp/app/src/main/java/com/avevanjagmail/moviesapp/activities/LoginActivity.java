@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.presenter.LoginActivityPresenter;
 import com.avevanjagmail.moviesapp.view.LoginActivityView;
@@ -31,25 +30,21 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
     private CallbackManager mCallbackManager;
     private static final String SHARED = "emailOrId";
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FacebookSdk.sdkInitialize(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mFaceBookLoginButton = (LoginButton) findViewById(R.id.login_button);
+        mFaceBookLoginButton = (LoginButton) findViewById(R.id.login_facebook_login_btn);
         mCallbackManager = CallbackManager.Factory.create();
         mFaceBookLoginButton.registerCallback(mCallbackManager, mLoginActivityPresenter.facebookLogin());
-        mRegisterView = (TextView) findViewById(R.id.register_text_view);
-        mEmailEditText = (EditText) findViewById(R.id.lastName);
-        mPasswordEditText = (EditText) findViewById(R.id.email);
+        mRegisterView = (TextView) findViewById(R.id.login_register_tv);
+        mEmailEditText = (EditText) findViewById(R.id.login_email_et);
+        mPasswordEditText = (EditText) findViewById(R.id.login_password_et);
         mLoginActivityPresenter.setLoginActivityView(this);
-        mLoginBtn = (Button) findViewById(R.id.btn_create);
+        mLoginBtn = (Button) findViewById(R.id.login_login_btn);
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,6 +112,11 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 }

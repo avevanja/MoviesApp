@@ -47,14 +47,14 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        mEditTextName = (EditText) findViewById(R.id.firstName);
-        mEditTextLastName = (EditText) findViewById(R.id.lastName);
-        mEditTextEmail = (EditText) findViewById(R.id.email);
-        mEditTextPassword = (EditText) findViewById(R.id.password);
-        mImageViewAvatar = (ImageView) findViewById(R.id.cast_foto3);
-        mButtonRegistration = (Button) (findViewById(R.id.btn_create));
-        mTextViewRegistered = (TextView) (findViewById(R.id.registered));
-        mEditTextConfirmPassword = (EditText) findViewById(R.id.confirm_password);
+        mEditTextName = (EditText) findViewById(R.id.registration_first_name_et);
+        mEditTextLastName = (EditText) findViewById(R.id.registration_last_name_et);
+        mEditTextEmail = (EditText) findViewById(R.id.registration_email_et);
+        mEditTextPassword = (EditText) findViewById(R.id.registration_password_et);
+        mImageViewAvatar = (ImageView) findViewById(R.id.registration_photo_iv);
+        mButtonRegistration = (Button) (findViewById(R.id.registration_registration_btn));
+        mTextViewRegistered = (TextView) (findViewById(R.id.registration_already_tv));
+        mEditTextConfirmPassword = (EditText) findViewById(R.id.registration_confirm_password_et);
         mRegistrationActivityPresenter = new RegistrationActivityPresenter();
 
 

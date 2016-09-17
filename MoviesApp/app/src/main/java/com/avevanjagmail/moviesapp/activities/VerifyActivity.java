@@ -23,16 +23,13 @@ public class VerifyActivity extends AppCompatActivity implements VerifyActivityV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify);
         verifyActivityPresenter.setVerifyActivityView(this);
-
         mActivateBtn = (Button) findViewById(R.id.activate_btn);
-        mCodeTextEdit = (EditText) findViewById(R.id.editText);
+        mCodeTextEdit = (EditText) findViewById(R.id.activate_code_et);
 
 
         mActivateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 String code = mCodeTextEdit.getText().toString();
                 String emailT = getIntent().getStringExtra("email");
                 verifyActivityPresenter.verify(emailT, code);

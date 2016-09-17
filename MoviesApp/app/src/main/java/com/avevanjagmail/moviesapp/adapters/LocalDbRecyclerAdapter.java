@@ -55,7 +55,7 @@ public class LocalDbRecyclerAdapter extends RecyclerView.Adapter<LocalDbRecycler
         holder.setName(mMovies.get(position).getTitle());
         final Context context = holder.mImagePosterMovie.getContext();
         Picasso.with(context).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + mMovies.get(position).getBackdropPath()).
-                error(R.drawable.nofim).resize(717, 400).into(holder.mImagePosterMovie);
+                error(R.drawable.ic_no_film).resize(717, 400).into(holder.mImagePosterMovie);
         holder.setDataMovieTextView(mMovies.get(position).getReleaseDate());
         holder.setTopMark(mMovies.get(position).getVoteAverage());
         holder.mCardView.setOnClickListener(new View.OnClickListener() {

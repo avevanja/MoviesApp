@@ -3,9 +3,7 @@ package com.avevanjagmail.moviesapp.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by irabokalo on 27.07.2016.
- */
+
 public class Data {
     @Expose
     @SerializedName("access_token")

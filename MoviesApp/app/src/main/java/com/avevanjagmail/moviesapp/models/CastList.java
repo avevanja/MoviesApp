@@ -5,9 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-/**
- * Created by paulg on 09.08.2016.
- */
+
 public class CastList {
     @SerializedName("cast")
     @Expose

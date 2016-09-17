@@ -3,9 +3,6 @@ package com.avevanjagmail.moviesapp;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-/**
- * Created by paulg on 02.08.2016.
- */
 public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
     public static String TAG = EndlessRecyclerOnScrollListener.class.getSimpleName();
 

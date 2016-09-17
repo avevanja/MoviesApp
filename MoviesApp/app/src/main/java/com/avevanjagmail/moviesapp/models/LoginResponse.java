@@ -1,8 +1,6 @@
 package com.avevanjagmail.moviesapp.models;
 
-/**
- * Created by irabokalo on 27.07.2016.
- */
+
 public class LoginResponse {
  private Succeeded succeeded;
  private Data data;

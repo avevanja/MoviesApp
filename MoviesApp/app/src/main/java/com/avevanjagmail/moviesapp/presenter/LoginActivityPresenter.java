@@ -13,6 +13,7 @@ import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,8 +30,9 @@ public class LoginActivityPresenter {
     private LoginActivityView mLoginActivityView;
     private SharedPreferences mSharedPreferences;
     private static final String SHARED = "emailOrId";
-    private Profile profile;
+//    private Profile profile;
     private String mImageUrl;
+
     private static final String TAG = LoginActivityPresenter.class.getSimpleName();
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mUserId = mRootRef.child("Users");
@@ -73,27 +75,30 @@ public class LoginActivityPresenter {
     }
     public FacebookCallback facebookLogin(){
         return new FacebookCallback<LoginResult>() {
+            private Profile profile;
             @Override
             public void onSuccess(LoginResult loginResult) {
-                profile = Profile.getCurrentProfile();
-                saveInSharedPreferences(profile.getId().toString(), SHARED);
-                mImageUrl = String.valueOf(profile.getProfilePictureUri(717, 400));
-                mRootRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (!dataSnapshot.child("Users").child(profile.getId()).hasChild("need photo")) {
-                            mUserId.child(profile.getId()).child("Photos").setValue(mImageUrl);
-                            mUserId.child(profile.getId()).child("need photo").setValue("no");
-                        }
-                    }
+//                profile = Profile.getCurrentProfile();
+//                Log.v("facebook - profile", profile.getFirstName());
+//                    saveInSharedPreferences(profile.getId().toString(), SHARED);
+//                    mImageUrl = String.valueOf(profile.getProfilePictureUri(717, 400));
+//                    mRootRef.addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            if (!dataSnapshot.child("Users").child(profile.getId()).hasChild("need photo")) {
+//                                mUserId.child(profile.getId()).child("Photos").setValue(mImageUrl);
+//                                mUserId.child(profile.getId()).child("need photo").setValue("no");
+//                            }
+//                        }
+//
+//
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
+                    mLoginActivityView.onSuccessLoginFaceBook();
 
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-                mLoginActivityView.onSuccessLoginFaceBook();
             }
 
             @Override

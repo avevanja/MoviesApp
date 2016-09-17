@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(2);
         setupViewPager(mViewPager);
-
         mTabLayout = (TabLayout) findViewById(R.id.tabs_mcv);
         mTabLayout.setupWithViewPager(mViewPager);
+        mMainActivityPresenter.saveFaceBook();
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

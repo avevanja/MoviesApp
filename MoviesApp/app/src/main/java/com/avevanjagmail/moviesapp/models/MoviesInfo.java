@@ -6,9 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by paulg on 08.08.2016.
- */
+
 public class MoviesInfo {
     @SerializedName("genres")
     @Expose

@@ -2,9 +2,7 @@ package com.avevanjagmail.moviesapp.models;
 
 import com.orm.SugarRecord;
 
-/**
- * Created by John on 15.07.2016.
- */
+
 public class Movie extends SugarRecord {
     public String getTitle() {
         return title;

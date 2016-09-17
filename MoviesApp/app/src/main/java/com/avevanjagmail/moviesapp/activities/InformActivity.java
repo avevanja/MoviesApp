@@ -156,7 +156,7 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
         String text = getIntent().getStringExtra(MOVIE_ID);
 
         Picasso.with(this).load("https://image.tmdb.org/t/p/w533_and_h300_bestv2" + getIntent().getStringExtra(URL_IMAGE)).
-                error(R.drawable.nofim).resize(717, 400).into(mTitleImageView);
+                error(R.drawable.ic_no_film).resize(717, 400).into(mTitleImageView);
         mInformActivityPresenter.getMovieInfo(text);
         mInformActivityPresenter.getCastList(text);
     }
@@ -169,22 +169,22 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
 
             mNameCast.setText(mListCast.get(0).getName());
             Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(0).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastPhoto);
+                    error(R.drawable.ic_user).into(mCastPhoto);
             mNameCast1.setText(mListCast.get(1).getName());
             Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(1).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastPhoto1);
+                    error(R.drawable.ic_user).into(mCastPhoto1);
             mNameCast2.setText(mListCast.get(2).getName());
             Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(2).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastPhoto2);
+                    error(R.drawable.ic_user).into(mCastPhoto2);
             mNameCast3.setText(mListCast.get(3).getName());
             Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(3).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastPhoto3);
+                    error(R.drawable.ic_user).into(mCastPhoto3);
             mNameCast4.setText(mListCast.get(4).getName());
             Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(4).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastPhoto4);
+                    error(R.drawable.ic_user).into(mCastPhoto4);
             mNameCast5.setText(mListCast.get(5).getName());
             Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(5).getProfilePath()).
-                    error(R.drawable.user_icon).into(mCastPhoto5);
+                    error(R.drawable.ic_user).into(mCastPhoto5);
         }
 
     }

@@ -35,18 +35,12 @@ public class InformActivityPresenter {
         RetrofitUtil.getMoviesService()
                 .getMovieInfoFromId(text, "ru")
                 .enqueue(getCallback());
-//        MoviesService mService = RetrofitUtil.getMoviesService();
-//        Call<MoviesInfo> requestMovie = mService.getMovieInfoFromId(text, "ru");
-//        requestMovie.enqueue(getCallback());
     }
 
     public void getCastList(String text) {
         RetrofitUtil.getMoviesService()
                 .getCastList(text)
                 .enqueue(getCastListCallback());
-//        MoviesService mServiceCastList = RetrofitUtil.getMoviesService();
-//        Call<CastList> requestCastList = mServiceCastList.getCastList(text);
-//        requestCastList.enqueue(getCastListCallback());
     }
 
     private Callback<MoviesInfo> getCallback() {
@@ -72,7 +66,6 @@ public class InformActivityPresenter {
             @Override
             public void onResponse(Call<CastList> call, Response<CastList> response) {
                 if (response.body() != null) {
-
                     mInformActivityView.setCastList(response.body().getCast());
                 } else {
                     Log.e(TAG, "onResponse: getCastList is null");
