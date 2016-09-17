@@ -63,7 +63,7 @@ public class SearchActivity extends AppCompatActivity implements OpenInformActiv
     @Override
     public void setSearchMoviesList(ArrayList<MovieApi> searchMoviesList) {
         if(searchMoviesList.size() == 0){
-            Toast.makeText(SearchActivity.this, "Nothing found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SearchActivity.this, R.string.error_search, Toast.LENGTH_SHORT).show();
         }
         mMovieAdapter.addNewMovies(searchMoviesList);
 

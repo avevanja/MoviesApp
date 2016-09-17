@@ -41,7 +41,7 @@ public class VerifyActivity extends AppCompatActivity implements VerifyActivityV
 
     @Override
     public void succeededVerify() {
-        Toast toast = Toast.makeText(getApplicationContext(), "Congratulations you activated your account!", Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(getApplicationContext(), R.string.hint_account_activate, Toast.LENGTH_LONG);
         toast.show();
         Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
 //        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

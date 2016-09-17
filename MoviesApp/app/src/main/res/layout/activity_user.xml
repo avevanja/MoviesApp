@@ -68,7 +68,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:paddingTop="16dp"
-                android:text="Information"
+                android:text="@string/hint_information_user"
                 android:textColor="@color/colorPrimaryDark"
                 />
 
@@ -101,7 +101,7 @@
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:paddingTop="16dp"
-                        android:text="name"
+                        android:text="@string/hint_name_user"
                         android:layout_marginBottom="8dp" />
 
                 </LinearLayout>

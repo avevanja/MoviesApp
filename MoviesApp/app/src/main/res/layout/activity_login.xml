@@ -51,7 +51,7 @@
             android:id="@+id/login_email_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="email"
+            android:hint="@string/hint_email"
             android:maxLines="1"
             android:singleLine="true"
             android:inputType="textEmailAddress"
@@ -72,7 +72,7 @@
             android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="password"
+            android:hint="@string/hint_password"
             android:singleLine="true"
             android:textColor="#ffffff"
             android:inputType="textPassword"
@@ -92,7 +92,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/ripple_btn_log"
         android:onClick="onClick1"
-        android:text="Login"
+        android:text="@string/btn_title_login"
         android:textColor="#ffffff" />
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_facebook_login_btn"
@@ -113,7 +113,7 @@
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:onClick="onClick"
-        android:text="Register now"
+        android:text="@string/title_register"
         android:textColor="#ffffff" />
 
 </RelativeLayout>

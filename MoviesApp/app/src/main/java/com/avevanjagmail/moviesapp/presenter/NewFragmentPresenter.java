@@ -2,6 +2,7 @@ package com.avevanjagmail.moviesapp.presenter;
 
 import android.util.Log;
 
+import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.managers.DBManager;
 import com.avevanjagmail.moviesapp.models.ListMovie;
 import com.avevanjagmail.moviesapp.models.Movie;
@@ -17,27 +18,28 @@ import retrofit2.Response;
 
 
 public class NewFragmentPresenter {
-    private NewFragmentView newFragmentView;
+    private NewFragmentView mNewFragmentView;
     private ArrayList<Movie> localList = new ArrayList<>();
     private ArrayList<MovieApi> newListMovies = new ArrayList<>();
     private Movie movie;
     private static final String TAG = TopFragmentPresenter.class.getSimpleName();
 
 
-    public void setNewFragmentView(NewFragmentView newFragmentView) {
-        this.newFragmentView = newFragmentView;
+    public void setNewFragmentView(NewFragmentView mNewFragmentView) {
+        this.mNewFragmentView = mNewFragmentView;
     }
 
     public void loadNewMovies() {
         RetrofitUtil.getMoviesService()
-                .getNewMovie("ru", 1)
+                .getNewMovie(mNewFragmentView.getContext().getString(R.string.query_lng), 1)
                 .enqueue(getCallback());
     }
 
 
+
     public void loadMoreNewMovies(int current_page) {
         RetrofitUtil.getMoviesService()
-                .getNewMovie("ru", current_page)
+                .getNewMovie(mNewFragmentView.getContext().getString(R.string.query_lng), current_page)
                 .enqueue(getCallbackLoadMore());
 
     }
@@ -50,7 +52,7 @@ public class NewFragmentPresenter {
             public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
                 Log.d(TAG, "getCallback onResponse");
                 newListMovies = response.body().getResults();
-                newFragmentView.setNewMovies(newListMovies);
+                mNewFragmentView.setNewMovies(newListMovies);
 
                 localList = DBManager.getLocalListMovie("New");
                 for (Movie movie1 : localList) {
@@ -69,7 +71,7 @@ public class NewFragmentPresenter {
                 Log.e(TAG, "Error" + t.getMessage());
                 t.printStackTrace();
                 localList = DBManager.getLocalListMovie("New");
-                newFragmentView.setLocalNewMovies(localList);
+                mNewFragmentView.setLocalNewMovies(localList);
             }
         };
     }
@@ -81,7 +83,7 @@ public class NewFragmentPresenter {
             public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
                 Log.d(TAG, "getCallback onResponse");
                 newListMovies = response.body().getResults();
-                newFragmentView.setMoreNewMovies(newListMovies);
+                mNewFragmentView.setMoreNewMovies(newListMovies);
 
 
             }

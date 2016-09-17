@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.avevanjagmail.moviesapp.ConnectivityReceiver;
+import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.managers.DBManager;
 import com.avevanjagmail.moviesapp.models.Movie;
 import com.avevanjagmail.moviesapp.models.MovieApi;
@@ -31,21 +32,21 @@ public class FavoriteFragmentPresenter {
     private String passedArg;
     private List<Movie> localList = new ArrayList<>();
     private Movie movie;
-    private FavoriteFragmentView favoriteFragmentView;
+    private FavoriteFragmentView mFavoriteFragmentView;
     private ArrayList<String> listId = new ArrayList<>();
     private static final String SHARED = "emailOrId";
 
-    public void setFavoriteFragmentView(FavoriteFragmentView favoriteFragmentView) {
-        this.favoriteFragmentView = favoriteFragmentView;
+    public void setFavoriteFragmentView(FavoriteFragmentView mFavoriteFragmentView) {
+        this.mFavoriteFragmentView = mFavoriteFragmentView;
     }
 
     public void UpdateRemoteDb() {
-        sPref = favoriteFragmentView.getContext().getSharedPreferences("SH", favoriteFragmentView.getContext().MODE_PRIVATE);
+        sPref = mFavoriteFragmentView.getContext().getSharedPreferences("SH", mFavoriteFragmentView.getContext().MODE_PRIVATE);
         passedArg1 = sPref.getString(SHARED, "");
         passedArg = passedArg1.replace(".", "a");
-        if (!ConnectivityReceiver.isOnline(favoriteFragmentView.getContext())) {
+        if (!ConnectivityReceiver.isOnline(mFavoriteFragmentView.getContext())) {
             localList = DBManager.getLocalListMovie("Favorite");
-            favoriteFragmentView.setLocalFavoriteMovies((ArrayList<Movie>) localList);
+            mFavoriteFragmentView.setLocalFavoriteMovies((ArrayList<Movie>) localList);
         }
 
         mUserId.child(passedArg).child("Movies").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -62,7 +63,7 @@ public class FavoriteFragmentPresenter {
 
                     listId.add(movie);
                     RetrofitUtil.getMoviesService()
-                            .getMovieForFavorite(movie, "ru")
+                            .getMovieForFavorite(movie, mFavoriteFragmentView.getContext().getString(R.string.query_lng))
                             .enqueue(getCallbackFavorite());
                 }
 
@@ -81,7 +82,7 @@ public class FavoriteFragmentPresenter {
             public void onResponse(Call<MovieApi> call, Response<MovieApi> response) {
                 if (response.body() != null) {
                     Log.d(TAG, "onResponse: movies received " + response.body().toString());
-                    favoriteFragmentView.setFavoriteMovies(response.body());
+                    mFavoriteFragmentView.setFavoriteMovies(response.body());
                     movie = new Movie(response.body(), "Favorite");
                     movie.save();
 

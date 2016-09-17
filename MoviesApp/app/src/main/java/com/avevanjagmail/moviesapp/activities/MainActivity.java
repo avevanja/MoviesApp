@@ -81,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     private void setupViewPager(ViewPager mViewPager) {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(TopTabFragment.newInstance(), "Top");
-        adapter.addFragment(NewTabFragment.newInstance(), "New");
-        adapter.addFragment(FavoriteTabFragment.newInstance(3), "Favorite");
+        adapter.addFragment(TopTabFragment.newInstance(), getApplicationContext().getString(R.string.tab_first_name));
+        adapter.addFragment(NewTabFragment.newInstance(), getApplicationContext().getString(R.string.tab_second_name));
+        adapter.addFragment(FavoriteTabFragment.newInstance(3), getApplicationContext().getString(R.string.tab_third_name));
         mViewPager.setAdapter(adapter);
 
     }
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                 }
             }
             else {
-                Toast.makeText(MainActivity.this, "Check your internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, R.string.error_connection, Toast.LENGTH_SHORT).show();
             }
         }
 

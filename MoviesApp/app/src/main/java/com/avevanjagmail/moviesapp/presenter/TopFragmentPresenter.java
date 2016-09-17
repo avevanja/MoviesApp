@@ -2,6 +2,7 @@ package com.avevanjagmail.moviesapp.presenter;
 
 import android.util.Log;
 
+import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.managers.DBManager;
 import com.avevanjagmail.moviesapp.models.ListMovie;
 import com.avevanjagmail.moviesapp.models.Movie;
@@ -17,26 +18,26 @@ import retrofit2.Response;
 
 
 public class TopFragmentPresenter {
-    private TopFragmentView topFragmentView;
+    private TopFragmentView mTopFragmentView;
     private ArrayList<Movie> localList = new ArrayList<>();
     private ArrayList<MovieApi> topListMovies = new ArrayList<>();
     private static final String TAG = TopFragmentPresenter.class.getSimpleName();
 
 
-    public void setTopFragmentView(TopFragmentView topFragmentView){
-        this.topFragmentView = topFragmentView;
+    public void setTopFragmentView(TopFragmentView mTopFragmentView){
+        this.mTopFragmentView = mTopFragmentView;
     }
 
     public void loadTopMovies(){
         RetrofitUtil.getMoviesService()
-                .getTopMovie("ru", 1)
+                .getTopMovie(mTopFragmentView.getContext().getString(R.string.query_lng), 1)
                 .enqueue(getCallback());
     }
 
 
     public void loadMoreTopMovies(int current_page){
         RetrofitUtil.getMoviesService()
-                .getTopMovie("ru", current_page)
+                .getTopMovie(mTopFragmentView.getContext().getString(R.string.query_lng), current_page)
                 .enqueue(getCallbackLoadMore());
     }
 
@@ -51,8 +52,8 @@ public class TopFragmentPresenter {
             public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
                 Log.d(TAG, "getCallback onResponse");
                 topListMovies = response.body().getResults();
-                topFragmentView.setTopMovies(topListMovies);
-                topFragmentView.stopProgress();
+                mTopFragmentView.setTopMovies(topListMovies);
+                mTopFragmentView.stopProgress();
 
                 localList = DBManager.getLocalListMovie("Top");
                 for (Movie movie1 : localList) {
@@ -70,8 +71,8 @@ public class TopFragmentPresenter {
                 Log.e(TAG, "Error" + t.getMessage());
                 t.printStackTrace();
                 localList = DBManager.getLocalListMovie("Top");
-                topFragmentView.setLocalTopMovies(localList);
-                topFragmentView.stopProgress();
+                mTopFragmentView.setLocalTopMovies(localList);
+                mTopFragmentView.stopProgress();
 
             }
         };
@@ -83,7 +84,7 @@ public class TopFragmentPresenter {
             public void onResponse(Call<ListMovie> call, Response<ListMovie> response) {
                 Log.d(TAG, "getCallback onResponse");
                 topListMovies = response.body().getResults();
-                topFragmentView.setMoreTopMovies(topListMovies);
+                mTopFragmentView.setMoreTopMovies(topListMovies);
 
 
 

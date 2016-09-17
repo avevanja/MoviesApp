@@ -3,6 +3,7 @@ package com.avevanjagmail.moviesapp.presenter;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.models.CastList;
 import com.avevanjagmail.moviesapp.models.MoviesInfo;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
@@ -33,7 +34,7 @@ public class InformActivityPresenter {
 
     public void getMovieInfo(String text) {
         RetrofitUtil.getMoviesService()
-                .getMovieInfoFromId(text, "ru")
+                .getMovieInfoFromId(text, mInformActivityView.getContext().getString(R.string.query_lng))
                 .enqueue(getCallback());
     }
 

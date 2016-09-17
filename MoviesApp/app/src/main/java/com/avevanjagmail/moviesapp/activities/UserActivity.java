@@ -52,7 +52,7 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
                 onBackPressed();
             }
         });
-        setTitle("Setting");
+        setTitle(R.string.action_settings);
         mUserActivityPresenter = new UserActivityPresenter(this);
         mUserActivityPresenter.downloadPhotoFromFireBase();
         mUserActivityPresenter.getUserName();
