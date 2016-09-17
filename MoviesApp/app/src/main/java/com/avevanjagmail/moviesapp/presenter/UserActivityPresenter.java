@@ -31,17 +31,18 @@ import java.io.IOException;
 public class UserActivityPresenter {
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mUserId = mRootRef.child("Users");
+    private SharedPreferences mSharedPreferences;
     private SharedPreferences mPref;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReferenceFromUrl("gs://movies-app-fda81.appspot.com");
     private String passedArg1;
     private String passedArg;
     private Profile profile;
-    private UserActivityView userActivityView;
+    private UserActivityView mUserActivityView;
     private static final String SHARED = "emailOrId";
 
-    public UserActivityPresenter(UserActivityView userActivityView) {
-        this.userActivityView = userActivityView;
+    public UserActivityPresenter(UserActivityView mUserActivityView) {
+        this.mUserActivityView = mUserActivityView;
     }
 
     public void downloadPhotoFromFireBase() {
@@ -55,7 +56,7 @@ public class UserActivityPresenter {
     }
 
     public String getChildFromShared() {
-        mPref = userActivityView.getContext().getSharedPreferences("SH", userActivityView.getContext().MODE_PRIVATE);
+        mPref = mUserActivityView.getContext().getSharedPreferences("SH", mUserActivityView.getContext().MODE_PRIVATE);
         passedArg1 = mPref.getString(SHARED, "");
         passedArg = passedArg1.replace(".", "a");
         return passedArg;
@@ -66,14 +67,16 @@ public class UserActivityPresenter {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String myUrl = dataSnapshot.child("Users").child(child).child("Photos").getValue().toString();
-                if(profile == null) {
-                    userActivityView.setName(dataSnapshot.child("Users").child(child).child("Name").getValue().toString());
-                }
-                else{
-                    userActivityView.setName(profile.getFirstName() + " " + profile.getLastName());
+                if (profile == null) {
+                    mUserActivityView.setName(dataSnapshot.child("Users").child(child).child("Name").getValue().toString());
+                    saveInSharedPreferences(dataSnapshot.child("Users").child(child).child("Name").getValue().toString(), "name");
+
+                } else {
+                    mUserActivityView.setName(profile.getFirstName() + " " + profile.getLastName());
+                    saveInSharedPreferences(profile.getFirstName() + " " + profile.getLastName(), "name");
                 }
                 Uri myUri = Uri.parse(myUrl);
-                userActivityView.setUrl(myUri);
+                mUserActivityView.setUrl(myUri);
             }
 
             @Override
@@ -102,26 +105,27 @@ public class UserActivityPresenter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        userActivityView.setBm(thumbnail);
+        mUserActivityView.setBm(thumbnail);
 
-        Uri tempUri = getImageUri(userActivityView.getContext(), thumbnail);
+        Uri tempUri = getImageUri(mUserActivityView.getContext(), thumbnail);
         uploadPhoto(tempUri);
 
     }
+
     @SuppressWarnings("deprecation")
     public void onSelectFromGalleryResult(Intent data) {
 
         Bitmap bm = null;
         if (data != null) {
             try {
-                bm = MediaStore.Images.Media.getBitmap(userActivityView.getContext().getContentResolver(), data.getData());
+                bm = MediaStore.Images.Media.getBitmap(mUserActivityView.getContext().getContentResolver(), data.getData());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        userActivityView.setBm(bm);
+        mUserActivityView.setBm(bm);
 
-        Uri tempUri = getImageUri(userActivityView.getContext(), bm);
+        Uri tempUri = getImageUri(mUserActivityView.getContext(), bm);
         uploadPhoto(tempUri);
 
     }
@@ -132,7 +136,8 @@ public class UserActivityPresenter {
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
-    private void uploadPhoto(Uri tempUri){
+
+    private void uploadPhoto(Uri tempUri) {
         StorageReference mountainImagesRef = storageRef.child("images/" + tempUri.getLastPathSegment());
         UploadTask uploadTask = mountainImagesRef.putFile(tempUri);
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -154,6 +159,18 @@ public class UserActivityPresenter {
 
                     }
                 });
+    }
+
+    private void saveInSharedPreferences(String values, String key) {
+        mSharedPreferences = mUserActivityView.getContext().getSharedPreferences("SHNAME", mUserActivityView.getContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(key, values);
+        editor.commit();
+    }
+
+    public void getUserName() {
+        mPref = mUserActivityView.getContext().getSharedPreferences("SHNAME", mUserActivityView.getContext().MODE_PRIVATE);
+        mUserActivityView.setName(mPref.getString("name", " no name"));
     }
 
 }

@@ -55,6 +55,8 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
         setTitle("Setting");
         mUserActivityPresenter = new UserActivityPresenter(this);
         mUserActivityPresenter.downloadPhotoFromFireBase();
+        mUserActivityPresenter.getUserName();
+
 
         mButtonSelectPhoto = (FloatingActionButton) findViewById(R.id.change_photo);
         mButtonSelectPhoto.setOnClickListener(new View.OnClickListener() {

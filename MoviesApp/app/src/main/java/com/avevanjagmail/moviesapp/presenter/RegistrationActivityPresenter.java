@@ -51,6 +51,7 @@ public class RegistrationActivityPresenter {
         RetrofitUtil.getLoginService().verify(new VerifyRequest(email))
                 .enqueue(doVerify());
          mUserId.child(newPassedArg).child("Name").setValue(Name + " " + Surname);
+
     }
 
     public void uploadPhoto(Uri tempUri, final String newPassedArg) {

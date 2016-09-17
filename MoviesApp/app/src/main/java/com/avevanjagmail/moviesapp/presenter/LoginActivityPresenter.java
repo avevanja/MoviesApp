@@ -75,7 +75,7 @@ public class LoginActivityPresenter {
     }
     public FacebookCallback facebookLogin(){
         return new FacebookCallback<LoginResult>() {
-            private Profile profile;
+
             @Override
             public void onSuccess(LoginResult loginResult) {
 //                profile = Profile.getCurrentProfile();

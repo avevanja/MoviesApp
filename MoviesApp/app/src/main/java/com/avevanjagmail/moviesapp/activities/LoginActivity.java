@@ -65,20 +65,12 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
                 }
             }
         });
-//        mEmailEditText.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-//                if(i == KeyEvent.KEYCODE_ENTER) {
-//                    mEmailEditText.requestFocus();
-//                }
-//                return true;
-//            }
-//        });
+
         mRegisterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
@@ -109,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
     @Override
     public void onSuccessLogin() {
         Intent intent = new Intent( getApplicationContext(), MainActivity.class );
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }

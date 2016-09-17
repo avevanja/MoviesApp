@@ -40,6 +40,7 @@
             android:id="@+id/registration_first_name_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:drawableLeft="@drawable/ic_person_white_24dp"
             android:hint="@string/first_name"
             android:textColor="#ffffff" />
@@ -57,6 +58,7 @@
             android:id="@+id/registration_last_name_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:drawableLeft="@drawable/ic_person_white_24dp"
             android:hint="@string/second_name"
             android:textColor="#ffffff" />
@@ -73,6 +75,8 @@
             android:id="@+id/registration_email_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="textEmailAddress"
             android:drawableLeft="@drawable/ic_email_white_24dp"
             android:hint="@string/email"
             android:textColor="#ffffff" />
@@ -89,11 +93,13 @@
             android:id="@+id/registration_password_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="textPassword"
             android:drawableLeft="@drawable/ic_lock_open_white_24dp"
 
             android:hint="@string/password"
             android:textColor="#ffffff"
-            android:password="true" />
+             />
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:id="@+id/registration_confirm_password_til"
@@ -107,11 +113,12 @@
             android:id="@+id/registration_confirm_password_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="textPassword"
             android:drawableLeft="@drawable/ic_lock_white_24dp"
-
             android:hint="confirm password"
             android:textColor="#ffffff"
-            android:password="true" />
+             />
     </android.support.design.widget.TextInputLayout>
 
     <Button

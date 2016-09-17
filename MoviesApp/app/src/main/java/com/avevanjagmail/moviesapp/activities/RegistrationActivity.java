@@ -213,7 +213,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     @Override
     public void onSuccessVerify(String email) {
         Intent myIntent = new Intent(getApplicationContext(), VerifyActivity.class).putExtra("email", email);
-        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(myIntent);
         finish();
     }

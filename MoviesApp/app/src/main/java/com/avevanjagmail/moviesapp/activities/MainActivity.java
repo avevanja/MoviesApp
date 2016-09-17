@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.avevanjagmail.moviesapp.ConnectivityReceiver;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.fragments.FavoriteTabFragment;
 import com.avevanjagmail.moviesapp.fragments.NewTabFragment;
@@ -139,17 +140,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         }
         if (id == R.id.action_logout) {
+            if (ConnectivityReceiver.isOnline(getApplicationContext())) {
 
-            mProfile = Profile.getCurrentProfile();
-            if (mProfile == null) {
-                mMainActivityPresenter.logout();
-                finish();
 
-            } else {
-                mMainActivityPresenter.logOutFromFB();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-                finish();
+                mProfile = Profile.getCurrentProfile();
+                if (mProfile == null) {
+                    mMainActivityPresenter.logout();
+                    finish();
+
+                } else {
+                    mMainActivityPresenter.logOutFromFB();
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+            else {
+                Toast.makeText(MainActivity.this, "Check your internet connection", Toast.LENGTH_SHORT).show();
             }
         }
 

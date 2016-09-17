@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:maxLines="1"
         android:layout_below="@+id/labl_app_iv">
 
         <EditText
@@ -52,6 +53,8 @@
             android:layout_height="wrap_content"
             android:hint="email"
             android:maxLines="1"
+            android:singleLine="true"
+            android:inputType="textEmailAddress"
             android:drawableLeft="@drawable/ic_email_white_24dp"
             android:textColor="#ffffff" />
     </android.support.design.widget.TextInputLayout>
@@ -70,8 +73,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="password"
+            android:singleLine="true"
             android:textColor="#ffffff"
-            android:password="true"
+            android:inputType="textPassword"
             android:drawableLeft="@drawable/ic_lock_white_24dp" />
     </android.support.design.widget.TextInputLayout>
 
