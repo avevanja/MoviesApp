@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -16,19 +14,14 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.avevanjagmail.moviesapp.adapters.SectionsPagerAdapter;
-import com.avevanjagmail.moviesapp.utils.ConnectivityUtility;
 import com.avevanjagmail.moviesapp.R;
+import com.avevanjagmail.moviesapp.adapters.SectionsPagerAdapter;
 import com.avevanjagmail.moviesapp.fragments.FavoriteTabFragment;
 import com.avevanjagmail.moviesapp.fragments.NewTabFragment;
 import com.avevanjagmail.moviesapp.fragments.TopTabFragment;
 import com.avevanjagmail.moviesapp.presenter.MainActivityPresenter;
 import com.avevanjagmail.moviesapp.view.MainActivityView;
-import com.facebook.Profile;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements MainActivityView {
 
@@ -153,7 +146,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         return this;
     }
 
-
+    @Override
+    public void finishLogOut() {
+        finish();
+    }
 
 
 }

@@ -1,7 +1,6 @@
 package com.avevanjagmail.moviesapp.presenter;
 
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import com.avevanjagmail.moviesapp.utils.ConnectivityUtility;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
 import com.avevanjagmail.moviesapp.utils.SharedPreferencesUtility;
 import com.avevanjagmail.moviesapp.view.MainActivityView;
-import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.google.firebase.database.DataSnapshot;
@@ -51,9 +49,11 @@ public class MainActivityPresenter {
             if (profile == null) {
                 logout();
 
+
             } else {
                 logOutFromFB();
                 LoginActivity.start(mMainActivityView.getContext());
+                mMainActivityView.finishLogOut();
             }
         } else {
             Toast.makeText(mMainActivityView.getContext(), R.string.error_connection, Toast.LENGTH_SHORT).show();
@@ -70,6 +70,7 @@ public class MainActivityPresenter {
                 if (response.body().getSucceeded().success) {
                     mSharedPreferencesUtility.clearSharedPreferences(mMainActivityView.getContext());
                     LoginActivity.start(mMainActivityView.getContext());
+                    mMainActivityView.finishLogOut();
                 } else {
                     Toast.makeText(mMainActivityView.getContext(), R.string.error_logout, Toast.LENGTH_LONG).show();
                 }

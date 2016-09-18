@@ -5,6 +5,7 @@ import android.content.Context;
 
 public interface MainActivityView {
     Context getContext();
+    void finishLogOut();
 
 
 }
