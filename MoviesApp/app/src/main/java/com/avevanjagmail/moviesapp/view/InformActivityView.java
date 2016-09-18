@@ -12,4 +12,5 @@ public interface InformActivityView {
     void setCastList(ArrayList<Cast> castList);
     void setMovieInfo(MoviesInfo movieInfo);
     Context getContext();
+    void setIconForFab(boolean showingFirst);
 }

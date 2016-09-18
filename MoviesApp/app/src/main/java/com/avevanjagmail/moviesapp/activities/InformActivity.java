@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,9 +16,6 @@ import com.avevanjagmail.moviesapp.models.Genre;
 import com.avevanjagmail.moviesapp.models.MoviesInfo;
 import com.avevanjagmail.moviesapp.presenter.InformActivityPresenter;
 import com.avevanjagmail.moviesapp.view.InformActivityView;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -33,19 +29,13 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
     private ImageView mTitleImageView, mCastPhoto, mCastPhoto1, mCastPhoto2, mCastPhoto3, mCastPhoto4, mCastPhoto5;
     private Toolbar mToolbarInformActivity;
     private ArrayList<Genre> mListMovie;
-    private ArrayList<Cast> mListCast;
-    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-    //це тут не має бути
-    //в презентер
-    //робота з даними
-    //View отримує лише готові дані
-    private DatabaseReference mUserId = mRootRef.child("Users");
     private static final String MOVIE_ID = "movie.id";
     private static final String URL_IMAGE = "url";
     private static final String TITLE = "movie_title";
     private boolean showingFirst;
+    private FloatingActionButton mFloatingActionButton;
     private InformActivityPresenter mInformActivityPresenter;
-    private ChildEventListener eventListener;
+
 
 
     public static void start(String movieId, String url, String title, Context context) {
@@ -61,7 +51,7 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inform);
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_favourite_btn);
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.add_favourite_btn);
         mInformActivityPresenter = new InformActivityPresenter();
         mInformActivityPresenter.setInformActivityView(this);
 
@@ -69,18 +59,18 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
         showingFirst = true;
 
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
                 if (showingFirst) {
-                    fab.setImageResource(R.drawable.ic_favorite_white_24dp);
+                    mFloatingActionButton.setImageResource(R.drawable.ic_favorite_white_24dp);
                     mInformActivityPresenter.addFavoriteMovieInRemoteDb(getIntent().getStringExtra(MOVIE_ID));
                     showingFirst = false;
 
                 } else {
-                    fab.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                    mFloatingActionButton.setImageResource(R.drawable.ic_favorite_border_white_24dp);
                     mInformActivityPresenter.deleteFavoriteMovieFromRemoteDb(getIntent().getStringExtra(MOVIE_ID));
                     showingFirst = true;
 
@@ -89,44 +79,9 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
             }
 
         });
+        mInformActivityPresenter.checkMovieForFavorite(getIntent().getStringExtra(MOVIE_ID));
 
-        //Listener теж в презентер
-        eventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String movie = dataSnapshot.getValue(String.class);
 
-                if (movie != null) {
-                    if (movie.equals(getIntent().getStringExtra(MOVIE_ID))) {
-                        fab.setImageResource(R.drawable.ic_favorite_white_24dp);
-                        showingFirst = false;
-                    }
-                }
-                Log.d(TAG, "get map " + movie.toString());
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-
-        mUserId.child(mInformActivityPresenter.getSPref()).child("Movies").addChildEventListener(eventListener);
 
 
         mToolbarInformActivity = (Toolbar) findViewById(R.id.toolbar_inf_act);
@@ -168,27 +123,27 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
 
     @Override
     public void setCastList(ArrayList<Cast> castList) {
-        mListCast = castList;
-        if (mListCast.size() >= 6) {
+
+        if (castList.size() >= 6) {
 
 
-            mNameCast.setText(mListCast.get(0).getName());
-            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(0).getProfilePath()).
+            mNameCast.setText(castList.get(0).getName());
+            Picasso.with(this).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + castList.get(0).getProfilePath()).
                     error(R.drawable.ic_user).into(mCastPhoto);
-            mNameCast1.setText(mListCast.get(1).getName());
-            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(1).getProfilePath()).
+            mNameCast1.setText(castList.get(1).getName());
+            Picasso.with(this).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + castList.get(1).getProfilePath()).
                     error(R.drawable.ic_user).into(mCastPhoto1);
-            mNameCast2.setText(mListCast.get(2).getName());
-            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(2).getProfilePath()).
+            mNameCast2.setText(castList.get(2).getName());
+            Picasso.with(this).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + castList.get(2).getProfilePath()).
                     error(R.drawable.ic_user).into(mCastPhoto2);
-            mNameCast3.setText(mListCast.get(3).getName());
-            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(3).getProfilePath()).
+            mNameCast3.setText(castList.get(3).getName());
+            Picasso.with(this).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + castList.get(3).getProfilePath()).
                     error(R.drawable.ic_user).into(mCastPhoto3);
-            mNameCast4.setText(mListCast.get(4).getName());
-            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(4).getProfilePath()).
+            mNameCast4.setText(castList.get(4).getName());
+            Picasso.with(this).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + castList.get(4).getProfilePath()).
                     error(R.drawable.ic_user).into(mCastPhoto4);
-            mNameCast5.setText(mListCast.get(5).getName());
-            Picasso.with(mCastPhoto.getContext()).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + mListCast.get(5).getProfilePath()).
+            mNameCast5.setText(castList.get(5).getName());
+            Picasso.with(this).load("https://image.tmdb.org/t/p/w600_and_h900_bestv2" + castList.get(5).getProfilePath()).
                     error(R.drawable.ic_user).into(mCastPhoto5);
         }
 
@@ -214,8 +169,15 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
     }
 
     @Override
+    public void setIconForFab(boolean showingFirst) {
+        mFloatingActionButton.setImageResource(R.drawable.ic_favorite_white_24dp);
+        this.showingFirst = showingFirst;
+
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        mUserId.child(mInformActivityPresenter.getSPref()).child("Movies").removeEventListener(eventListener);
+        mInformActivityPresenter.stopFbListener();
     }
 }
