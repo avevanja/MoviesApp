@@ -165,7 +165,7 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
 
     @Override
     public Context getContext() {
-        return getApplicationContext();
+        return this;
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.avevanjagmail.moviesapp.presenter;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.avevanjagmail.moviesapp.ConnectivityReceiver;
+import com.avevanjagmail.moviesapp.utils.ConnectivityUtility;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.managers.DBManager;
 import com.avevanjagmail.moviesapp.models.Movie;
@@ -44,7 +44,7 @@ public class FavoriteFragmentPresenter {
         sPref = mFavoriteFragmentView.getContext().getSharedPreferences("SH", mFavoriteFragmentView.getContext().MODE_PRIVATE);
         passedArg1 = sPref.getString(SHARED, "");
         passedArg = passedArg1.replace(".", "a");
-        if (!ConnectivityReceiver.isOnline(mFavoriteFragmentView.getContext())) {
+        if (!ConnectivityUtility.isOnline(mFavoriteFragmentView.getContext())) {
             localList = DBManager.getLocalListMovie("Favorite");
             mFavoriteFragmentView.setLocalFavoriteMovies((ArrayList<Movie>) localList);
         }

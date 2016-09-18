@@ -1,6 +1,7 @@
 package com.avevanjagmail.moviesapp.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,11 +21,16 @@ import java.util.ArrayList;
 
 
 public class SearchActivity extends AppCompatActivity implements OpenInformActivity, SearchActivityView {
-    private LinearLayoutManager llm;
+    private LinearLayoutManager mLinearLayoutManager;
     public MovieRecyclerAdapter mMovieAdapter;
-    private RecyclerView rv;
+    private RecyclerView mRecyclerView;
     private SearchActivityPresenter mSearchActivityPresenter;
     private static final String TAG = SearchActivity.class.getSimpleName();
+    public static void start(Context context, String query) {
+        Intent starter = new Intent(context, SearchActivity.class);
+        starter.putExtra("query", query);
+        context.startActivity(starter);
+    }
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,40 +48,33 @@ public class SearchActivity extends AppCompatActivity implements OpenInformActiv
         mSearchActivityPresenter = new SearchActivityPresenter();
         mSearchActivityPresenter.setSearchActivityView(this);
         setTitle(getIntent().getStringExtra("query"));
-        rv = (RecyclerView) findViewById(R.id.search_activity_rv);
-
-        llm = new LinearLayoutManager(getApplicationContext());
-        rv.setLayoutManager(llm);
+        mRecyclerView = (RecyclerView) findViewById(R.id.search_activity_rv);
+        mLinearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mSearchActivityPresenter.loadSearchMovies(getIntent().getStringExtra("query"));
-
-
         mMovieAdapter = new MovieRecyclerAdapter(this);
-        rv.setAdapter(mMovieAdapter);
+        mRecyclerView.setAdapter(mMovieAdapter);
 
 
     }
 
-    //в Презентер
+
     @Override
     public void onClickOpen(String id, String url, String title) {
         InformActivity.start(id, url, title, this);
     }
 
-    //перевірки, логіку в презентер!
-    //в'юшкам лише готові дані
+
     @Override
     public void setSearchMoviesList(ArrayList<MovieApi> searchMoviesList) {
-        if(searchMoviesList.size() == 0){
-            Toast.makeText(SearchActivity.this, R.string.error_search, Toast.LENGTH_SHORT).show();
-        }
         mMovieAdapter.addNewMovies(searchMoviesList);
 
     }
 
-    //WTF???
+
     @Override
     public Context getContext() {
-        return null;
+        return this;
     }
 }
 

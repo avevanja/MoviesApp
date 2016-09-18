@@ -1,10 +1,10 @@
-package com.avevanjagmail.moviesapp;
+package com.avevanjagmail.moviesapp.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 
 
-public class ConnectivityReceiver { //в Утиліти -_-
+public class ConnectivityUtility { //в Утиліти -_-
 
     public static boolean isOnline(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

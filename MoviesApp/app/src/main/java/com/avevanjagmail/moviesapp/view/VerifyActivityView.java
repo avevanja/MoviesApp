@@ -1,9 +1,10 @@
 package com.avevanjagmail.moviesapp.view;
 
-/**
- * Created by irabokalo on 10.09.2016.
- */
+import android.content.Context;
+
+
 public interface VerifyActivityView {
-    void succeededVerify();
+
+    Context getContext();
 
 }

@@ -18,7 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.avevanjagmail.moviesapp.ConnectivityReceiver;
+import com.avevanjagmail.moviesapp.adapters.SectionsPagerAdapter;
+import com.avevanjagmail.moviesapp.utils.ConnectivityUtility;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.fragments.FavoriteTabFragment;
 import com.avevanjagmail.moviesapp.fragments.NewTabFragment;
@@ -33,10 +34,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private Profile mProfile;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private MainActivityPresenter mMainActivityPresenter;
+    public static void start(Context context) {
+        Intent starter = new Intent(context, MainActivity.class);
+        context.startActivity(starter);
+    }
 
 
     @Override
@@ -98,13 +102,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //в Презентер!
 
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                String word = getIntent().getStringExtra("mail");
-                intent.putExtra("query", query);
-                intent.putExtra("mail", word);
-                startActivity(intent);
+                mMainActivityPresenter.startSearch(query);
+
                 return false;
             }
 
@@ -141,25 +141,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         }
         if (id == R.id.action_logout) {
-            //всю логіку (онлайн/офлайн, фейсбук/не-фейсбук) в Презентер
-            if (ConnectivityReceiver.isOnline(getApplicationContext())) {
+            mMainActivityPresenter.logOut();
 
-
-                mProfile = Profile.getCurrentProfile();
-                if (mProfile == null) {
-                    mMainActivityPresenter.logout();
-                    finish();
-
-                } else {
-                    mMainActivityPresenter.logOutFromFB();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-            else {
-                Toast.makeText(MainActivity.this, R.string.error_connection, Toast.LENGTH_SHORT).show();
-            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -167,47 +150,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public Context getContext() {
-        return getApplicationContext();
+        return this;
     }
 
-    @Override
-    public void setLogOut(boolean success) {
-        if (success) {
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(getApplicationContext(), R.string.error_logout, Toast.LENGTH_LONG).show();
-        }
-    }
 
-//в окремий клас
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        private ArrayList<Fragment> mFragmentList = new ArrayList<>();
-        private ArrayList<String> mFragmentListTitle = new ArrayList<>();
 
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
 
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentListTitle.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentListTitle.get(position);
-        }
-    }
 }

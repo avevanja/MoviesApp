@@ -7,9 +7,7 @@ import com.avevanjagmail.moviesapp.models.MovieApi;
 
 import java.util.ArrayList;
 
-/**
- * Created by paulg on 06.09.2016.
- */
+
 public interface FavoriteFragmentView {
     void setFavoriteMovies(MovieApi movieApi);
 

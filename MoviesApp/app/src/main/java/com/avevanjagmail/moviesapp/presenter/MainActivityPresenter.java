@@ -1,13 +1,19 @@
 package com.avevanjagmail.moviesapp.presenter;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import com.avevanjagmail.moviesapp.R;
+import com.avevanjagmail.moviesapp.activities.LoginActivity;
+import com.avevanjagmail.moviesapp.activities.SearchActivity;
 import com.avevanjagmail.moviesapp.interfaces.LoginApiService;
 import com.avevanjagmail.moviesapp.models.LogOutRequest;
 import com.avevanjagmail.moviesapp.models.LogoutResponse;
+import com.avevanjagmail.moviesapp.utils.ConnectivityUtility;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+import com.avevanjagmail.moviesapp.utils.SharedPreferencesUtility;
 import com.avevanjagmail.moviesapp.view.MainActivityView;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
@@ -33,23 +39,46 @@ public class MainActivityPresenter {
     private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference mUserId = mRootRef.child("Users");
     private static final String SHARED = "emailOrId";
+    private SharedPreferencesUtility mSharedPreferencesUtility = new SharedPreferencesUtility();
 
     public void setMainActivityView(MainActivityView mMainActivityView) {
         this.mMainActivityView = mMainActivityView;
     }
 
-    public void logout() {
+    public void logOut() {
+        if (ConnectivityUtility.isOnline(mMainActivityView.getContext())) {
+
+
+            profile = Profile.getCurrentProfile();
+            if (profile == null) {
+                logout();
+
+            } else {
+                logOutFromFB();
+                LoginActivity.start(mMainActivityView.getContext());
+            }
+        } else {
+            Toast.makeText(mMainActivityView.getContext(), R.string.error_connection, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void logout() {
 
         LoginApiService mService = RetrofitUtil.getLoginService();
         Call<LogoutResponse> requestInfo = mService.logout(new LogOutRequest(getParametersForLogOut()[0], getParametersForLogOut()[1]));
         requestInfo.enqueue(new Callback<LogoutResponse>() {
             @Override
             public void onResponse(Call<LogoutResponse> call, Response<LogoutResponse> response) {
+                if (response.body().getSucceeded().success) {
+//                    SharedPreferences.Editor ed = mPref.edit();
+//                    ed.clear();
+//                    ed.commit();
+                    mSharedPreferencesUtility.clearSharedPreferences(mMainActivityView.getContext());
+                    LoginActivity.start(mMainActivityView.getContext());
+                } else {
+                    Toast.makeText(mMainActivityView.getContext(), R.string.error_logout, Toast.LENGTH_LONG).show();
+                }
 
-                SharedPreferences.Editor ed = mPref.edit();
-                ed.clear();
-                ed.commit();
-                mMainActivityView.setLogOut(response.body().getSucceeded().success);
             }
 
             @Override
@@ -61,25 +90,25 @@ public class MainActivityPresenter {
         });
     }
 
-    public void logOutFromFB() {
-        mPref = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
-        SharedPreferences.Editor ed = mPref.edit();
-        ed.clear();
-        ed.commit();
-        FacebookSdk.sdkInitialize(mMainActivityView.getContext());
+    private void logOutFromFB() {
+//        mPref = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
+//        SharedPreferences.Editor ed = mPref.edit();
+//        ed.clear();
+//        ed.commit();
+        mSharedPreferencesUtility.clearSharedPreferences(mMainActivityView.getContext());
         LoginManager.getInstance().logOut();
 
 
     }
 
     public String[] getParametersForLogOut() {
-        mPref = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
-        String passedArg = mPref.getString(SHARED, "");
-        mPref1 = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
-        String accessToken = mPref1.getString("accessToken", "");
+//        mPref = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
+//        String passedArg = mPref.getString(SHARED, "");
+//        mPref1 = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
+//        String accessToken = mPref1.getString("accessToken", "");
         String[] sListParameters = new String[2];
-        sListParameters[0] = passedArg;
-        sListParameters[1] = accessToken;
+        sListParameters[0] = mSharedPreferencesUtility.getSPref(mMainActivityView.getContext(), SHARED);
+        sListParameters[1] = mSharedPreferencesUtility.getSPref(mMainActivityView.getContext(), "accessToken");
         return sListParameters;
     }
 
@@ -102,7 +131,9 @@ public class MainActivityPresenter {
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
+
             });
+
         }
     }
 
@@ -111,5 +142,9 @@ public class MainActivityPresenter {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(key, values);
         editor.commit();
+    }
+
+    public void startSearch(String query) {
+        SearchActivity.start(mMainActivityView.getContext(), query);
     }
 }

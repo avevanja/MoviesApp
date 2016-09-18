@@ -1,5 +1,6 @@
 package com.avevanjagmail.moviesapp.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,11 @@ public class VerifyActivity extends AppCompatActivity implements VerifyActivityV
     private EditText mCodeTextEdit;
     private Button mActivateBtn;
     private VerifyActivityPresenter verifyActivityPresenter = new VerifyActivityPresenter();
+    public static void start(Context context, String email) {
+        Intent starter = new Intent(context, VerifyActivity.class);
+        starter.putExtra("email", email);
+        context.startActivity(starter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +45,10 @@ public class VerifyActivity extends AppCompatActivity implements VerifyActivityV
     }
 
 
+
     @Override
-    public void succeededVerify() {
-        Toast toast = Toast.makeText(getApplicationContext(), R.string.hint_account_activate, Toast.LENGTH_LONG);
-        toast.show();
-        Intent myIntent = new Intent(getApplicationContext(), LoginActivity.class);
-//        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(myIntent);
-        finish();
+    public Context getContext() {
+        return this;
     }
 }
 

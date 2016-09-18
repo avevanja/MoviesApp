@@ -37,8 +37,6 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //викликається в Application класі
-        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_user);
         mTextViewEmail = (TextView) findViewById(R.id.name_user_tv);
 
@@ -97,8 +95,6 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                //check for Api 23 - Context should come from activity
-                //best way - to give activity to method
                 boolean result = com.avevanjagmail.moviesapp.utils.Utility.checkPermission(getApplicationContext());
 
                 if (items[item].equals("Take Photo")) {
