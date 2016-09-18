@@ -142,7 +142,7 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
 
     @Override
     public Context getContext() {
-        return getApplicationContext();
+        return this;
     }
 
     @Override

@@ -30,8 +30,6 @@ import retrofit2.Response;
 
 
 public class MainActivityPresenter {
-    private SharedPreferences mPref;
-    private SharedPreferences mPref1;
     private MainActivityView mMainActivityView;
     private SharedPreferences mSharedPreferences;
     private Profile profile;
@@ -70,9 +68,6 @@ public class MainActivityPresenter {
             @Override
             public void onResponse(Call<LogoutResponse> call, Response<LogoutResponse> response) {
                 if (response.body().getSucceeded().success) {
-//                    SharedPreferences.Editor ed = mPref.edit();
-//                    ed.clear();
-//                    ed.commit();
                     mSharedPreferencesUtility.clearSharedPreferences(mMainActivityView.getContext());
                     LoginActivity.start(mMainActivityView.getContext());
                 } else {
@@ -91,10 +86,6 @@ public class MainActivityPresenter {
     }
 
     private void logOutFromFB() {
-//        mPref = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
-//        SharedPreferences.Editor ed = mPref.edit();
-//        ed.clear();
-//        ed.commit();
         mSharedPreferencesUtility.clearSharedPreferences(mMainActivityView.getContext());
         LoginManager.getInstance().logOut();
 
@@ -102,10 +93,6 @@ public class MainActivityPresenter {
     }
 
     public String[] getParametersForLogOut() {
-//        mPref = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
-//        String passedArg = mPref.getString(SHARED, "");
-//        mPref1 = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
-//        String accessToken = mPref1.getString("accessToken", "");
         String[] sListParameters = new String[2];
         sListParameters[0] = mSharedPreferencesUtility.getSPref(mMainActivityView.getContext(), SHARED);
         sListParameters[1] = mSharedPreferencesUtility.getSPref(mMainActivityView.getContext(), "accessToken");
