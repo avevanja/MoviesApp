@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.avevanjagmail.moviesapp.EndlessRecyclerOnScrollListener;
+import com.avevanjagmail.moviesapp.utils.EndlessRecyclerOnScrollListener;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.InformActivity;
 import com.avevanjagmail.moviesapp.adapters.LocalDbRecyclerAdapter;
