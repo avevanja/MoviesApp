@@ -71,7 +71,8 @@ public class UserActivityPresenter {
                     mUserActivityView.setName(dataSnapshot.child("Users").child(child).child("Name").getValue().toString());
                     saveInSharedPreferences(dataSnapshot.child("Users").child(child).child("Name").getValue().toString(), "name");
 
-                } else {
+                }
+                else {
                     mUserActivityView.setName(profile.getFirstName() + " " + profile.getLastName());
                     saveInSharedPreferences(profile.getFirstName() + " " + profile.getLastName(), "name");
                 }

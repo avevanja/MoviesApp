@@ -149,6 +149,7 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
 
     @Override
     public void setMovieInfo(MoviesInfo movieInfo) {
+        mListMovie = new ArrayList<>();
         mListMovie = movieInfo.getGenres();
         for (Genre genre : mListMovie) {
             mGenreTextView.setText(genre.getName() + " ");
@@ -179,9 +180,9 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
         mInformActivityPresenter.stopFbListener();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mInformActivityPresenter.onDestroy();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        mInformActivityPresenter.onDestroy();
+//    }
 }

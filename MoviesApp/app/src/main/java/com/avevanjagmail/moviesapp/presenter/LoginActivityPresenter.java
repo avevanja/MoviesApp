@@ -6,13 +6,14 @@ import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.activities.MainActivity;
 import com.avevanjagmail.moviesapp.activities.RegistrationActivity;
-import com.avevanjagmail.moviesapp.utils.SharedPreferencesUtility;
-import com.avevanjagmail.moviesapp.view.LoginActivityView;
 import com.avevanjagmail.moviesapp.models.LoginRequest;
 import com.avevanjagmail.moviesapp.models.LoginResponse;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+import com.avevanjagmail.moviesapp.utils.SharedPreferencesUtility;
+import com.avevanjagmail.moviesapp.view.LoginActivityView;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 
 import retrofit2.Call;
@@ -25,6 +26,7 @@ public class LoginActivityPresenter {
     private static final String SHARED = "emailOrId";
     private static final String TAG = LoginActivityPresenter.class.getSimpleName();
     private SharedPreferencesUtility mSharedPreferencesUtility = new SharedPreferencesUtility();
+    private Profile profile;
 
     public void setLoginActivityView(LoginActivityView mLoginActivityView) {
         this.mLoginActivityView = mLoginActivityView;
@@ -103,11 +105,20 @@ public class LoginActivityPresenter {
 //        });
     }
 
-    public FacebookCallback facebookLogin() {
+    public FacebookCallback<LoginResult> facebookLogin() {
         return new FacebookCallback<LoginResult>() {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
+//                profile = Profile.getCurrentProfile();
+//                if (profile != null) {
+//                    Log.d("LOGIN", "saveFaceBook: " + profile.getId());
+//                    mSharedPreferencesUtility.addToShared(mLoginActivityView.getContext(), SHARED, profile.getId());
+//
+//                } else {
+//                    Log.d("LOGIN", "saveFaceBook: profile is null");
+//                }
+
                 startMainActivity();
                 mLoginActivityView.onSuccessLoginFaceBook();
 
@@ -145,6 +156,7 @@ public class LoginActivityPresenter {
 
     public void checkLogin() {
         boolean checkout;
+        Log.d("LOGIN", "checkLogin: userId " + mSharedPreferencesUtility.getmSharedPreferences(mLoginActivityView.getContext()).getString(SHARED, ""));
         checkout = mSharedPreferencesUtility.getmSharedPreferences(mLoginActivityView.getContext()).contains(SHARED);
         if (checkout) {
             startMainActivity();

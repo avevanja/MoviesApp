@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.presenter.UserActivityPresenter;
 import com.avevanjagmail.moviesapp.view.UserActivityView;
+import com.facebook.FacebookSdk;
 import com.squareup.picasso.Picasso;
 
 
@@ -36,6 +37,7 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_user);
         mTextViewEmail = (TextView) findViewById(R.id.name_user_tv);
 
@@ -159,9 +161,9 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
         mTextViewEmail.setText(name);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mUserActivityPresenter.onDestroy();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        mUserActivityPresenter.onDestroy();
+//    }
 }
