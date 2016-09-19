@@ -4,11 +4,10 @@ import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.activities.LoginActivity;
-import com.avevanjagmail.moviesapp.view.VerifyActivityView;
-import com.avevanjagmail.moviesapp.interfaces.LoginApiService;
 import com.avevanjagmail.moviesapp.models.ActivateRequest;
 import com.avevanjagmail.moviesapp.models.ActivateResponse;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+import com.avevanjagmail.moviesapp.view.VerifyActivityView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,5 +41,8 @@ public class VerifyActivityPresenter {
             }
         });
 
+    }
+    public void onDestroy(){
+        verifyActivityView = null;
     }
 }

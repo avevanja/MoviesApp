@@ -97,6 +97,9 @@ public class TopFragmentPresenter {
             }
         };
     }
+    public void onDetach(){
+        mTopFragmentView = null;
+    }
 
 
 

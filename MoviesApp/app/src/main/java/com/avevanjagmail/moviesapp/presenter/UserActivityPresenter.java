@@ -172,6 +172,9 @@ public class UserActivityPresenter {
         mPref = mUserActivityView.getContext().getSharedPreferences("SHNAME", mUserActivityView.getContext().MODE_PRIVATE);
         mUserActivityView.setName(mPref.getString("name", " no name"));
     }
+    public void onDestroy(){
+        mUserActivityView = null;
+    }
 
 }
 

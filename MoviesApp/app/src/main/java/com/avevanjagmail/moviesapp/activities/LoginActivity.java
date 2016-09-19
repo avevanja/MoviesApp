@@ -2,7 +2,6 @@ package com.avevanjagmail.moviesapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
         mTextInputLayoutPassword = (TextInputLayout) findViewById(R.id.login_password_til);
         mLoginActivityPresenter.setLoginActivityView(this);
         mLoginBtn = (Button) findViewById(R.id.login_login_btn);
+        mLoginActivityPresenter.checkLogin();
 
 
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
                 mLoginActivityPresenter.startRegistrationActivity();
             }
         });
-        mLoginActivityPresenter.checkLogin();
+//        mLoginActivityPresenter.checkLogin();
     }
 
     @Override
@@ -102,6 +102,11 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mLoginActivityPresenter.onDestroy();
+    }
 }
 
 

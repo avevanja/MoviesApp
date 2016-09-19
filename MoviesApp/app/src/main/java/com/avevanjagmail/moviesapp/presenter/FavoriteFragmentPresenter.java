@@ -105,5 +105,8 @@ public class FavoriteFragmentPresenter {
     public void onStop() {
 
     }
+    public void onDetach(){
+        mFavoriteFragmentView = null;
+    }
 }
 

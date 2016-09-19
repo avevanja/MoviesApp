@@ -16,8 +16,6 @@ import com.avevanjagmail.moviesapp.models.Genre;
 import com.avevanjagmail.moviesapp.models.MoviesInfo;
 import com.avevanjagmail.moviesapp.presenter.InformActivityPresenter;
 import com.avevanjagmail.moviesapp.view.InformActivityView;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -179,5 +177,11 @@ public class InformActivity extends AppCompatActivity implements InformActivityV
     protected void onStop() {
         super.onStop();
         mInformActivityPresenter.stopFbListener();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mInformActivityPresenter.onDestroy();
     }
 }

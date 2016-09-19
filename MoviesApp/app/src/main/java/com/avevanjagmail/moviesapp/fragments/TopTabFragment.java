@@ -116,6 +116,12 @@ public class TopTabFragment extends Fragment implements OpenInformActivity, TopF
     public void stopProgress() {
         mProgredDIalog.dismiss();
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mTopFragmentPresenter.onDetach();
+    }
 }
 
 

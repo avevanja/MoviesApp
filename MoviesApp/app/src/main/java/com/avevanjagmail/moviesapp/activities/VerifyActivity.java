@@ -7,11 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.presenter.VerifyActivityPresenter;
 import com.avevanjagmail.moviesapp.view.VerifyActivityView;
-import com.avevanjagmail.moviesapp.R;
 
 
 public class VerifyActivity extends AppCompatActivity implements VerifyActivityView {
@@ -49,6 +48,12 @@ public class VerifyActivity extends AppCompatActivity implements VerifyActivityV
     @Override
     public Context getContext() {
         return this;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        verifyActivityPresenter.onDestroy();
     }
 }
 

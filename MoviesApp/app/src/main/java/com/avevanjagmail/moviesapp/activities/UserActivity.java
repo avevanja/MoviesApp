@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.presenter.UserActivityPresenter;
 import com.avevanjagmail.moviesapp.view.UserActivityView;
-import com.facebook.FacebookSdk;
 import com.squareup.picasso.Picasso;
 
 
@@ -158,5 +157,11 @@ public class UserActivity extends AppCompatActivity implements UserActivityView 
     @Override
     public void setName(String name) {
         mTextViewEmail.setText(name);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mUserActivityPresenter.onDestroy();
     }
 }

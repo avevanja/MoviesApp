@@ -97,6 +97,9 @@ public class NewFragmentPresenter {
             }
         };
     }
+    public void onDetach(){
+        mNewFragmentView = null;
+    }
 
 
 }

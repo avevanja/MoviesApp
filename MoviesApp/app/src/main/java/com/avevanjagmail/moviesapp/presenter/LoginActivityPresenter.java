@@ -136,6 +136,7 @@ public class LoginActivityPresenter {
 
     public void startRegistrationActivity() {
         RegistrationActivity.start(mLoginActivityView.getContext());
+        mLoginActivityView.onSuccessLogin();
     }
 
     public void startMainActivity() {
@@ -143,10 +144,15 @@ public class LoginActivityPresenter {
     }
 
     public void checkLogin() {
-        if (mSharedPreferencesUtility.getmSharedPreferences(mLoginActivityView.getContext()).contains(SHARED)) {
+        boolean checkout;
+        checkout = mSharedPreferencesUtility.getmSharedPreferences(mLoginActivityView.getContext()).contains(SHARED);
+        if (checkout) {
             startMainActivity();
             mLoginActivityView.onSuccessLogin();
         }
+    }
+    public void onDestroy(){
+        mLoginActivityView = null;
     }
 
 }

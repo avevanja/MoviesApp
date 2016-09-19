@@ -104,7 +104,7 @@ public class MainActivityPresenter {
 
         profile = Profile.getCurrentProfile();
         if (profile != null) {
-            saveInSharedPreferences(profile.getId().toString(), SHARED);
+            mSharedPreferencesUtility.addToShared(mMainActivityView.getContext(), SHARED, profile.getId().toString());
             mImageUrl = String.valueOf(profile.getProfilePictureUri(717, 400));
             mRootRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -125,14 +125,11 @@ public class MainActivityPresenter {
         }
     }
 
-    private void saveInSharedPreferences(String values, String key) {
-        mSharedPreferences = mMainActivityView.getContext().getSharedPreferences("SH", mMainActivityView.getContext().MODE_PRIVATE);
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(key, values);
-        editor.commit();
-    }
 
     public void startSearch(String query) {
         SearchActivity.start(mMainActivityView.getContext(), query);
+    }
+    public void onDestroy(){
+        mMainActivityView = null;
     }
 }

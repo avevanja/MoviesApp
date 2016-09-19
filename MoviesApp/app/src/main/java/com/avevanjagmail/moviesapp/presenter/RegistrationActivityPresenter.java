@@ -2,7 +2,6 @@ package com.avevanjagmail.moviesapp.presenter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
@@ -11,13 +10,12 @@ import android.support.annotation.NonNull;
 import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.activities.VerifyActivity;
-import com.avevanjagmail.moviesapp.utils.SharedPreferencesUtility;
-import com.avevanjagmail.moviesapp.view.RegistrationActivityView;
 import com.avevanjagmail.moviesapp.models.RegisterRequest;
 import com.avevanjagmail.moviesapp.models.RegisterResponse;
 import com.avevanjagmail.moviesapp.models.VerifyRequest;
 import com.avevanjagmail.moviesapp.models.VerifyResponse;
 import com.avevanjagmail.moviesapp.utils.RetrofitUtil;
+import com.avevanjagmail.moviesapp.view.RegistrationActivityView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -201,6 +199,9 @@ public class RegistrationActivityPresenter {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
+    }
+    public void onDestroy(){
+        registrationActivityView = null;
     }
 
 

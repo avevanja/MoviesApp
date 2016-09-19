@@ -138,5 +138,8 @@ public class InformActivityPresenter {
     public void stopFbListener (){
         mUserId.child(getNameChild()).child("Movies").removeEventListener(eventListener);
     }
+    public void onDestroy(){
+        mInformActivityView = null;
+    }
 
 }

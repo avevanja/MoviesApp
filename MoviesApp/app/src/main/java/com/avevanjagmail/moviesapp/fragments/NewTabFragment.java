@@ -95,5 +95,11 @@ public class NewTabFragment extends Fragment implements OpenInformActivity, NewF
         mRecyclerView.setAdapter(mLocalDbRecyclerAdapter);
 
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mNewFragmentPresenter.onDetach();
+    }
 }
 

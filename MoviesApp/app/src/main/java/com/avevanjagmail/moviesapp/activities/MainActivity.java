@@ -151,5 +151,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         finish();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMainActivityPresenter.onDestroy();
+    }
 }

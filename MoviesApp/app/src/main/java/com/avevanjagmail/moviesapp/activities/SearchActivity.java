@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.R;
 import com.avevanjagmail.moviesapp.adapters.MovieRecyclerAdapter;
@@ -75,6 +74,12 @@ public class SearchActivity extends AppCompatActivity implements OpenInformActiv
     @Override
     public Context getContext() {
         return this;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mSearchActivityPresenter.onDestroy();
     }
 }
 

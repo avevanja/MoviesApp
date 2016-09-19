@@ -46,6 +46,10 @@ public class SearchActivityPresenter {
             }
         };
     }
+    public void onDestroy(){
+        mSearchActivityView = null;
+
+    }
 
 
 }

@@ -107,6 +107,11 @@ public class FavoriteTabFragment extends Fragment implements OpenInformActivity,
 
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mFavoriteFragmentPresenter.onDetach();
+    }
 }
 
 
