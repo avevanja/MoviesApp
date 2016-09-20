@@ -2,6 +2,7 @@ package com.avevanjagmail.moviesapp.presenter;
 
 
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.avevanjagmail.moviesapp.R;
@@ -16,8 +17,11 @@ import com.avevanjagmail.moviesapp.utils.SharedPreferencesUtility;
 import com.avevanjagmail.moviesapp.view.MainActivityView;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -98,38 +102,38 @@ public class MainActivityPresenter {
         return sListParameters;
     }
 
-//    public void saveFaceBook() {
-//
-//
-//            profile = Profile.getCurrentProfile();
-//
-//
-//            if (profile != null) {
-//                Log.d("LOGIN", "saveFaceBook: " + profile.getId());
-//                mSharedPreferencesUtility.addToShared(mMainActivityView.getContext(), SHARED, profile.getId());
-//                mImageUrl = String.valueOf(profile.getProfilePictureUri(717, 400));
-//                mRootRef.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        if (!dataSnapshot.child("Users").child(profile.getId()).hasChild("Photos")) {
-//                            mUserId.child(profile.getId()).child("Photos").setValue(mImageUrl);
-//                        }
-//                    }
-//
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//
-//                    }
-//
-//                });
-//
-//            } else {
-//                Log.d("LOGIN", "saveFaceBook: profile is null");
-//            }
-//
-//
-//    }
+    public void saveFaceBook() {
+
+
+            profile = Profile.getCurrentProfile();
+
+
+            if (profile != null) {
+                Log.d("LOGIN", "saveFaceBook: " + profile.getId());
+                mSharedPreferencesUtility.addToShared(mMainActivityView.getContext(), SHARED, profile.getId());
+                mImageUrl = String.valueOf(profile.getProfilePictureUri(717, 400));
+                mRootRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (!dataSnapshot.child("Users").child(profile.getId()).hasChild("Photos")) {
+                            mUserId.child(profile.getId()).child("Photos").setValue(mImageUrl);
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+
+                });
+
+            } else {
+                Log.d("LOGIN", "saveFaceBook: profile is null");
+            }
+
+
+    }
 
 
     public void startSearch(String query) {
