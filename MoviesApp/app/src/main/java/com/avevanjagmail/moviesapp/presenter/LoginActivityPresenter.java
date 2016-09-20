@@ -14,7 +14,13 @@ import com.avevanjagmail.moviesapp.view.LoginActivityView;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,6 +33,12 @@ public class LoginActivityPresenter {
     private static final String TAG = LoginActivityPresenter.class.getSimpleName();
     private SharedPreferencesUtility mSharedPreferencesUtility = new SharedPreferencesUtility();
     private Profile profile;
+    private String mImageUrl;
+    private ProfileTracker mProfileTracker;
+    private DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference mUserId = mRootRef.child("Users");
+
+
 
     public void setLoginActivityView(LoginActivityView mLoginActivityView) {
         this.mLoginActivityView = mLoginActivityView;
@@ -110,14 +122,30 @@ public class LoginActivityPresenter {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-//                profile = Profile.getCurrentProfile();
-//                if (profile != null) {
-//                    Log.d("LOGIN", "saveFaceBook: " + profile.getId());
-//                    mSharedPreferencesUtility.addToShared(mLoginActivityView.getContext(), SHARED, profile.getId());
-//
-//                } else {
-//                    Log.d("LOGIN", "saveFaceBook: profile is null");
-//                }
+
+                mProfileTracker = new ProfileTracker() {
+                    @Override
+                    protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                        mProfileTracker.stopTracking();
+                        Log.v("Facebook profile", Profile.getCurrentProfile().getFirstName());
+                        saveFaceBook();
+
+                    }
+                };
+                mProfileTracker.startTracking();
+//                GraphRequest request = GraphRequest.newMeRequest(
+//                        loginResult.getAccessToken(),
+//                        new GraphRequest.GraphJSONObjectCallback() {
+//                            @Override
+//                            public void onCompleted(JSONObject object, GraphResponse response) {
+//                                // this is where you should have the profile
+////                                Log.v("Facebook profile", Profile.getCurrentProfile().getFirstName());
+//                            }
+//                        });
+////                Bundle parameters = new Bundle();
+//////                parameters.putString("fields", "id,name,link"); //write the fields you need
+//////                request.setParameters(parameters);
+//                request.executeAsync();
 
                 startMainActivity();
                 mLoginActivityView.onSuccessLoginFaceBook();
@@ -165,6 +193,38 @@ public class LoginActivityPresenter {
     }
     public void onDestroy(){
         mLoginActivityView = null;
+    }
+    private void saveFaceBook() {
+
+
+        profile = Profile.getCurrentProfile();
+
+
+        if (profile != null) {
+            Log.d("LOGIN", "saveFaceBook: " + profile.getId());
+            mSharedPreferencesUtility.addToShared(mLoginActivityView.getContext(), SHARED, profile.getId());
+            mImageUrl = String.valueOf(profile.getProfilePictureUri(717, 400));
+            mRootRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (!dataSnapshot.child("Users").child(profile.getId()).hasChild("Photos")) {
+                        mUserId.child(profile.getId()).child("Photos").setValue(mImageUrl);
+                    }
+                }
+
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+
+            });
+
+        } else {
+            Log.d("LOGIN", "saveFaceBook: profile is null");
+        }
+
+
     }
 
 }
