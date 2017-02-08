@@ -4,5 +4,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">#00796B</item>
         <item name="colorAccent">#ffffff</item>
+        <item name="android:textColorPrimary">@color/accent</item>
+        <item name="android:textColorSecondary">@color/accent</item>
     </style>
+
+
+
 </resources>

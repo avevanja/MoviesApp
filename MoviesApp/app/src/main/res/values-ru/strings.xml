@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MovieBox</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_logout">Выход</string>
+    <string name="action_about">Про приложение</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="data_release_hint">Дата Релиза</string>
+    <string name="country_hint">Страна</string>
+    <string name="genre_hint">Жанр</string>
+    <string name="overview_hint">Описание</string>
+    <string name="cast_hint">В главных ролях</string>
+    <string name="error_logout">Ошибка выхода</string>
+    <string name="error_no_internet">нет интернет соединения</string>
+    <string name="tab_first_name">Лучшее</string>
+    <string name="tab_second_name">Новые</string>
+    <string name="tab_third_name">Любимые</string>
+    <string name="hint_first_name">Имя</string>
+    <string name="hint_second_name">Фамилия</string>
+    <string name="hint_email">Электронная почта</string>
+    <string name="hint_password">Пароль</string>
+    <string name="error_connection">проверьте интернет соединение</string>
+    <string name="hint_write_email">please write email</string>
+    <string name="error_search">ничего не найдено</string>
+    <string name="title_register">Зарегистрироваться</string>
+    <string name="btn_title_login">ВХОД</string>
+    <string name="hint_confirm_password">Подтвердите пароль</string>
+    <string name="btn_title_create">Создать Аккаунт</string>
+    <string name="query_lng">ru</string>
+    <string name="hint_account_activate">поздравляем ваш аккаунт активирован!</string>
+    <string name="hint_already_member">Уже зарегистрированы? Войдите</string>
+    <string name="hint_name_user">имя</string>
+    <string name="hint_information_user">Информация</string>
+</resources>
